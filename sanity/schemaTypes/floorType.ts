@@ -1,0 +1,147 @@
+import { defineField, defineType } from "sanity";
+
+export const floorType = defineType({
+  name: "floor",
+  title: "Podlahy",
+  type: "document",
+  fields: [
+    defineField({
+      name: "title",
+      title: "Název",
+      type: "string",
+    }),
+    defineField({
+      name: "slug",
+      description: "Je potřeba dodržovat strukturu URL adresy: podlaha-[název]",
+      title: "Slug",
+      type: "slug",
+      options: {
+        source: "title",
+        maxLength: 96,
+      },
+      validation: (Rule) =>
+        Rule.required().custom((slug) => {
+          const current = slug?.current || "";
+          if (!current.startsWith("podlaha-")) {
+            return 'Slug musí začínat předponou "podlaha-"';
+          }
+          if (current === "podlaha-") {
+            return "Za pomlčkou musí následovat název (např. podlaha-dub-classic)";
+          }
+          return true;
+        }),
+    }),
+    defineField({
+      name: "category",
+      title: "Kategorie",
+      options: {
+        list: [
+          { title: "Click", value: "podlahy-click" },
+          { title: "Lepená", value: "podlahy-lepene" },
+        ],
+        // 'radio' zobrazí přepínače místo rozbalovacího seznamu
+        layout: "dropdown",
+      },
+      type: "string",
+    }),
+    defineField({
+      name: "collection",
+      title: "Kolekce",
+      options: {
+        list: [
+          { title: "Classic", value: "classic" },
+          { title: "Premium", value: "premium" },
+        ],
+        // 'radio' zobrazí přepínače místo rozbalovacího seznamu
+        layout: "dropdown",
+      },
+      type: "string",
+    }),
+    defineField({
+      name: "pattern",
+      title: "Dekor",
+      type: "reference",
+      to: [{ type: "pattern" }],
+    }),
+    defineField({
+      name: "manufacturer",
+      title: "Výrobce",
+      type: "string",
+      options: {
+        list: [
+          { title: "Rigid", value: "rigid" },
+          { title: "Egibi", value: "egibi" },
+        ],
+        // 'radio' zobrazí přepínače místo rozbalovacího seznamu
+        layout: "dropdown",
+      },
+    }),
+    defineField({
+      name: "description",
+      title: "Popis podlahy",
+      type: "text",
+    }),
+    defineField({
+      name: "mainImage",
+      title: "Hlavní obrázek",
+      type: "image",
+      options: {
+        hotspot: true,
+      },
+    }),
+    defineField({
+      name: "gallery",
+      title: "Galerie",
+      type: "array",
+      of: [{ type: "image", options: { hotspot: true } }],
+    }),
+    defineField({
+      name: "techParams",
+      title: "Technické parametry",
+      type: "object",
+      fields: [
+        { name: "dimensions", type: "string", title: "Rozměr lamely (mm)" },
+        { name: "thickness", type: "number", title: "Celková tloušťka (mm)" },
+        { name: "wearLayer", type: "number", title: "Nášlapná vrstva (mm)" },
+        { name: "piecesInPackage", type: "number", title: "Kusů v balení" },
+        {
+          name: "weightPackage",
+          type: "number",
+          title: "Hmotnost balení (kg)",
+        },
+        { name: "m2InPackage", type: "number", title: "Počet m² v balení" },
+      ],
+    }),
+    defineField({
+      name: "features",
+      title: "Vlastnosti",
+      type: "array",
+      of: [{ type: "string" }],
+      options: {
+        list: [
+          { title: "Voděodolné", value: "waterproof" },
+          { title: "Pro podlahové vytápění", value: "underfloor-heating" },
+          { title: "Integrovaná podložka", value: "integrated-underlay" },
+        ],
+      },
+    }),
+    defineField({
+      name: "pricePerUnit",
+      title: "Cena za balení (Kč)",
+      type: "number",
+    }),
+    defineField({
+      name: "tags",
+      title: "Štítky",
+      type: "array",
+      of: [{ type: "string" }],
+      options: {
+        list: [
+          { title: "Novinka", value: "new" },
+          { title: "Akce", value: "sale" },
+          { title: "Doprodej", value: "clearance" },
+        ],
+      },
+    }),
+  ],
+});
