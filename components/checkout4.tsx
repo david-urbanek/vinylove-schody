@@ -67,61 +67,13 @@ interface Checkout4Props {
 
 // Schemas removed, imported from checkout-form
 
-const CART_ITEMS: CartItem[] = [
-  {
-    product_id: "product-1",
-    link: "#",
-    name: "Stylish Maroon Sneaker",
-    image:
-      "https://deifkwefumgah.cloudfront.net/shadcnblocks/block/ecommerce/clothes/stylish-maroon-sneaker.png",
-    price: {
-      regular: 354.0,
-      currency: "USD",
-    },
-    quantity: 1,
-    details: [
-      { label: "Color", value: "Red" },
-      { label: "Size", value: "36" },
-    ],
-  },
-  {
-    product_id: "product-2",
-    link: "#",
-    name: "Bicolor Sweatshirt with Embroidered Logo",
-    image:
-      "https://deifkwefumgah.cloudfront.net/shadcnblocks/block/ecommerce/clothes/bicolor-crewneck-sweatshirt-with-embroidered-logo.png",
-    price: {
-      regular: 499.0,
-      currency: "USD",
-    },
-    quantity: 1,
-    details: [
-      { label: "Color", value: "Blue & White" },
-      { label: "Size", value: "L" },
-    ],
-  },
-  {
-    product_id: "product-4",
-    link: "#",
-    name: "Maroon Leather Handbag",
-    image:
-      "https://deifkwefumgah.cloudfront.net/shadcnblocks/block/ecommerce/clothes/maroon-leather-handbag.png",
-    price: {
-      regular: 245.0,
-      currency: "USD",
-    },
-    quantity: 1,
-    details: [{ label: "Color", value: "Maroon" }],
-  },
-];
-
 const Checkout4 = ({
-  cartItems = CART_ITEMS,
+  cartItems,
   className,
   onRemoveItem,
   onUpdateQuantity,
 }: Checkout4Props) => {
-  if (cartItems.length === 0) {
+  if (cartItems.length === 0 || !cartItems) {
     return (
       <section
         className={cn(

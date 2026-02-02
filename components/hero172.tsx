@@ -219,8 +219,13 @@ const Hero172 = ({ className }: Hero172Props) => {
                 fill="none"
                 xmlns="http://www.w3.org/2000/svg"
                 initial={{ opacity: 0 }}
-                animate={{ opacity: 1 }}
-                transition={{ duration: 0.5, delay: 0.2 }}
+                animate={{ opacity: [1, 0.4, 1] }}
+                transition={{
+                  duration: 2,
+                  delay: 0.2,
+                  repeat: Infinity,
+                  ease: "easeInOut",
+                }}
               >
                 <motion.path
                   d="M72 9C68.4932 44.3333 50.7836 115 8 115"
