@@ -9,9 +9,11 @@ import { z } from "zod";
 
 import "photoswipe/style.css";
 
+import { useCart } from "@/hooks/useCart";
 import { useMediaQuery } from "@/hooks/useMediaQuery";
 import { cn } from "@/lib/utils";
 import { urlFor } from "@/sanity/lib/image";
+import { STOCK_STATUS } from "@/types/product";
 
 import { ProductVariants } from "@/components/product-variants";
 
@@ -93,6 +95,7 @@ interface ProductFormProps {
   hinges: Record<FieldName, Hinges>;
   pricePerPackage: number;
   packageSize: number;
+  onAddToCart: (quantity: number) => void;
 }
 
 type FormType = z.infer<typeof formSchema>;
@@ -115,12 +118,14 @@ interface StairProductFormProps {
   availability: boolean;
   pricePerPiece: number;
   allowSample?: boolean;
+  onAddToCart: (quantity: number) => void;
 }
 
 const StairProductForm = ({
   availability,
   pricePerPiece,
   allowSample = true,
+  onAddToCart,
 }: StairProductFormProps) => {
   const form = useForm<FormType>({
     resolver: zodResolver(formSchema),
@@ -133,7 +138,7 @@ const StairProductForm = ({
   const totalPrice = quantity * pricePerPiece;
 
   function onSubmit(values: FormType) {
-    console.log(values);
+    onAddToCart(values.quantity);
   }
 
   return (
@@ -220,7 +225,35 @@ const ProductDetail7 = ({
     features,
     pattern,
     pricePerUnit,
+    slug,
   } = product || {};
+
+  const { addItem } = useCart();
+
+  const handleAddToCart = (quantity: number) => {
+    const price = pricePerUnit || 0;
+    const productLink = slug?.current
+      ? `/produkt/${slug.current}`
+      : `/produkt/${_id}`;
+
+    addItem(
+      {
+        name: title || "Unknown Product",
+        id: _id, // Adding ID to help with uniqueness if link is not enough, though interface might not have it strictly
+        link: productLink,
+        price: {
+          regular: price,
+          currency: "CZK",
+        },
+        image: {
+          src: mainImage ? urlFor(mainImage).url() : "",
+          alt: title || "Product Image",
+        },
+        stockStatusCode: STOCK_STATUS.IN_STOCK,
+      } as any,
+      quantity,
+    ); // Type cast as any because Product interface might be strict and our mapped object might need adjustments or the interface in types/product.ts might need updates.
+  };
 
   // ... images logic ... (keep existing)
   const rawImages = [mainImage, ...(gallery || []), pattern?.image].filter(
@@ -519,6 +552,7 @@ const ProductDetail7 = ({
                 availability={true}
                 pricePerPiece={unitPrice}
                 allowSample={!isAccessory}
+                onAddToCart={handleAddToCart}
               />
             ) : (
               <ProductForm
@@ -534,6 +568,7 @@ const ProductDetail7 = ({
                 availability={true}
                 pricePerPackage={price}
                 packageSize={packageSize}
+                onAddToCart={handleAddToCart}
               />
             )}
 
@@ -554,6 +589,7 @@ const ProductForm = ({
   hinges,
   pricePerPackage,
   packageSize,
+  onAddToCart,
 }: ProductFormProps) => {
   const submitButtonRef = useRef<HTMLButtonElement>(null);
   const stickyButtonWrapperRef = useRef<HTMLDivElement>(null);
@@ -569,7 +605,7 @@ const ProductForm = ({
   const totalPrice = quantity * pricePerPackage;
 
   function onSubmit(values: FormType) {
-    console.log(values);
+    onAddToCart(values.quantity);
   }
 
   useEffect(() => {

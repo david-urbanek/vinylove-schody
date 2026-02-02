@@ -1,5 +1,6 @@
 "use client";
 
+import { useCart } from "@/hooks/useCart";
 import {
   ChevronLeft,
   ChevronRight,
@@ -12,6 +13,7 @@ import {
   ShoppingBag,
   X,
 } from "lucide-react";
+import Link from "next/link";
 import { useState } from "react";
 
 import { cn } from "@/lib/utils";
@@ -132,6 +134,7 @@ const Navbar3 = ({ className }: Navbar3Props) => {
   >(null);
   const [activeSolution, setActiveSolution] = useState(solutions[0]);
   const [activeFlooring, setActiveFlooring] = useState(flooringCategories[0]);
+  const { totalItems, isReady } = useCart();
 
   return (
     <section
@@ -334,8 +337,20 @@ const Navbar3 = ({ className }: Navbar3Props) => {
                   +420 123 456 789
                 </a>
               </Button>
-              <Button variant="outline" size="icon" className="rounded-full">
-                <ShoppingBag className="size-5" />
+              <Button
+                variant="outline"
+                size="icon"
+                className="rounded-full relative"
+                asChild
+              >
+                <Link href="/kosik">
+                  <ShoppingBag className="size-5" />
+                  {isReady && totalItems > 0 && (
+                    <span className="absolute -top-1.5 -right-1.5 flex h-5 w-5 items-center justify-center rounded-full bg-black text-[11px] text-white border-2 border-background">
+                      {totalItems}
+                    </span>
+                  )}
+                </Link>
               </Button>
             </div>
             <div className="flex items-center gap-4 lg:hidden">

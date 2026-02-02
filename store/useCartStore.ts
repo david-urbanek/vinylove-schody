@@ -8,7 +8,7 @@ export interface CartItem extends Product {
 
 interface CartStoreState {
   items: CartItem[];
-  addItem: (product: Product) => void;
+  addItem: (product: Product, quantity?: number) => void;
   removeItem: (id: string) => void;
   updateQuantity: (id: string, quantity: number) => void;
   clearCart: () => void; // Přidal jsem pro pohodlí
@@ -19,7 +19,7 @@ export const useCartStore = create<CartStoreState>()(
     (set, get) => ({
       items: [],
 
-      addItem: (product) => {
+      addItem: (product, quantity = 1) => {
         const { items } = get();
         // Používáš 'link' jako ID, což je v pohodě, pokud je unikátní
         const existingItem = items.find((item) => item.link === product.link);
@@ -28,13 +28,13 @@ export const useCartStore = create<CartStoreState>()(
           set({
             items: items.map((item) =>
               item.link === product.link
-                ? { ...item, quantity: item.quantity + 1 }
+                ? { ...item, quantity: item.quantity + quantity }
                 : item,
             ),
           });
         } else {
           set({
-            items: [...items, { ...product, quantity: 1 }],
+            items: [...items, { ...product, quantity: quantity }],
           });
         }
       },
