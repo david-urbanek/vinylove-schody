@@ -5,8 +5,6 @@ import { Product, ProductList } from "@/types/product";
 import { notFound } from "next/navigation";
 
 // Define the mapping configurations
-import { MOCK_PRODUCTS } from "@/data/mock-products";
-
 const CATEGORY_MAP: Record<
   string,
   { query: string; title: string; params?: Record<string, string> }
@@ -23,19 +21,19 @@ const CATEGORY_MAP: Record<
 
   // Stairs
   "schody-bez-nosu": {
-    query: `*[_type == "stair" && category == "bez-nosu"]`,
+    query: `*[_type == "stair" && category == "schody-bez-nosu"]`,
     title: "Schody bez nosu",
   },
   "schody-s-nosem": {
-    query: `*[_type == "stair" && category == "s-nosem"]`,
+    query: `*[_type == "stair" && category == "schody-s-nosem"]`,
     title: "Schody s nosem",
   },
   "schody-naslapy": {
-    query: `*[_type == "stair" && category == "naslapy"]`,
+    query: `*[_type == "stair" && category == "schody-naslapy"]`,
     title: "Nášlapy",
   },
   "schody-vetknute": {
-    query: `*[_type == "stair" && category == "vetknute"]`,
+    query: `*[_type == "stair" && category == "schody-vetknute"]`,
     title: "Vetknuté schody",
   },
 
@@ -66,37 +64,23 @@ export default async function ProductsCategoryPage(props: Params) {
   const config = CATEGORY_MAP[slug];
 
   if (!config) {
-    // If slug is not a known category, define what to do.
-    // It might be a product detail page if the routing allows [slug] to handle both.
-    // However, typically Next.js structure separates them.
-    // If this file is solely for categories, we 404.
-    // But since the user might have product slug here, we should be careful.
-    // For this task, user explicitly asked for logic "if slug is X render Y".
-    // I will return notFound() for unknown slugs for now, assuming detail pages are elsewhere or handled differently.
     notFound();
   }
 
   const { query, title } = config;
-
-  // Fetch data
   const data = await client.fetch(query);
 
-  // MOCK DATA FOR TESTING VISUALIZATION
-  // @ts-ignore - indexing with string on specific keys
-  const displayData =
-    data && data.length > 0 ? data : MOCK_PRODUCTS[slug] || [];
+  const displayData = data || [];
 
   if (!displayData || displayData.length === 0) {
-    if (process.env.NODE_ENV === "development") {
-      // Fallback for dev if specific slug not in mock, just use first category
-      const fallback = Object.values(MOCK_PRODUCTS)[0];
-      if (fallback) {
-        console.warn(`No mock data for ${slug}, using fallback.`);
-        // displayData = fallback; // Can't reassign const, refactor below
-      }
-    }
-    // If still empty
-    if (!displayData || displayData.length === 0) return <div>Loading...</div>;
+    return (
+      <div className="flex flex-col items-center justify-center min-h-[50vh] px-4 text-center">
+        <h2 className="text-2xl font-bold mb-2">Zatím zde nic není</h2>
+        <p className="text-muted-foreground">
+          Tato kategorie je momentálně prázdná. Zkuste se podívat později.
+        </p>
+      </div>
+    );
   }
 
   // Transform data

@@ -20,11 +20,8 @@ import { AspectRatio } from "@/components/ui/aspect-ratio";
 import { Button } from "@/components/ui/button";
 import { Field } from "@/components/ui/field";
 import { Separator } from "@/components/ui/separator";
-import {
-  CheckoutForm,
-  checkoutFormSchema,
-  CheckoutFormType,
-} from "./checkout-form";
+import { checkoutFormSchema, CheckoutFormType } from "@/lib/schemas";
+import { CheckoutForm } from "./checkout-form";
 
 interface ProductPrice {
   regular: number;
@@ -67,6 +64,10 @@ interface Checkout4Props {
 
 // Schemas removed, imported from checkout-form
 
+import { submitOrder } from "@/lib/cartFormAction";
+import { useRouter } from "next/navigation";
+import { useState } from "react";
+
 const Checkout4 = ({
   cartItems,
   className,
@@ -74,6 +75,7 @@ const Checkout4 = ({
   onUpdateQuantity,
 }: Checkout4Props) => {
   if (cartItems.length === 0 || !cartItems) {
+    // ... empty state (unchanged)
     return (
       <section
         className={cn(
@@ -121,8 +123,40 @@ const Checkout4 = ({
     },
   });
 
-  const onSubmit = (data: CheckoutFormType) => {
-    console.log(data);
+  const router = useRouter();
+  const [isSubmitting, setIsSubmitting] = useState(false);
+
+  const onSubmit = async (data: CheckoutFormType) => {
+    setIsSubmitting(true);
+    try {
+      // Pass both form data and the full cart items (for image/details that aren't in form)
+      const res = await submitOrder({ ...data, cartItems });
+
+      if (res.success) {
+        // Redirect to success page on success
+        router.push("/kosik/dekujeme");
+      } else {
+        if (res.details) {
+          Object.entries(res.details).forEach(([key, messages]) => {
+            if (messages && messages.length > 0) {
+              form.setError(key as any, {
+                type: "server",
+                message: messages[0],
+              });
+            }
+          });
+          // Scroll to first error potentially, or just show general alert
+          alert("Prosím opravte chyby ve formuláři.");
+        } else {
+          alert(res.error || "Něco se pokazilo. Zkontrolujte prosím údaje.");
+        }
+      }
+    } catch (err) {
+      console.error(err);
+      alert("Nepodařilo se odeslat formulář. Zkuste to prosím později.");
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   return (
@@ -154,8 +188,13 @@ const Checkout4 = ({
 
                 <div className="space-y-6">
                   <CheckoutForm />
-                  <Button type="submit" size="lg" className="w-full text-base">
-                    Odeslat poptávku
+                  <Button
+                    type="submit"
+                    size="lg"
+                    className="w-full text-base"
+                    disabled={isSubmitting}
+                  >
+                    {isSubmitting ? "Odesílám..." : "Odeslat poptávku"}
                   </Button>
                 </div>
               </div>

@@ -8,6 +8,7 @@ import { ControllerRenderProps, useForm } from "react-hook-form";
 import { z } from "zod";
 
 import "photoswipe/style.css";
+import { toast } from "sonner";
 
 import { useCart } from "@/hooks/useCart";
 import { useMediaQuery } from "@/hooks/useMediaQuery";
@@ -252,7 +253,12 @@ const ProductDetail7 = ({
         stockStatusCode: STOCK_STATUS.IN_STOCK,
       } as any,
       quantity,
-    ); // Type cast as any because Product interface might be strict and our mapped object might need adjustments or the interface in types/product.ts might need updates.
+    );
+
+    toast.success("Produkt přidán do košíku", {
+      description: `${quantity}x ${title || "Produkt"}`,
+      duration: 3000,
+    });
   };
 
   // ... images logic ... (keep existing)
