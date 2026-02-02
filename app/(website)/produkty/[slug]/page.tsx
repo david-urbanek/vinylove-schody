@@ -56,6 +56,9 @@ type Params = {
   params: Promise<{
     slug: string;
   }>;
+  searchParams: Promise<{
+    sort?: string;
+  }>;
 };
 
 export default async function ProductsCategoryPage(props: Params) {
@@ -129,6 +132,24 @@ export default async function ProductsCategoryPage(props: Params) {
       }),
     };
   });
+
+  // Sort products based on searchParams
+  const sort = await props.searchParams;
+  const sortOrder = sort?.sort;
+
+  if (sortOrder === "asc") {
+    products.sort((a, b) => {
+      const priceA = a.price.sale ?? a.price.regular;
+      const priceB = b.price.sale ?? b.price.regular;
+      return priceA - priceB;
+    });
+  } else if (sortOrder === "desc") {
+    products.sort((a, b) => {
+      const priceA = a.price.sale ?? a.price.regular;
+      const priceB = b.price.sale ?? b.price.regular;
+      return priceB - priceA;
+    });
+  }
 
   // Split into batches
   const BATCH_SIZE_PROMO = 6; // products next to promo

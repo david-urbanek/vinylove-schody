@@ -120,6 +120,7 @@ interface StairProductFormProps {
   pricePerPiece: number;
   allowSample?: boolean;
   onAddToCart: (quantity: number) => void;
+  onOrderSample?: () => void;
 }
 
 const StairProductForm = ({
@@ -127,6 +128,7 @@ const StairProductForm = ({
   pricePerPiece,
   allowSample = true,
   onAddToCart,
+  onOrderSample,
 }: StairProductFormProps) => {
   const form = useForm<FormType>({
     resolver: zodResolver(formSchema),
@@ -196,6 +198,7 @@ const StairProductForm = ({
               variant="outline"
               type="button"
               className="flex-1"
+              onClick={onOrderSample}
             >
               OBJEDNAT VZOREK
             </Button>
@@ -229,7 +232,7 @@ const ProductDetail7 = ({
     slug,
   } = product || {};
 
-  const { addItem } = useCart();
+  const { addItem, items } = useCart();
 
   const handleAddToCart = (quantity: number) => {
     const price = pricePerUnit || 0;
@@ -257,6 +260,49 @@ const ProductDetail7 = ({
 
     toast.success("Produkt přidán do košíku", {
       description: `${quantity}x ${title || "Produkt"}`,
+      duration: 3000,
+    });
+  };
+
+  const handleOrderSample = () => {
+    const sampleTitle = `Vzorek - ${title || "Produkt"}`;
+    const sampleId = `sample-${_id}`;
+
+    // Check if sample is already in cart
+    const sameSampleExists = items.some((item) => item.id === sampleId);
+
+    if (sameSampleExists) {
+      toast.info("Vzorek již je v košíku", {
+        description: "Maximálně 1 kus na vzorek.",
+        duration: 3000,
+      });
+      return;
+    }
+
+    addItem(
+      {
+        name: sampleTitle,
+        id: sampleId,
+        link: slug?.current ? `/produkt/${slug.current}` : "#",
+        price: {
+          regular: 0, // Samples are usually free or specific price. Assuming free for now based on context.
+          currency: "CZK",
+        },
+        image: {
+          src: pattern?.image
+            ? urlFor(pattern.image).url()
+            : mainImage
+              ? urlFor(mainImage).url()
+              : "",
+          alt: sampleTitle,
+        },
+        stockStatusCode: STOCK_STATUS.IN_STOCK,
+      } as any,
+      1,
+    );
+
+    toast.success("Vzorek přidán do košíku", {
+      description: sampleTitle,
       duration: 3000,
     });
   };
@@ -559,6 +605,7 @@ const ProductDetail7 = ({
                 pricePerPiece={unitPrice}
                 allowSample={!isAccessory}
                 onAddToCart={handleAddToCart}
+                onOrderSample={handleOrderSample}
               />
             ) : (
               <ProductForm
@@ -575,6 +622,7 @@ const ProductDetail7 = ({
                 pricePerPackage={price}
                 packageSize={packageSize}
                 onAddToCart={handleAddToCart}
+                onOrderSample={handleOrderSample}
               />
             )}
 
@@ -590,12 +638,24 @@ const formSchema = z.object({
   quantity: z.number().min(1),
 });
 
+interface ProductFormProps {
+  availability: boolean;
+  hinges: Record<FieldName, Hinges>;
+  pricePerPackage: number;
+  packageSize: number;
+  onAddToCart: (quantity: number) => void;
+  onOrderSample?: () => void;
+}
+
+// ...
+
 const ProductForm = ({
   availability,
   hinges,
   pricePerPackage,
   packageSize,
   onAddToCart,
+  onOrderSample,
 }: ProductFormProps) => {
   const submitButtonRef = useRef<HTMLButtonElement>(null);
   const stickyButtonWrapperRef = useRef<HTMLDivElement>(null);
@@ -729,7 +789,13 @@ const ProductForm = ({
           >
             {availability ? "PŘIDAT DO KOŠÍKU" : "Vyprodáno"}
           </Button>
-          <Button size="lg" variant="outline" type="button" className="flex-1">
+          <Button
+            size="lg"
+            variant="outline"
+            type="button"
+            className="flex-1"
+            onClick={onOrderSample}
+          >
             OBJEDNAT VZOREK
           </Button>
         </div>

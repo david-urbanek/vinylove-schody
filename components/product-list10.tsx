@@ -1,4 +1,7 @@
+"use client";
+
 import { ShoppingCart } from "lucide-react";
+import { useRouter, useSearchParams } from "next/navigation";
 
 import { cn } from "@/lib/utils";
 
@@ -7,13 +10,20 @@ import { AspectRatio } from "@/components/ui/aspect-ratio";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 import {
   FeaturedPromotionCardProps,
   ProductCardProps,
   ProductList,
   STOCK_STATUS,
 } from "@/types/product";
+// ... existing imports
 
 interface ProductList10Props {
   className?: string;
@@ -26,12 +36,45 @@ const ProductList10 = ({
   items,
   title = "Vinylové podlahy a příslušenství",
 }: ProductList10Props) => {
+  const router = useRouter();
+  const searchParams = useSearchParams();
+  const sortOrder = searchParams.get("sort") || "default";
+
+  const handleSortChange = (value: string) => {
+    const params = new URLSearchParams(searchParams.toString());
+    if (value === "default") {
+      params.delete("sort");
+    } else {
+      params.set("sort", value);
+    }
+    router.push(`?${params.toString()}`);
+  };
+
   return (
     <section className={cn("py-20 lg:py-32", className)}>
       <div className="container px-4 md:px-6">
-        <h2 className="mb-6 font-serif text-3xl md:text-4xl lg:text-5xl text-foreground text-center md:text-left font-medium tracking-tight">
-          {title}
-        </h2>
+        <div className="flex flex-col md:flex-row md:items-center justify-between mb-6 gap-4">
+          <h2 className="font-serif text-3xl md:text-4xl lg:text-5xl text-foreground font-medium tracking-tight">
+            {title}
+          </h2>
+          <div className="flex items-center gap-3 w-full md:w-auto">
+            <span className="text-sm font-medium text-muted-foreground whitespace-nowrap">
+              Řadit podle:
+            </span>
+            <div className="w-full md:w-48">
+              <Select value={sortOrder} onValueChange={handleSortChange}>
+                <SelectTrigger>
+                  <SelectValue placeholder="Seřadit podle" />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="default">Doporučeno</SelectItem>
+                  <SelectItem value="asc">Od nejlevnějšího</SelectItem>
+                  <SelectItem value="desc">Od nejdražšího</SelectItem>
+                </SelectContent>
+              </Select>
+            </div>
+          </div>
+        </div>
         {!items || items.length === 0 ? (
           <p className="py-10 text-lg text-muted-foreground text-center md:text-left">
             Bohužel zde zatím žádné produkty nejsou.

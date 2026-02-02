@@ -61,7 +61,7 @@ export const CheckoutForm = () => {
             name="firstName"
             render={({ field, fieldState }) => (
               <Field data-invalid={fieldState.invalid}>
-                <FieldLabel htmlFor="firstName">Jméno</FieldLabel>
+                <FieldLabel htmlFor="firstName">Jméno:</FieldLabel>
                 <Input
                   id="firstName"
                   placeholder="Jan"
@@ -79,7 +79,7 @@ export const CheckoutForm = () => {
             name="lastName"
             render={({ field, fieldState }) => (
               <Field data-invalid={fieldState.invalid}>
-                <FieldLabel htmlFor="lastName">Příjmení</FieldLabel>
+                <FieldLabel htmlFor="lastName">Příjmení:</FieldLabel>
                 <Input
                   id="lastName"
                   placeholder="Novák"
@@ -100,7 +100,7 @@ export const CheckoutForm = () => {
             name="email"
             render={({ field, fieldState }) => (
               <Field data-invalid={fieldState.invalid}>
-                <FieldLabel htmlFor="email">Email</FieldLabel>
+                <FieldLabel htmlFor="email">Email:</FieldLabel>
                 <Input
                   id="email"
                   type="email"
@@ -119,7 +119,7 @@ export const CheckoutForm = () => {
             name="phone"
             render={({ field, fieldState }) => (
               <Field data-invalid={fieldState.invalid}>
-                <FieldLabel htmlFor="phone">Telefon</FieldLabel>
+                <FieldLabel htmlFor="phone">Telefon:</FieldLabel>
                 <Input
                   id="phone"
                   type="tel"
@@ -144,7 +144,7 @@ export const CheckoutForm = () => {
           name="street"
           render={({ field, fieldState }) => (
             <Field data-invalid={fieldState.invalid}>
-              <FieldLabel htmlFor="street">Ulice a číslo popisné</FieldLabel>
+              <FieldLabel htmlFor="street">Ulice a číslo popisné:</FieldLabel>
               <Input
                 id="street"
                 placeholder="Dlouhá 123"
@@ -161,7 +161,7 @@ export const CheckoutForm = () => {
             name="city"
             render={({ field, fieldState }) => (
               <Field data-invalid={fieldState.invalid}>
-                <FieldLabel htmlFor="city">Město</FieldLabel>
+                <FieldLabel htmlFor="city">Město:</FieldLabel>
                 <Input
                   id="city"
                   placeholder="Praha"
@@ -179,7 +179,7 @@ export const CheckoutForm = () => {
             name="zip"
             render={({ field, fieldState }) => (
               <Field data-invalid={fieldState.invalid}>
-                <FieldLabel htmlFor="zip">PSČ</FieldLabel>
+                <FieldLabel htmlFor="zip">PSČ:</FieldLabel>
                 <Input
                   id="zip"
                   placeholder="110 00"
@@ -194,6 +194,26 @@ export const CheckoutForm = () => {
           />
         </div>
       </div>
+
+      {/* Poznámka k objednávce */}
+      <Controller
+        control={control}
+        name="orderNote"
+        render={({ field, fieldState }) => (
+          <Field data-invalid={fieldState && fieldState.invalid}>
+            <FieldLabel htmlFor="orderNote">Poznámka k objednávce:</FieldLabel>
+            <Textarea
+              id="orderNote"
+              placeholder="Zde napište požadované rozměry schodů nebo jakékoliv jiné požadavky týkající se vašeho nákupu..."
+              className="resize-none"
+              {...field}
+            />
+            {fieldState && fieldState.invalid && (
+              <FieldError errors={[fieldState.error]} />
+            )}
+          </Field>
+        )}
+      />
 
       {/* Realizace */}
       <div className="space-y-4 rounded-lg border p-4">
@@ -213,7 +233,7 @@ export const CheckoutForm = () => {
             htmlFor="interestInRealization"
             className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
           >
-            Mám zájem o realizaci
+            Mám zájem o realizaci:
           </label>
         </div>
 
