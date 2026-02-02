@@ -234,11 +234,12 @@ const ProductDetail7 = ({
 
   const { addItem, items } = useCart();
 
+  const productLink = slug?.current
+    ? `/produkt/${slug.current}`
+    : `/produkt/${_id}`;
+
   const handleAddToCart = (quantity: number) => {
     const price = pricePerUnit || 0;
-    const productLink = slug?.current
-      ? `/produkt/${slug.current}`
-      : `/produkt/${_id}`;
 
     addItem(
       {
@@ -254,6 +255,7 @@ const ProductDetail7 = ({
           alt: title || "Product Image",
         },
         stockStatusCode: STOCK_STATUS.IN_STOCK,
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
       } as any,
       quantity,
     );
@@ -283,7 +285,7 @@ const ProductDetail7 = ({
       {
         name: sampleTitle,
         id: sampleId,
-        link: slug?.current ? `/produkt/${slug.current}` : "#",
+        link: `${productLink}?sample=true`,
         price: {
           regular: 0, // Samples are usually free or specific price. Assuming free for now based on context.
           currency: "CZK",
@@ -297,6 +299,7 @@ const ProductDetail7 = ({
           alt: sampleTitle,
         },
         stockStatusCode: STOCK_STATUS.IN_STOCK,
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
       } as any,
       1,
     );

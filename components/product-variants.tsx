@@ -1,5 +1,6 @@
 import { cn } from "@/lib/utils";
 import { urlFor } from "@/sanity/lib/image";
+import Image from "next/image";
 import Link from "next/link";
 
 interface ProductVariantsProps {
@@ -34,10 +35,12 @@ export function ProductVariants({
             scroll={false} // Optional: depends on UX preference, usually good for variants
           >
             {imageUrl ? (
-              <img
+              <Image
                 src={imageUrl}
                 alt={item.title}
                 className="size-full object-cover"
+                fill
+                sizes="64px"
               />
             ) : (
               <div className="size-full bg-muted flex items-center justify-center text-xs">

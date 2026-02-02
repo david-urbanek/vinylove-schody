@@ -10,6 +10,7 @@ import {
   Trash2,
   Truck,
 } from "lucide-react";
+import Image from "next/image";
 import { useState } from "react";
 
 import { AspectRatio } from "@/components/ui/aspect-ratio";
@@ -31,7 +32,8 @@ const DEFAULT_ITEMS: CartItem[] = [
   {
     id: "1",
     name: "Minimalist Beige Sneakers",
-    image: "https://deifkwefumgah.cloudfront.net/shadcnblocks/block/ecommerce/clothes/Minimalist-Beige-Sneakers-2.png",
+    image:
+      "https://deifkwefumgah.cloudfront.net/shadcnblocks/block/ecommerce/clothes/Minimalist-Beige-Sneakers-2.png",
     price: 120.0,
     quantity: 1,
     variant: "Size: EU 36",
@@ -48,7 +50,8 @@ const DEFAULT_ITEMS: CartItem[] = [
   {
     id: "3",
     name: "Classic Fedora Hat",
-    image: "https://deifkwefumgah.cloudfront.net/shadcnblocks/block/ecommerce/accessories/Classic-Fedora-Hat-2.png",
+    image:
+      "https://deifkwefumgah.cloudfront.net/shadcnblocks/block/ecommerce/accessories/Classic-Fedora-Hat-2.png",
     price: 84.0,
     quantity: 1,
     variant: "Color: Beige",
@@ -125,7 +128,7 @@ const ShoppingCart3 = ({
           </div>
           <h1 className="mb-4 text-2xl font-semibold">Your cart is empty</h1>
           <p className="mb-8 text-muted-foreground">
-            Looks like you haven't added anything yet.
+            Looks like you haven&apos;t added anything yet.
           </p>
           <Button asChild>
             <a href="#">Continue Shopping</a>
@@ -152,12 +155,14 @@ const ShoppingCart3 = ({
                   <div className="w-36 shrink-0">
                     <AspectRatio
                       ratio={1}
-                      className="overflow-hidden rounded-lg bg-muted"
+                      className="relative overflow-hidden rounded-lg bg-muted"
                     >
-                      <img
+                      <Image
                         src={item.image}
                         alt={item.name}
-                        className="size-full object-cover"
+                        className="object-cover"
+                        fill
+                        sizes="144px"
                       />
                     </AspectRatio>
                   </div>

@@ -2,12 +2,13 @@
 
 import { OrderSummaryEmail } from "@/emails/orderEmail";
 import { checkoutFormSchema, CheckoutFormType } from "@/lib/schemas";
+import { CartItem } from "@/store/useCartStore";
 import { Resend } from "resend";
 
 const resend = new Resend(process.env.RESEND_API_KEY);
 
 export async function submitOrder(
-  data: CheckoutFormType & { cartItems: any[] },
+  data: CheckoutFormType & { cartItems: CartItem[] },
 ) {
   // 1. Validation on server side
   const result = checkoutFormSchema.safeParse(data);
@@ -40,16 +41,18 @@ export async function submitOrder(
   // For now, we trust the passed data as per the user's current setup.
 
   const enrichedItems = products.map((p) => {
-    const originalItem = data.cartItems.find(
-      (ci) => ci.product_id === p.product_id,
-    );
+    const originalItem = data.cartItems.find((ci) => ci.link === p.product_id);
     return {
-      ...originalItem,
+      product_id: p.product_id, // This is the link
+      name: originalItem?.name || "Unknown Product",
+      image: originalItem?.image?.src || "",
+      link: originalItem?.link || "",
       quantity: p.quantity,
       price: {
         regular: p.price,
-        currency: "CZK", // Assuming CZK for now, or pass it from client
+        currency: "CZK",
       },
+      details: [],
     };
   });
 

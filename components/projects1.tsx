@@ -1,5 +1,6 @@
 "use client";
 import { motion } from "framer-motion";
+import Image from "next/image";
 
 import { cn } from "@/lib/utils";
 
@@ -105,16 +106,18 @@ const Projects1 = ({ className }: Projects1Props) => {
               </div>
 
               <motion.div
-                className="aspect-[3/2] w-full overflow-hidden rounded-sm"
+                className="relative aspect-[3/2] w-full overflow-hidden rounded-sm"
                 initial={{ y: -80, opacity: 0 }}
                 whileInView={{ y: 0, opacity: 1 }}
                 transition={{ duration: 0.8, ease: "easeOut" }}
                 viewport={{ once: true }}
               >
-                <img
+                <Image
                   src={project.image}
                   alt={project.title}
-                  className="h-full w-full rounded-sm object-cover"
+                  className="object-cover"
+                  fill
+                  sizes="(max-width: 768px) 100vw, 50vw"
                 />
               </motion.div>
             </motion.div>

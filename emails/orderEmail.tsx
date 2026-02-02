@@ -271,7 +271,7 @@ export const OrderSummaryEmail = ({
                       </Text>
                       {customer.projectDescription && (
                         <Text className="text-green-700 text-[13px] m-0 mt-2 italic">
-                          "{customer.projectDescription}"
+                          &quot;{customer.projectDescription}&quot;
                         </Text>
                       )}
                     </div>

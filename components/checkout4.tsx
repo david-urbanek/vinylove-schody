@@ -2,6 +2,7 @@
 
 import { zodResolver } from "@hookform/resolvers/zod";
 import { ShoppingBag, Trash } from "lucide-react";
+import Link from "next/link";
 import { useCallback } from "react";
 import {
   Controller,
@@ -11,6 +12,7 @@ import {
   useFormContext,
   UseFormReturn,
 } from "react-hook-form";
+import { toast } from "sonner";
 
 import { cn } from "@/lib/utils";
 
@@ -21,26 +23,16 @@ import { Button } from "@/components/ui/button";
 import { Field } from "@/components/ui/field";
 import { Separator } from "@/components/ui/separator";
 import { checkoutFormSchema, CheckoutFormType } from "@/lib/schemas";
+import { CartItem } from "@/store/useCartStore";
 import { CheckoutForm } from "./checkout-form";
 
-interface ProductPrice {
-  regular: number;
-  sale?: number;
-  currency: string;
-}
+// Local CartItem definition removed. Using shared one.
 
-type CartItem = {
-  product_id: string;
-  link: string;
-  name: string;
-  image: string;
-  price: ProductPrice;
-  quantity: number;
-  details: {
-    label: string;
-    value: string;
-  }[];
-};
+interface CartItemProps extends CartItem {
+  index: number;
+  onRemoveClick: () => void;
+  onQuantityChange: (newQty: number) => void;
+}
 
 interface CartItemProps extends CartItem {
   index: number;
@@ -74,38 +66,12 @@ const Checkout4 = ({
   onRemoveItem,
   onUpdateQuantity,
 }: Checkout4Props) => {
-  if (cartItems.length === 0 || !cartItems) {
-    // ... empty state (unchanged)
-    return (
-      <section
-        className={cn(
-          "flex min-h-[60vh] flex-col items-center justify-center gap-6 py-12",
-          className,
-        )}
-      >
-        <div className="flex h-24 w-24 items-center justify-center rounded-full bg-muted">
-          <ShoppingBag className="h-10 w-10 text-muted-foreground" />
-        </div>
-        <div className="space-y-2 text-center">
-          <h2 className="text-2xl font-bold tracking-tight">
-            Váš košík je prázdný
-          </h2>
-          <p className="text-muted-foreground">
-            Prozatím jste do košíku nic nepřidali.
-          </p>
-        </div>
-        <Button asChild size="lg" className="mt-2 text-xl font-bold">
-          <a href="/">Zpět k nákupu</a>
-        </Button>
-      </section>
-    );
-  }
-
-  const defaultProducts = cartItems.map((item) => ({
-    product_id: item.product_id,
-    quantity: item.quantity,
-    price: item.price.sale ?? item.price.regular,
-  }));
+  const defaultProducts =
+    cartItems?.map((item) => ({
+      product_id: item.link,
+      quantity: item.quantity,
+      price: item.price.sale ?? item.price.regular,
+    })) || [];
 
   const form = useForm<CheckoutFormType>({
     resolver: zodResolver(checkoutFormSchema),
@@ -126,6 +92,33 @@ const Checkout4 = ({
   const router = useRouter();
   const [isSubmitting, setIsSubmitting] = useState(false);
 
+  // Early return MUST happen after hooks
+  if (!cartItems || cartItems.length === 0) {
+    return (
+      <section
+        className={cn(
+          "flex min-h-[60vh] flex-col items-center justify-center gap-6 py-12",
+          className,
+        )}
+      >
+        <div className="flex h-24 w-24 items-center justify-center rounded-full bg-muted">
+          <ShoppingBag className="h-10 w-10 text-muted-foreground" />
+        </div>
+        <div className="space-y-2 text-center">
+          <h2 className="text-2xl font-bold tracking-tight">
+            Váš košík je prázdný
+          </h2>
+          <p className="text-muted-foreground">
+            Prozatím jste do košíku nic nepřidali.
+          </p>
+        </div>
+        <Button asChild size="lg" className="mt-2 text-xl font-bold">
+          <Link href="/">Zpět k nákupu</Link>
+        </Button>
+      </section>
+    );
+  }
+
   const onSubmit = async (data: CheckoutFormType) => {
     setIsSubmitting(true);
     try {
@@ -139,21 +132,23 @@ const Checkout4 = ({
         if (res.details) {
           Object.entries(res.details).forEach(([key, messages]) => {
             if (messages && messages.length > 0) {
-              form.setError(key as any, {
+              form.setError(key as keyof CheckoutFormType, {
                 type: "server",
                 message: messages[0],
               });
             }
           });
           // Scroll to first error potentially, or just show general alert
-          alert("Prosím opravte chyby ve formuláři.");
+          toast.error("Prosím opravte chyby ve formuláři.");
         } else {
-          alert(res.error || "Něco se pokazilo. Zkontrolujte prosím údaje.");
+          toast.error(
+            res.error || "Něco se pokazilo. Zkontrolujte prosím údaje.",
+          );
         }
       }
     } catch (err) {
       console.error(err);
-      alert("Nepodařilo se odeslat formulář. Zkuste to prosím později.");
+      toast.error("Nepodařilo se odeslat formulář. Zkuste to prosím později.");
     } finally {
       setIsSubmitting(false);
     }
@@ -243,17 +238,15 @@ const Cart = ({
     <div className="space-y-8">
       <ul className="space-y-6">
         {fields.map((field, index) => {
-          const cartItem = cartItems.find(
-            (p) => p.product_id === field.product_id,
-          );
+          const cartItem = cartItems.find((p) => p.link === field.product_id);
           if (!cartItem) return null;
           return (
             <li key={field.id}>
               <CartItemComponent
                 {...cartItem}
-                onRemoveClick={() => handleRemove(index, cartItem.product_id)()}
+                onRemoveClick={() => handleRemove(index, cartItem.link)()}
                 onQuantityChange={(newQty: number) =>
-                  handleQuantityChange(index, cartItem.product_id)(newQty)
+                  handleQuantityChange(index, cartItem.link)(newQty)
                 }
                 index={index}
               />
@@ -310,7 +303,6 @@ const CartItemComponent = ({
   image,
   name,
   link,
-  details,
   price,
   index,
   onQuantityChange,
@@ -325,7 +317,11 @@ const CartItemComponent = ({
           ratio={1}
           className="overflow-hidden rounded-xl bg-background"
         >
-          <img src={image} alt={name} className="size-full object-cover" />
+          <img
+            src={image?.src || ""}
+            alt={name}
+            className="size-full object-cover"
+          />
         </AspectRatio>
       </div>
       <div className="min-w-0 flex-1">
@@ -334,7 +330,6 @@ const CartItemComponent = ({
             <a href={link} className="line-clamp-2 font-medium hover:underline">
               {name}
             </a>
-            <ProductDetails details={details} />
           </div>
           <Button
             size="icon"
@@ -353,24 +348,6 @@ const CartItemComponent = ({
         </div>
       </div>
     </div>
-  );
-};
-
-const ProductDetails = ({
-  details,
-}: {
-  details?: { label: string; value: string }[];
-}) => {
-  if (!details) return null;
-  return (
-    <p className="mt-1 text-sm text-muted-foreground">
-      {details.map((item, index) => (
-        <span key={index}>
-          {item.label}: {item.value}
-          {index < details.length - 1 && " · "}
-        </span>
-      ))}
-    </p>
   );
 };
 

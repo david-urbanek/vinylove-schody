@@ -10,24 +10,10 @@ export default function CartPage() {
     return null; // Or a loading spinner
   }
 
-  // Map items to Checkout4 format
-  const cartItems = items.map((item) => ({
-    product_id: item.link, // using link as ID is consistent with store
-    link: item.link,
-    name: item.name,
-    image: item.image.src,
-    price: {
-      regular: item.price.regular,
-      currency: "CZK", // Force CZK as it is hardcoded in store for now
-    },
-    quantity: item.quantity,
-    details: [], // Attributes not yet supported in store
-  }));
-
   return (
     <div className="container mx-auto py-8">
       <Checkout4
-        cartItems={cartItems}
+        cartItems={items}
         onRemoveItem={removeItem}
         onUpdateQuantity={updateQuantity}
       />
