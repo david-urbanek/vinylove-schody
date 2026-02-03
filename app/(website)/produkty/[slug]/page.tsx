@@ -42,10 +42,6 @@ const CATEGORY_MAP: Record<
     query: `*[_type == "skirting"]`,
     title: "Obvodové lišty",
   },
-  prislusenstvi: {
-    query: `*[_type == "accessory"]`,
-    title: "Příslušenství",
-  },
   "prechodove-listy": {
     query: `*[_type == "transitionProfile"]`,
     title: "Přechodové lišty",
@@ -53,6 +49,18 @@ const CATEGORY_MAP: Record<
   "zakonceni-u-steny": {
     query: `*[_type == "staircaseSokl"]`,
     title: "Zakončení u stěny",
+  },
+  lepidla: {
+    query: `*[_type == "accessory" && type == "lepidla"]`,
+    title: "Lepidla",
+  },
+  sterky: {
+    query: `*[_type == "accessory" && type == "sterky"]`,
+    title: "Stěrky",
+  },
+  penetrace: {
+    query: `*[_type == "accessory" && type == "penetrace"]`,
+    title: "Penetrace",
   },
 };
 

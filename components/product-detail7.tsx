@@ -260,7 +260,7 @@ const ProductDetail7 = ({
       quantity,
     );
 
-    toast.success("Produkt přidán do košíku", {
+    toast.success("Produkt byl přidán do košíku", {
       description: `${quantity}x ${title || "Produkt"}`,
       duration: 3000,
     });

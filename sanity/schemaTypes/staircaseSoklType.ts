@@ -6,6 +6,11 @@ export const staircaseSoklType = defineType({
   type: "document",
   fields: [
     defineField({
+      name: "title",
+      title: "Název",
+      type: "string",
+    }),
+    defineField({
       name: "type",
       title: "Typ zakončení",
       type: "string",
@@ -16,6 +21,16 @@ export const staircaseSoklType = defineType({
           { title: "Bez lišty (silikon)", value: "silikon" },
         ],
         layout: "radio",
+      },
+      validation: (Rule) => Rule.required(),
+    }),
+    defineField({
+      name: "slug",
+      title: "Slug",
+      type: "slug",
+      options: {
+        source: "title", // Or generate based on type/title
+        maxLength: 96,
       },
       validation: (Rule) => Rule.required(),
     }),

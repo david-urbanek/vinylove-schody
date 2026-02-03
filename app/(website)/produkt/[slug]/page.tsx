@@ -55,7 +55,18 @@ export default async function Page({
   } else if (product._type === "accessory") {
     variantsQuery = null;
     variantsParams = {};
-  } else {
+  } else if (product._type === "staircaseSokl") {
+    variantsQuery = `*[_type == $type && type == $subtype]{
+      _id,
+      title,
+      slug,
+      pattern->{title, image}
+    }`;
+    variantsParams = {
+      type: product._type,
+      subtype: product.type,
+    };
+  } else if (product._type === "floor") {
     // For floors, filter by category and collection
     variantsQuery = `*[_type == $type && category == $category && collection == $collection]{
       _id,
@@ -68,6 +79,10 @@ export default async function Page({
       category: product.category,
       collection: product.collection,
     };
+  } else {
+    // Fallback for unknown types
+    variantsQuery = null;
+    variantsParams = {};
   }
 
   const relatedProducts = variantsQuery

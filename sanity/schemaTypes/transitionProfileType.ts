@@ -15,6 +15,7 @@ export const transitionProfileType = defineType({
       title: "Slug",
       type: "slug",
       options: { source: "title" },
+      validation: (Rule) => Rule.required(),
     }),
     defineField({
       name: "pattern",
