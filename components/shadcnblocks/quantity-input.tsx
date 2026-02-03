@@ -15,6 +15,7 @@ export interface QuantityProps {
   renderLeftIcon?: () => ReactNode;
   renderRightIcon?: () => ReactNode;
   inputProps?: React.ComponentProps<"input">;
+  disabled?: boolean;
 }
 
 const QuantityInput = ({
@@ -23,22 +24,26 @@ const QuantityInput = ({
   className,
   renderRightIcon,
   renderLeftIcon,
+  disabled,
   ...props
 }: QuantityProps) => {
   const { min = 1, max = 99 } = props;
 
   const clamp = (num: number) => Math.max(min, Math.min(max, num));
   const handleIncrement = () => {
+    if (disabled) return;
     const newValue = clamp((inputProps?.value as number) + 1 || min);
     onValueChange?.(newValue);
   };
 
   const handleDecrement = () => {
+    if (disabled) return;
     const newValue = clamp((inputProps?.value as number) - 1 || min);
     onValueChange?.(newValue);
   };
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    if (disabled) return;
     let val = parseInt(e.target.value, 10);
     if (isNaN(val)) val = min;
     val = clamp(val);
@@ -49,6 +54,7 @@ const QuantityInput = ({
     <div
       className={clsx(
         "flex h-9 w-full items-center overflow-hidden rounded-full border shadow-xs",
+        disabled && "opacity-50 cursor-not-allowed",
         className,
       )}
       aria-label="quantity"
@@ -58,6 +64,7 @@ const QuantityInput = ({
         variant="ghost"
         type="button"
         size="icon"
+        disabled={disabled}
         className="shrink-0 rounded-none"
       >
         {renderLeftIcon?.() ?? <Minus />}
@@ -69,6 +76,7 @@ const QuantityInput = ({
         className="w-full min-w-10 flex-1 [appearance:textfield] rounded-none border-0 !bg-inherit px-1 text-center shadow-none focus-visible:ring-0 [&::-webkit-inner-spin-button]:appearance-none [&::-webkit-outer-spin-button]:appearance-none"
         value={inputProps?.value ?? min}
         onChange={handleInputChange}
+        disabled={disabled}
         {...inputProps}
       />
       <Button
@@ -76,6 +84,7 @@ const QuantityInput = ({
         variant="ghost"
         type="button"
         size="icon"
+        disabled={disabled}
         className="shrink-0 rounded-none"
       >
         {renderRightIcon?.() ?? <Plus />}

@@ -271,19 +271,11 @@ const EcommerceFooter19 = ({
         <InfoSection list={infoSectionList} />
         <div className="grid grid-cols-1 gap-7.5 lg:grid-cols-5 xl:grid-cols-2">
           <div className="space-y-5 lg:max-xl:col-span-2">
-            <a
-              href={footerDetails.homeLink.link}
-              className="inline-block w-full max-w-80"
-            >
+            <a href="/" className="inline-block w-full max-w-80">
               <img
-                className="w-full dark:hidden"
-                src={footerDetails.homeLink.logo.light}
-                alt="Logo"
-              />
-              <img
-                className="hidden w-full dark:inline-block"
-                src={footerDetails.homeLink.logo.dark}
-                alt="Logo"
+                className="h-10 w-auto"
+                src="/logo/full-logo.svg"
+                alt="Vinylové schody"
               />
             </a>
             <p className="max-w-100 text-sm leading-relaxed text-muted-foreground">

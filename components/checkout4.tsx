@@ -159,8 +159,8 @@ const Checkout4 = ({
       <FormProvider {...form}>
         <form onSubmit={form.handleSubmit(onSubmit)}>
           <div className="grid min-h-screen lg:grid-cols-2">
-            <div className="order-2 flex items-center bg-muted/30 lg:order-1">
-              <div className="mx-auto w-full max-w-xl p-8 lg:p-12 xl:p-16">
+            <div className="order-2 flex flex-col justify-center bg-muted/30 lg:order-1 lg:flex-row lg:items-center">
+              <div className="mx-auto w-full max-w-xl p-4 sm:p-8 lg:p-12 xl:p-16">
                 <h2 className="mb-8 text-xl font-semibold">
                   Shrnutí objednávky
                 </h2>
@@ -173,8 +173,8 @@ const Checkout4 = ({
               </div>
             </div>
 
-            <div className="order-1 flex items-center lg:order-2">
-              <div className="mx-auto w-full max-w-xl p-8 lg:p-12 xl:p-16">
+            <div className="order-1 flex flex-col justify-center lg:order-2 lg:flex-row lg:items-center">
+              <div className="mx-auto w-full max-w-xl p-4 sm:p-8 lg:p-12 xl:p-16">
                 <div className="mb-10">
                   <h1 className="text-3xl font-bold tracking-tight">
                     Doručení a poptávka
@@ -309,6 +309,8 @@ const CartItemComponent = ({
   onRemoveClick,
 }: CartItemProps) => {
   const { regular, currency } = price;
+  const isSample =
+    name.toLowerCase().includes("vzorek") || link.includes("sample=true");
 
   return (
     <div className="flex gap-5">
@@ -341,7 +343,11 @@ const CartItemComponent = ({
           </Button>
         </div>
         <div className="mt-3 flex items-center justify-between">
-          <QuantityField index={index} onQuantityChange={onQuantityChange} />
+          <QuantityField
+            index={index}
+            onQuantityChange={onQuantityChange}
+            disabled={isSample}
+          />
           <Price className="text-lg font-semibold">
             <PriceValue price={regular} currency={currency} variant="regular" />
           </Price>
@@ -354,9 +360,11 @@ const CartItemComponent = ({
 const QuantityField = ({
   index,
   onQuantityChange,
+  disabled,
 }: {
   index: number;
   onQuantityChange: (n: number) => void;
+  disabled?: boolean;
 }) => {
   const { control } = useFormContext();
 
@@ -373,6 +381,7 @@ const QuantityField = ({
               onQuantityChange(newQty);
             }}
             className="rounded-none"
+            disabled={disabled}
           />
         </Field>
       )}

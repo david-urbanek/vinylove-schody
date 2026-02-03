@@ -2,13 +2,20 @@
 
 import { useCart } from "@/hooks/useCart";
 import {
+  ArrowLeftRight,
   ChevronLeft,
   ChevronRight,
   CornerDownRight,
+  Droplet,
+  Frame,
+  Hammer,
   Layers,
   Menu,
   MoveRight,
+  PaintRoller,
   Phone,
+  Pipette,
+  Ruler,
   ScanLine,
   ShoppingBag,
   X,
@@ -18,11 +25,6 @@ import { useState } from "react";
 
 import { cn } from "@/lib/utils";
 
-import {
-  Logo,
-  LogoImageDesktop,
-  LogoImageMobile,
-} from "@/components/shadcnblocks/logo";
 import { Button } from "@/components/ui/button";
 import {
   NavigationMenu,
@@ -91,6 +93,21 @@ const flooringCategories = [
   },
 ];
 
+const services = [
+  {
+    title: "Realizace",
+    description: "Profesionální realizace podlah a schodů na klíč.",
+    href: "/realizace",
+    icon: Hammer,
+  },
+  {
+    title: "Ohýbání vinylu na míru",
+    description: "Zakázkové ohýbání vinylu pro vaše specifické potřeby.",
+    href: "/ohybani-vinylu",
+    icon: Ruler,
+  },
+];
+
 const documentationLinks = [
   {
     title: "API Reference",
@@ -110,16 +127,36 @@ const documentationLinks = [
   },
 ];
 
-const resources = [
+const accessories = [
   {
-    title: "Blog",
-    description: "Latest insights, tutorials, and industry best practices.",
+    title: "Obvodové lišty",
+    description: "Dokonalé začištění podlahy u stěny.",
     href: "#",
+    icon: Frame,
   },
   {
-    title: "News",
-    description: "Product updates, announcements, and company news.",
+    title: "Přechodové lišty",
+    description: "Plynulé přechody mezi různými typy podlah.",
     href: "#",
+    icon: ArrowLeftRight,
+  },
+  {
+    title: "Lepidla",
+    description: "Kvalitní lepidla pro pevné a trvalé spojení.",
+    href: "#",
+    icon: Droplet,
+  },
+  {
+    title: "Stěrky",
+    description: "Vyrovnávací hmoty pro dokonalý podklad.",
+    href: "#",
+    icon: PaintRoller,
+  },
+  {
+    title: "Penetrace",
+    description: "Příprava podkladu pro optimální přilnavost.",
+    href: "#",
+    icon: Pipette,
   },
 ];
 
@@ -130,10 +167,11 @@ interface Navbar3Props {
 const Navbar3 = ({ className }: Navbar3Props) => {
   const [open, setOpen] = useState(false);
   const [submenu, setSubmenu] = useState<
-    "schody" | "podlahy" | "ohybani" | "onas" | null
+    "schody" | "podlahy" | "sluzby" | "prislusenstvi" | null
   >(null);
   const [activeSolution, setActiveSolution] = useState(solutions[0]);
   const [activeFlooring, setActiveFlooring] = useState(flooringCategories[0]);
+  const [activeService, setActiveService] = useState(services[0]);
   const { totalItems, isReady } = useCart();
 
   return (
@@ -150,18 +188,13 @@ const Navbar3 = ({ className }: Navbar3Props) => {
             <div>
               {(!open || !submenu) && (
                 <>
-                  <Logo url="https://shadcnblocks.com">
-                    <LogoImageDesktop
-                      src="https://deifkwefumgah.cloudfront.net/shadcnblocks/block/logos/shadcnblocks-logo-word.svg"
-                      className="h-7 dark:invert"
-                      alt="Shadcn UI Navbar"
+                  <Link href="/" className="flex items-center">
+                    <img
+                      src="/logo/full-logo.svg"
+                      alt="Vinylové schody"
+                      className="h-7 w-auto md:h-10"
                     />
-                    <LogoImageMobile
-                      src="https://deifkwefumgah.cloudfront.net/shadcnblocks/block/logos/shadcnblocks-logo.svg"
-                      className="h-7 dark:invert"
-                      alt="Shadcn UI Navbar"
-                    />
-                  </Logo>
+                  </Link>
                 </>
               )}
               {open && submenu && (
@@ -282,42 +315,64 @@ const Navbar3 = ({ className }: Navbar3Props) => {
                 </NavigationMenuContent>
               </NavigationMenuItem>
               <NavigationMenuItem>
-                <NavigationMenuTrigger>Ohýbání vinylu</NavigationMenuTrigger>
-                <NavigationMenuContent className="min-w-[900px] p-6">
+                <NavigationMenuTrigger>
+                  Realizace a Ohýbání vinylu na míru
+                </NavigationMenuTrigger>
+                <NavigationMenuContent className="min-w-[800px] p-6 ">
                   <div className="flex justify-between gap-8">
-                    <div className="w-1/3 max-w-[404px]">
-                      <div className="mb-4 text-xs tracking-widest text-muted-foreground uppercase">
+                    <div>
+                      <div className="mb-6 text-xs tracking-widest text-muted-foreground uppercase">
                         Služby
                       </div>
-                      <div className="mb-6 text-sm font-normal text-muted-foreground">
-                        Profesionální ohýbání vinylu na míru.
+                      <div className="grid grid-cols-1 gap-6 lg:grid-cols-2 lg:gap-8">
+                        {services.map((service, index) => (
+                          <NavigationMenuLink
+                            key={index}
+                            href={service.href}
+                            className="group block p-4"
+                            onMouseEnter={() => setActiveService(service)}
+                          >
+                            <div className="mb-5 group-hover:opacity-60">
+                              <service.icon className="size-5" />
+                            </div>
+                            <div className="mb-1 text-base">
+                              {service.title}
+                            </div>
+                            <div className="text-sm font-normal text-muted-foreground">
+                              {service.description}
+                            </div>
+                          </NavigationMenuLink>
+                        ))}
                       </div>
                     </div>
                   </div>
                 </NavigationMenuContent>
               </NavigationMenuItem>
               <NavigationMenuItem>
-                <NavigationMenuTrigger>O nás</NavigationMenuTrigger>
-                <NavigationMenuContent className="min-w-[900px] p-8">
-                  <div className="grid grid-cols-2 gap-8">
-                    <div className="flex flex-1 flex-col">
+                <NavigationMenuTrigger>
+                  Příslušenství a Detaily
+                </NavigationMenuTrigger>
+                <NavigationMenuContent className="min-w-[800px] p-6">
+                  <div className="flex justify-between gap-8">
+                    <div className="flex-1">
                       <div className="mb-6 text-xs tracking-widest text-muted-foreground uppercase">
-                        O firmě
+                        Kategorie
                       </div>
-                      <div className="grid flex-1 grid-cols-1 gap-6 md:grid-cols-2">
-                        {resources.map((resource, index) => (
+                      <div className="grid grid-cols-1 gap-6 lg:grid-cols-2 lg:gap-8">
+                        {accessories.map((accessory, index) => (
                           <NavigationMenuLink
                             key={index}
-                            href={resource.href}
-                            className="flex h-full flex-col overflow-clip rounded-lg border border-input bg-background p-5 hover:bg-accent hover:text-accent-foreground xl:p-8"
+                            href={accessory.href}
+                            className="group block p-4"
                           >
-                            <div className="mt-auto">
-                              <div className="mb-2 text-base">
-                                {resource.title}
-                              </div>
-                              <div className="text-sm font-normal text-muted-foreground">
-                                {resource.description}
-                              </div>
+                            <div className="mb-5 group-hover:opacity-60">
+                              <accessory.icon className="size-5" />
+                            </div>
+                            <div className="mb-1 text-base">
+                              {accessory.title}
+                            </div>
+                            <div className="text-sm font-normal text-muted-foreground">
+                              {accessory.description}
                             </div>
                           </NavigationMenuLink>
                         ))}
@@ -354,6 +409,21 @@ const Navbar3 = ({ className }: Navbar3Props) => {
               </Button>
             </div>
             <div className="flex items-center gap-4 lg:hidden">
+              <Button
+                variant="outline"
+                size="icon"
+                className="rounded-full relative"
+                asChild
+              >
+                <Link href="/kosik">
+                  <ShoppingBag className="size-5" />
+                  {isReady && totalItems > 0 && (
+                    <span className="absolute -top-1.5 -right-1.5 flex h-5 w-5 items-center justify-center rounded-full bg-black text-[11px] text-white border-2 border-background">
+                      {totalItems}
+                    </span>
+                  )}
+                </Link>
+              </Button>
               <Button
                 variant="outline"
                 size="icon"
@@ -400,9 +470,11 @@ const Navbar3 = ({ className }: Navbar3Props) => {
                 <button
                   type="button"
                   className="flex w-full items-center border-b border-border px-8 py-7 text-left"
-                  onClick={() => setSubmenu("ohybani")}
+                  onClick={() => setSubmenu("sluzby")}
                 >
-                  <span className="flex-1">Ohýbání vinylu</span>
+                  <span className="flex-1">
+                    Realizace a Ohýbání vinylu na míru
+                  </span>
                   <span className="shrink-0">
                     <ChevronRight className="size-4" />
                   </span>
@@ -410,9 +482,9 @@ const Navbar3 = ({ className }: Navbar3Props) => {
                 <button
                   type="button"
                   className="flex w-full items-center border-b border-border px-8 py-7 text-left"
-                  onClick={() => setSubmenu("onas")}
+                  onClick={() => setSubmenu("prislusenstvi")}
                 >
-                  <span className="flex-1">O nás</span>
+                  <span className="flex-1">Příslušenství a Detaily</span>
                   <span className="shrink-0">
                     <ChevronRight className="size-4" />
                   </span>
@@ -513,34 +585,53 @@ const Navbar3 = ({ className }: Navbar3Props) => {
               </div>
             </div>
           )}
-          {/* Mobile Menu > Ohýbání vinylu */}
-          {open && submenu === "ohybani" && (
+          {/* Mobile Menu > Služby */}
+          {open && submenu === "sluzby" && (
             <div className="fixed inset-0 top-[72px] flex h-[calc(100vh-72px)] w-full flex-col overflow-scroll border-t border-border bg-background lg:hidden">
               <div className="px-8 py-3.5 text-xs tracking-widest text-muted-foreground uppercase">
                 Služby
               </div>
-              <div className="mb-6 text-sm font-normal text-muted-foreground px-8">
-                Profesionální ohýbání vinylu na míru.
+              <div className="border-t border-border pb-16">
+                {services.map((service, index) => (
+                  <a
+                    key={index}
+                    href={service.href}
+                    className="group flex w-full items-start gap-x-4 border-b border-border px-8 py-7 text-left hover:bg-accent"
+                  >
+                    <div className="shrink-0">
+                      <service.icon className="size-6" />
+                    </div>
+                    <div>
+                      <div className="mb-1.5 text-base">{service.title}</div>
+                      <div className="text-sm font-normal text-muted-foreground">
+                        {service.description}
+                      </div>
+                    </div>
+                  </a>
+                ))}
               </div>
             </div>
           )}
           {/* Mobile Menu > O nás */}
-          {open && submenu === "onas" && (
+          {open && submenu === "prislusenstvi" && (
             <div className="fixed inset-0 top-[72px] flex h-[calc(100vh-72px)] w-full flex-col overflow-scroll bg-background lg:hidden">
               <div className="px-8 py-3.5 text-xs tracking-widest text-muted-foreground uppercase">
-                O firmě
+                Kategorie
               </div>
               <div>
-                {resources.map((resource, index) => (
+                {accessories.map((accessory, index) => (
                   <a
                     key={index}
-                    href={resource.href}
-                    className="group flex w-full items-start gap-x-4 border-t border-border px-8 py-7 text-left hover:bg-accent"
+                    href={accessory.href}
+                    className="group flex w-full items-start gap-x-4 border-b border-border px-8 py-7 text-left hover:bg-accent"
                   >
+                    <div className="shrink-0">
+                      <accessory.icon className="size-6" />
+                    </div>
                     <div>
-                      <div className="mb-1.5 text-base">{resource.title}</div>
+                      <div className="mb-1.5 text-base">{accessory.title}</div>
                       <div className="text-sm font-normal text-muted-foreground">
-                        {resource.description}
+                        {accessory.description}
                       </div>
                     </div>
                   </a>
