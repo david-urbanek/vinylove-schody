@@ -8,6 +8,7 @@ import { skirtingType } from "./skirtingType";
 import { transitionProfileType } from "./transitionProfileType";
 
 import { accessoryType } from "./accessoryType";
+import { staircaseSoklType } from "./staircaseSoklType";
 
 export const schema: { types: SchemaTypeDefinition[] } = {
   types: [
@@ -17,5 +18,6 @@ export const schema: { types: SchemaTypeDefinition[] } = {
     skirtingType,
     transitionProfileType,
     accessoryType,
+    staircaseSoklType,
   ],
 };

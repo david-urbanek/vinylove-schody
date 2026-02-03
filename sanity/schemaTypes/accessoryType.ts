@@ -20,6 +20,20 @@ export const accessoryType = defineType({
       },
     }),
     defineField({
+      name: "type",
+      title: "Typ příslušenství",
+      type: "string",
+      options: {
+        list: [
+          { title: "Lepidla", value: "lepidla" },
+          { title: "Stěrky", value: "sterky" },
+          { title: "Penetrace", value: "penetrace" },
+        ],
+        layout: "radio",
+      },
+      validation: (Rule) => Rule.required(),
+    }),
+    defineField({
       name: "pricePerUnit",
       title: "Cena za kus (Kč)",
       type: "number",

@@ -50,6 +50,10 @@ const CATEGORY_MAP: Record<
     query: `*[_type == "transitionProfile"]`,
     title: "Přechodové lišty",
   },
+  "zakonceni-u-steny": {
+    query: `*[_type == "staircaseSokl"]`,
+    title: "Zakončení u stěny",
+  },
 };
 
 type Params = {

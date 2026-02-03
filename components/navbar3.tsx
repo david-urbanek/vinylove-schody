@@ -108,54 +108,41 @@ const services = [
   },
 ];
 
-const documentationLinks = [
-  {
-    title: "API Reference",
-    href: "#",
-  },
-  {
-    title: "SDK Documentation",
-    href: "#",
-  },
-  {
-    title: "Integration Guides",
-    href: "#",
-  },
-  {
-    title: "Code Examples",
-    href: "#",
-  },
-];
-
-const accessories = [
+const categories = [
   {
     title: "Obvodové lišty",
     description: "Dokonalé začištění podlahy u stěny.",
-    href: "#",
+    href: "/produkty/obvodove-listy",
+    icon: Frame,
+  },
+  {
+    title: "Zakončení u stěny",
+    description: "Elegantní a praktické zakončení schodů u zdi.",
+    href: "/produkty/zakonceni-u-steny",
     icon: Frame,
   },
   {
     title: "Přechodové lišty",
     description: "Plynulé přechody mezi různými typy podlah.",
-    href: "#",
+    href: "/produkty/prechodove-listy",
     icon: ArrowLeftRight,
   },
   {
     title: "Lepidla",
     description: "Kvalitní lepidla pro pevné a trvalé spojení.",
-    href: "#",
+    href: "/produkty/lepidla",
     icon: Droplet,
   },
   {
     title: "Stěrky",
     description: "Vyrovnávací hmoty pro dokonalý podklad.",
-    href: "#",
+    href: "/produkty/sterky",
     icon: PaintRoller,
   },
   {
     title: "Penetrace",
     description: "Příprava podkladu pro optimální přilnavost.",
-    href: "#",
+    href: "/produkty/penetrace",
     icon: Pipette,
   },
 ];
@@ -359,7 +346,7 @@ const Navbar3 = ({ className }: Navbar3Props) => {
                         Kategorie
                       </div>
                       <div className="grid grid-cols-1 gap-6 lg:grid-cols-2 lg:gap-8">
-                        {accessories.map((accessory, index) => (
+                        {categories.map((accessory, index) => (
                           <NavigationMenuLink
                             key={index}
                             href={accessory.href}
@@ -619,7 +606,7 @@ const Navbar3 = ({ className }: Navbar3Props) => {
                 Kategorie
               </div>
               <div>
-                {accessories.map((accessory, index) => (
+                {categories.map((accessory, index) => (
                   <a
                     key={index}
                     href={accessory.href}

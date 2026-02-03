@@ -49,9 +49,9 @@ export const transitionProfileType = defineType({
         defineField({ name: "length", type: "number", title: "Délka (mm)" }),
         defineField({ name: "width", type: "number", title: "Šířka (mm)" }),
         defineField({
-          name: "elevation",
+          name: "height",
           type: "string",
-          title: "Převýšení (mm)",
+          title: "Výška (mm)",
           description: "Např. 0-12 mm",
         }),
         defineField({
