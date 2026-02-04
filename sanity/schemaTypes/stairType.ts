@@ -11,6 +11,12 @@ export const stairType = defineType({
       type: "string",
     }),
     defineField({
+      name: "typeLabel",
+      title: "Kategorie produktu",
+      type: "string",
+      initialValue: "Schody",
+    }),
+    defineField({
       name: "slug",
       description: "Je potřeba dodržovat strukturu URL adresy: schody-[název]",
       title: "Slug",

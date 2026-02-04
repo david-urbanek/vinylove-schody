@@ -11,6 +11,12 @@ export const accessoryType = defineType({
       type: "string",
     }),
     defineField({
+      name: "typeLabel",
+      title: "Kategorie produktu",
+      type: "string",
+      initialValue: "Příslušenství",
+    }),
+    defineField({
       name: "slug",
       title: "Slug",
       type: "slug",

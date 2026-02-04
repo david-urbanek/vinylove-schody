@@ -11,11 +11,11 @@ const CATEGORY_MAP: Record<
 > = {
   // Floors
   "podlahy-click": {
-    query: `*[_type == "floor" && category == "click"]`,
+    query: `*[_type == "floor" && category == "podlahy-click"]`,
     title: "Vinylové podlahy Click",
   },
   "podlahy-lepena": {
-    query: `*[_type == "floor" && category == "lepena"]`,
+    query: `*[_type == "floor" && category == "podlahy-lepene"]`,
     title: "Lepené vinylové podlahy",
   },
 

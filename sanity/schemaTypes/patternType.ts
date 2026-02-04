@@ -11,6 +11,12 @@ export const patternType = defineType({
       type: "string",
     }),
     defineField({
+      name: "typeLabel",
+      title: "Kategorie produktu",
+      type: "string",
+      initialValue: "Dekor",
+    }),
+    defineField({
       name: "slug",
       description: "Je potřeba dodržovat strukturu URL adresy: dekor-[název]",
       title: "Slug",

@@ -11,6 +11,12 @@ export const transitionProfileType = defineType({
       type: "string",
     }),
     defineField({
+      name: "typeLabel",
+      title: "Kategorie produktu",
+      type: "string",
+      initialValue: "Přechodové lišty",
+    }),
+    defineField({
       name: "slug",
       title: "Slug",
       type: "slug",

@@ -229,6 +229,7 @@ const ProductDetail7 = ({
     features,
     pattern,
     pricePerUnit,
+    typeLabel,
     slug,
   } = product || {};
 
@@ -505,16 +506,7 @@ const ProductDetail7 = ({
           <div className="w-full shrink-0 md:w-[42%]">
             <div className="flex flex-col gap-1">
               <div className="text-xs leading-normal tracking-widest text-muted-foreground uppercase">
-                {category ||
-                  (isStair
-                    ? "Schody"
-                    : isSkirting
-                      ? "Obvodové lišty"
-                      : isTransitionProfile
-                        ? "Přechodové lišty"
-                        : isAccessory
-                          ? "Příslušenství"
-                          : "Podlaha")}
+                {typeLabel || "Produkt"}
               </div>
               <h1 className="font-serif text-[2rem] leading-tight">{title}</h1>
             </div>

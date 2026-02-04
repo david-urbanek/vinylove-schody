@@ -11,6 +11,12 @@ export const staircaseSoklType = defineType({
       type: "string",
     }),
     defineField({
+      name: "typeLabel",
+      title: "Kategorie produktu",
+      type: "string",
+      initialValue: "Zakončení u stěny",
+    }),
+    defineField({
       name: "type",
       title: "Typ zakončení",
       type: "string",

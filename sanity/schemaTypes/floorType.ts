@@ -11,6 +11,12 @@ export const floorType = defineType({
       type: "string",
     }),
     defineField({
+      name: "typeLabel",
+      title: "Kategorie produktu",
+      type: "string",
+      initialValue: "Podlahy",
+    }),
+    defineField({
       name: "slug",
       description: "Je potřeba dodržovat strukturu URL adresy: podlaha-[název]",
       title: "Slug",
