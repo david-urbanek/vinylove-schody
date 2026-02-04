@@ -2,7 +2,6 @@ import { ProductList10 } from "@/components/product-list10";
 import { client } from "@/sanity/lib/client";
 import { urlFor } from "@/sanity/lib/image";
 import { Product, ProductList } from "@/types/product";
-import { notFound } from "next/navigation";
 
 // Define the mapping configurations
 const CATEGORY_MAP: Record<
@@ -79,7 +78,14 @@ export default async function ProductsCategoryPage(props: Params) {
   const config = CATEGORY_MAP[slug];
 
   if (!config) {
-    notFound();
+    return (
+      <div className="flex flex-col items-center justify-center min-h-[50vh] px-4 text-center">
+        <h2 className="text-2xl font-bold mb-2">Zatím zde nic není</h2>
+        <p className="text-muted-foreground">
+          Tato kategorie je momentálně prázdná. Zkuste se podívat později.
+        </p>
+      </div>
+    );
   }
 
   const { query, title } = config;
@@ -92,7 +98,7 @@ export default async function ProductsCategoryPage(props: Params) {
       <div className="flex flex-col items-center justify-center min-h-[50vh] px-4 text-center">
         <h2 className="text-2xl font-bold mb-2">Zatím zde nic není</h2>
         <p className="text-muted-foreground">
-          Tato kategorie je momentálně prázdná. Zkuste se podívat později.
+          Jejda, zde nic není. Zkuste se podívat později.
         </p>
       </div>
     );

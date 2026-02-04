@@ -73,10 +73,13 @@ const Projects1 = ({ className }: Projects1Props) => {
   return (
     <section className={cn("py-32", className)}>
       <div className="container">
-        <div className="mb-16 flex items-center justify-between border-b border-border pb-6">
+        <div className="mb-16 flex flex-col gap-4 border-b border-border pb-6">
           <h2 className="font-serif text-3xl md:text-5xl font-medium tracking-tight">
             Typy realizací a služeb
           </h2>
+          <p className="text-lg text-muted-foreground">
+            Podívejte se na naše realizace a služby, které nabízíme.
+          </p>
         </div>
         <div className="space-y-12">
           {projects1prop.map((project, index) => (

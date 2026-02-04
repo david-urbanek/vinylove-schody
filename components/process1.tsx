@@ -5,35 +5,21 @@ import { cn } from "@/lib/utils";
 
 import { Button } from "@/components/ui/button";
 
-interface Process1Props {
-  className?: string;
+interface ProcessStep {
+  step?: string;
+  title: string;
+  description: string;
+  color?: string;
 }
 
-const Process1 = ({ className }: Process1Props) => {
-  const process = [
-    {
-      step: "01",
-      title: "Výběr zboží",
-      description:
-        "Prohlédněte si naši nabídku vinylových schodů a podlah. Vyberte si dekor a provedení, které nejlépe ladí s vaším interiérem.",
-      color: "#0ea5e9",
-    },
-    {
-      step: "02",
-      title: "Zaslání poptávky",
-      description:
-        "Využijte náš poptávkový formulář. Stačí vyplnit základní údaje a představy o realizaci, o zbytek se postaráme my.",
-      color: "#5DCA8A",
-    },
-    {
-      step: "03",
-      title: "Ozvěme se do 48 hodin",
-      description:
-        "Vaši poptávku ihned zpracujeme. Nejpozději do 48 hodin vás budeme kontaktovat s konkrétní nabídkou nebo doplňujícími dotazy.",
-      color: "#f59e0b",
-    },
-  ];
+interface Process1Props {
+  className?: string;
+  title: string;
+  description: string;
+  steps: ProcessStep[];
+}
 
+const Process1 = ({ className, title, description, steps }: Process1Props) => {
   return (
     <section className={cn("py-32", className)}>
       <div className="container">
@@ -41,13 +27,10 @@ const Process1 = ({ className }: Process1Props) => {
           <div className="top-10 col-span-2 h-fit w-fit gap-3 space-y-7 py-8 lg:sticky">
             <div className="relative w-fit text-3xl font-bold md:text-4xl">
               {" "}
-              <h2 className="w-fit">Jak to funguje</h2>
+              <h2 className="w-fit">{title}</h2>
               <Star className="absolute -top-2 -right-2 size-5 text-sky-500 md:size-10 lg:-right-14" />
             </div>
-            <p className="text-muted-foreground lg:text-xl">
-              Jednoduchý proces od prvního kontaktu až po finální realizaci.
-              Zakládáme si na rychlé a srozumitelné komunikaci.
-            </p>
+            <p className="text-muted-foreground lg:text-xl">{description}</p>
 
             <Button
               variant="ghost"
@@ -58,7 +41,7 @@ const Process1 = ({ className }: Process1Props) => {
             </Button>
           </div>
           <ul className="relative col-span-4 w-full lg:pl-22">
-            {process.map((step, index) => (
+            {steps.map((step, index) => (
               <li
                 key={index}
                 className="relative flex flex-col justify-between gap-10 border-t py-8 md:flex-row lg:py-10"
@@ -69,7 +52,7 @@ const Process1 = ({ className }: Process1Props) => {
                 />
 
                 <div className="flex size-12 items-center justify-center bg-muted px-4 py-1 tracking-tighter">
-                  0{index + 1}
+                  {step.step ?? `0${index + 1}`}
                 </div>
                 <div className="">
                   <h3 className="mb-4 text-2xl font-semibold tracking-tighter lg:text-3xl">
