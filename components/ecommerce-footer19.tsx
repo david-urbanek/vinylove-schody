@@ -14,7 +14,7 @@ import { siFacebook, siInstagram, SimpleIcon, siX } from "simple-icons";
 import { useMediaQuery } from "@/hooks/useMediaQuery";
 import { cn } from "@/lib/utils";
 
-import { ConsultationForm } from "@/components/consultation-form";
+import { ConsultationForm } from "@/components/forms/consultation-form";
 import {
   Accordion,
   AccordionContent,
@@ -296,7 +296,7 @@ const NewsletterSection = ({ title, description }: NewsletterFormProps) => {
         <p className="leading-normal text-muted-foreground">{description}</p>
       </div>
       <div className="space-y-4">
-        <ConsultationForm isConsultation={true} />
+        <ConsultationForm />
         <p className="text-sm text-muted-foreground">
           Kliknutím souhlasíte se{" "}
           <a className="underline underline-offset-2" href="#">

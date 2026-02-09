@@ -27,7 +27,7 @@ import { checkoutFormSchema, CheckoutFormType } from "@/lib/schemas";
 import { CartItem } from "@/store/useCartStore";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
-import { CheckoutForm } from "./checkout-form";
+import { CheckoutForm } from "./forms/checkout-form";
 
 // Local CartItem definition removed. Using shared one.
 
