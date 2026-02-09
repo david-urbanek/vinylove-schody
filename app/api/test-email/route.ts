@@ -1,4 +1,4 @@
-import { OrderSummaryEmail } from "@/emails/orderEmail";
+import { OrderSummaryEmail } from "@/emails/customer-order-email";
 import { NextResponse } from "next/server";
 import { Resend } from "resend";
 

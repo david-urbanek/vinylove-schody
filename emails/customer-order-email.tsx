@@ -35,7 +35,7 @@ interface CartItem {
   }[];
 }
 
-interface OrderSummaryEmailProps {
+interface CustomerOrderSummaryEmailProps {
   items: CartItem[];
   totalPrice: number;
   customer: {
@@ -51,11 +51,11 @@ interface OrderSummaryEmailProps {
   };
 }
 
-export const OrderSummaryEmail = ({
+export const CustomerOrderSummaryEmail = ({
   items,
   totalPrice,
   customer,
-}: OrderSummaryEmailProps) => {
+}: CustomerOrderSummaryEmailProps) => {
   const formattedDate = new Intl.DateTimeFormat("cs-CZ", {
     dateStyle: "long",
     timeStyle: "short",
@@ -295,4 +295,4 @@ export const OrderSummaryEmail = ({
   );
 };
 
-export default OrderSummaryEmail;
+export default CustomerOrderSummaryEmail;

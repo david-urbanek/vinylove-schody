@@ -1,6 +1,6 @@
 "use server";
 
-import { OrderSummaryEmail } from "@/emails/orderEmail";
+import { CustomerOrderSummaryEmail } from "@/emails/customer-order-email";
 import { checkoutFormSchema, CheckoutFormType } from "@/lib/schemas";
 import { CartItem } from "@/store/useCartStore";
 import { Resend } from "resend";
@@ -67,7 +67,7 @@ export async function submitOrder(
       from: "Vinylové schody <david.urbanek@virtuio.cz>", // Or your verified sender
       to: [email, "david.urbanek@virtuio.cz"], // Send to customer and copy to admin (optional)
       subject: `Potvrzení poptávky - Vinylové schody`,
-      react: OrderSummaryEmail({
+      react: CustomerOrderSummaryEmail({
         items: enrichedItems,
         totalPrice,
         customer: {
