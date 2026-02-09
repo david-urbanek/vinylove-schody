@@ -2,6 +2,7 @@
 
 import { Field, FieldError, FieldLabel } from "@/components/ui/field";
 import { Input } from "@/components/ui/input";
+import { CheckoutFormType } from "@/lib/schemas";
 import { cn } from "@/lib/utils";
 import * as React from "react";
 import { Controller, useFormContext } from "react-hook-form";
@@ -43,8 +44,6 @@ const Textarea = React.forwardRef<
   );
 });
 Textarea.displayName = "Textarea";
-
-import { CheckoutFormType } from "@/lib/schemas";
 
 export const CheckoutForm = () => {
   const { control, watch } = useFormContext<CheckoutFormType>();

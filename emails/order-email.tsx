@@ -111,7 +111,7 @@ export const OrderEmail = ({
                   <div key={item.product_id} className="mb-3">
                     <Link
                       href={item.link}
-                      className="text-[16px] font-medium text-foreground hover:underline"
+                      className="text-[16px] font-medium text-foreground underline"
                     >
                       {item.name}
                     </Link>
@@ -159,7 +159,7 @@ export const OrderEmail = ({
                   📧 Email:{" "}
                   <Link
                     href={`mailto:${customer.email}`}
-                    className="text-primary hover:underline"
+                    className="text-primary underline"
                   >
                     {customer.email}
                   </Link>
@@ -169,7 +169,7 @@ export const OrderEmail = ({
                   📞 Telefon:{" "}
                   <Link
                     href={`tel:${customer.phone}`}
-                    className="text-primary hover:underline"
+                    className="text-primary underline"
                   >
                     {customer.phone}
                   </Link>

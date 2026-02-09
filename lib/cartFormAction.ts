@@ -1,6 +1,7 @@
 "use server";
 
 import { CustomerOrderSummaryEmail } from "@/emails/customer-order-email";
+import { OrderEmail } from "@/emails/order-email";
 import { checkoutFormSchema, CheckoutFormType } from "@/lib/schemas";
 import { CartItem } from "@/store/useCartStore";
 import { Resend } from "resend";
@@ -62,7 +63,37 @@ export async function submitOrder(
   );
 
   try {
-    // 3. Send Email
+    // 3. Send Email to the businessowner
+    await resend.emails.send({
+      from: `Nová poptávka Web Vinylové schody <david.urbanek@virtuio.cz>`,
+      to: ["david.urbanek@virtuio.cz"],
+      subject: `Nová poptávka - ${firstName} ${lastName}`,
+      react: OrderEmail({
+        items: enrichedItems,
+        totalPrice,
+        customer: {
+          firstName,
+          lastName,
+          email,
+          phone,
+          street,
+          city,
+          zip,
+          interestInRealization,
+          projectDescription,
+        },
+      }),
+    });
+  } catch (error) {
+    console.error("Failed to send email:", error);
+    return {
+      success: false,
+      error: "Nepodařilo se odeslat poptávku. Zkuste to prosím později.",
+    };
+  }
+
+  try {
+    // 3. Send Email to the customer
     await resend.emails.send({
       from: "Vinylové schody <david.urbanek@virtuio.cz>", // Or your verified sender
       to: [email, "david.urbanek@virtuio.cz"], // Send to customer and copy to admin (optional)
