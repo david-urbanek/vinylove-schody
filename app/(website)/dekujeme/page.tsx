@@ -3,11 +3,19 @@
 import { motion } from "framer-motion";
 import { Check, Clock, Mail, Phone } from "lucide-react";
 import Link from "next/link";
+import { useEffect } from "react";
 
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
+import { useCartStore } from "@/store/useCartStore";
 
 export default function ThankYouPage() {
+  const clearCart = useCartStore((state) => state.clearCart);
+
+  // Clear cart when user successfully arrives at thank you page
+  useEffect(() => {
+    clearCart();
+  }, [clearCart]);
   return (
     <section className="min-h-[calc(100vh-5rem)] bg-gradient-to-b from-background to-muted/20 py-12 md:py-20">
       <div className="container">

@@ -10,7 +10,9 @@ import { Resend } from "resend";
 const resend = new Resend(process.env.RESEND_API_KEY);
 
 export async function submitOrder(
-  data: CheckoutFormType & { cartItems: CartItem[] },
+  cartItems: CartItem[],
+  prevState: any,
+  data: CheckoutFormType,
 ) {
   // 1. Validation on server side
   const result = checkoutFormSchema.safeParse(data);
@@ -37,15 +39,10 @@ export async function submitOrder(
   } = result.data;
 
   // 2. Prepare data for email
-  // We need to merge form product data (quantity) with actual cart details (image, name, details)
-  // passed from the client as 'cartItems'.
-  // Note: In a real app, you should re-fetch prices from DB to prevent tampering.
-  // For now, we trust the passed data as per the user's current setup.
-
   const enrichedItems = products.map((p) => {
-    const originalItem = data.cartItems.find((ci) => ci.link === p.product_id);
+    const originalItem = cartItems.find((ci) => ci.link === p.product_id);
     return {
-      product_id: p.product_id, // This is the link
+      product_id: p.product_id,
       name: originalItem?.name || "Unknown Product",
       image: originalItem?.image?.src || "",
       link: originalItem?.link || "",
@@ -94,10 +91,10 @@ export async function submitOrder(
   }
 
   try {
-    // 3. Send Email to the customer
+    // 4. Send Email to the customer
     await resend.emails.send({
-      from: "Vinylové schody <david.urbanek@virtuio.cz>", // Or your verified sender
-      to: [email, "david.urbanek@virtuio.cz"], // Send to customer and copy to admin (optional)
+      from: "Vinylové schody <david.urbanek@virtuio.cz>",
+      to: [email, "david.urbanek@virtuio.cz"],
       subject: `Potvrzení poptávky - Vinylové schody`,
       react: CustomerOrderSummaryEmail({
         items: enrichedItems,
@@ -115,9 +112,6 @@ export async function submitOrder(
         },
       }),
     });
-
-    // Redirect to thank you page on success
-    redirect("/dekujeme");
   } catch (error) {
     console.error("Failed to send email:", error);
     return {
@@ -125,4 +119,7 @@ export async function submitOrder(
       error: "Nepodařilo se odeslat poptávku. Zkuste to prosím později.",
     };
   }
+
+  // Redirect to thank you page on success (outside try-catch)
+  redirect("/dekujeme");
 }
