@@ -1,4 +1,5 @@
 import { CornerDownRight, Star } from "lucide-react";
+import Link from "next/link";
 import React from "react";
 
 import { cn } from "@/lib/utils";
@@ -33,11 +34,14 @@ const Process1 = ({ className, title, description, steps }: Process1Props) => {
             <p className="text-muted-foreground lg:text-xl">{description}</p>
 
             <Button
+              asChild
               variant="ghost"
               className="flex items-center justify-start gap-2"
             >
-              <CornerDownRight className="text-sky-500" />
-              Napište nám
+              <Link href="/kontakt">
+                <CornerDownRight className="text-sky-500" />
+                Napište nám
+              </Link>
             </Button>
           </div>
           <ul className="relative col-span-4 w-full lg:pl-22">

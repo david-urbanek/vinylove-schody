@@ -22,10 +22,9 @@ import { AspectRatio } from "@/components/ui/aspect-ratio";
 import { Button } from "@/components/ui/button";
 import { Field } from "@/components/ui/field";
 import { Separator } from "@/components/ui/separator";
-import { submitOrder } from "@/lib/cartFormAction";
+import { submitOrder } from "@/lib/checkoutFormAction";
 import { checkoutFormSchema, CheckoutFormType } from "@/lib/schemas";
 import { CartItem } from "@/store/useCartStore";
-import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { CheckoutForm } from "./forms/checkout-form";
 
@@ -82,7 +81,6 @@ const Checkout4 = ({
     },
   });
 
-  const router = useRouter();
   const [isSubmitting, setIsSubmitting] = useState(false);
 
   // Early return MUST happen after hooks
@@ -116,28 +114,25 @@ const Checkout4 = ({
     setIsSubmitting(true);
     try {
       // Pass both form data and the full cart items (for image/details that aren't in form)
+      // If successful, the server action will redirect to /dekujeme automatically
       const res = await submitOrder({ ...data, cartItems });
 
-      if (res.success) {
-        // Redirect to success page on success
-        router.push("/kosik/dekujeme");
+      // If we get here, it means there was an error (success redirects and doesn't return)
+      if (res.details) {
+        Object.entries(res.details).forEach(([key, messages]) => {
+          if (messages && messages.length > 0) {
+            form.setError(key as keyof CheckoutFormType, {
+              type: "server",
+              message: messages[0],
+            });
+          }
+        });
+        // Scroll to first error potentially, or just show general alert
+        toast.error("Prosím opravte chyby ve formuláři.");
       } else {
-        if (res.details) {
-          Object.entries(res.details).forEach(([key, messages]) => {
-            if (messages && messages.length > 0) {
-              form.setError(key as keyof CheckoutFormType, {
-                type: "server",
-                message: messages[0],
-              });
-            }
-          });
-          // Scroll to first error potentially, or just show general alert
-          toast.error("Prosím opravte chyby ve formuláři.");
-        } else {
-          toast.error(
-            res.error || "Něco se pokazilo. Zkontrolujte prosím údaje.",
-          );
-        }
+        toast.error(
+          res.error || "Něco se pokazilo. Zkontrolujte prosím údaje.",
+        );
       }
     } catch (err) {
       console.error(err);

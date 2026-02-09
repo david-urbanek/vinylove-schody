@@ -224,7 +224,7 @@ export default function ThankYouPage() {
               variant="outline"
               className="min-w-[200px]"
             >
-              <Link href="/#realizace">Naše realizace</Link>
+              <Link href="/realizace">Naše realizace</Link>
             </Button>
           </motion.div>
 
