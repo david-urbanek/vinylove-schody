@@ -22,17 +22,14 @@ import { AspectRatio } from "@/components/ui/aspect-ratio";
 import { Button } from "@/components/ui/button";
 import { Field } from "@/components/ui/field";
 import { Separator } from "@/components/ui/separator";
+import { submitOrder } from "@/lib/cartFormAction";
 import { checkoutFormSchema, CheckoutFormType } from "@/lib/schemas";
 import { CartItem } from "@/store/useCartStore";
+import { useRouter } from "next/navigation";
+import { useState } from "react";
 import { CheckoutForm } from "./checkout-form";
 
 // Local CartItem definition removed. Using shared one.
-
-interface CartItemProps extends CartItem {
-  index: number;
-  onRemoveClick: () => void;
-  onQuantityChange: (newQty: number) => void;
-}
 
 interface CartItemProps extends CartItem {
   index: number;
@@ -55,10 +52,6 @@ interface Checkout4Props {
 }
 
 // Schemas removed, imported from checkout-form
-
-import { submitOrder } from "@/lib/cartFormAction";
-import { useRouter } from "next/navigation";
-import { useState } from "react";
 
 const Checkout4 = ({
   cartItems,

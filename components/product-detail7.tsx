@@ -337,6 +337,7 @@ const ProductDetail7 = ({
   const isSkirting = _type === "skirting";
   const isTransitionProfile = _type === "transitionProfile";
   const isAccessory = _type === "accessory";
+  const isFloor = _type === "floor";
 
   // Tech params content construction
   let techContent;
@@ -530,18 +531,7 @@ const ProductDetail7 = ({
             </div>
 
             <div className="my-6 space-y-2 rounded-lg bg-muted/50 p-4">
-              {isStair || isSkirting || isTransitionProfile || isAccessory ? (
-                <div className="flex justify-between text-sm">
-                  <span className="text-muted-foreground">Cena za kus:</span>
-                  <span className="font-medium">
-                    {new Intl.NumberFormat("cs-CZ", {
-                      style: "currency",
-                      currency: "CZK",
-                    }).format(unitPrice)}{" "}
-                    vč. DPH
-                  </span>
-                </div>
-              ) : (
+              {isFloor ? (
                 <>
                   <div className="flex justify-between text-sm">
                     <span className="text-muted-foreground">
@@ -566,6 +556,17 @@ const ProductDetail7 = ({
                     </span>
                   </div>
                 </>
+              ) : (
+                <div className="flex justify-between text-sm">
+                  <span className="text-muted-foreground">Cena za kus:</span>
+                  <span className="font-medium">
+                    {new Intl.NumberFormat("cs-CZ", {
+                      style: "currency",
+                      currency: "CZK",
+                    }).format(unitPrice)}{" "}
+                    vč. DPH
+                  </span>
+                </div>
               )}
             </div>
 
@@ -594,15 +595,7 @@ const ProductDetail7 = ({
               </div>
             )}
 
-            {isStair || isSkirting || isTransitionProfile || isAccessory ? (
-              <StairProductForm
-                availability={true}
-                pricePerPiece={unitPrice}
-                allowSample={!isAccessory}
-                onAddToCart={handleAddToCart}
-                onOrderSample={handleOrderSample}
-              />
-            ) : (
+            {isFloor ? (
               <ProductForm
                 hinges={{
                   quantity: {
@@ -616,6 +609,14 @@ const ProductDetail7 = ({
                 availability={true}
                 pricePerPackage={price}
                 packageSize={packageSize}
+                onAddToCart={handleAddToCart}
+                onOrderSample={handleOrderSample}
+              />
+            ) : (
+              <StairProductForm
+                availability={true}
+                pricePerPiece={unitPrice}
+                allowSample={isStair}
                 onAddToCart={handleAddToCart}
                 onOrderSample={handleOrderSample}
               />
