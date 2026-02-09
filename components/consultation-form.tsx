@@ -18,11 +18,7 @@ const consultationFormSchema = z.object({
 
 type consultationFormType = z.infer<typeof consultationFormSchema>;
 
-interface ConsultationFormProps {
-  isConsultation?: boolean;
-}
-
-export const ConsultationForm = ({}: ConsultationFormProps) => {
+export const ConsultationForm = () => {
   const router = useRouter();
 
   const form = useForm<consultationFormType>({
@@ -35,14 +31,14 @@ export const ConsultationForm = ({}: ConsultationFormProps) => {
   });
 
   const onSubmit = (data: consultationFormType) => {
-    sessionStorage.setItem("consultation_data", JSON.stringify(data));
+    sessionStorage.setItem("user_data", JSON.stringify(data));
 
-    router.push("/potvrzeni");
+    router.push("/kontakt");
   };
 
   return (
     <Form
-      action="/potvrzeni"
+      action="/kontakt"
       onSubmit={form.handleSubmit(onSubmit)}
       className="space-y-4"
     >
