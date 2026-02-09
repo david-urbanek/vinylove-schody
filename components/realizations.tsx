@@ -6,7 +6,7 @@ import { cn } from "@/lib/utils";
 
 import { Badge } from "@/components/ui/badge";
 
-const projects1prop = [
+const realizationsData = [
   {
     title: "Schody s nosem",
     description:
@@ -65,11 +65,11 @@ const projects1prop = [
   },
 ];
 
-interface Projects1Props {
+interface RealizationsProps {
   className?: string;
 }
 
-const Projects1 = ({ className }: Projects1Props) => {
+const Realizations = ({ className }: RealizationsProps) => {
   return (
     <section className={cn("py-32", className)}>
       <div className="container">
@@ -82,7 +82,7 @@ const Projects1 = ({ className }: Projects1Props) => {
           </p>
         </div>
         <div className="space-y-12">
-          {projects1prop.map((project, index) => (
+          {realizationsData.map((project, index) => (
             <motion.div
               key={index}
               initial={{ opacity: 0, y: 30 }}
@@ -131,4 +131,4 @@ const Projects1 = ({ className }: Projects1Props) => {
   );
 };
 
-export { Projects1 };
+export { Realizations };

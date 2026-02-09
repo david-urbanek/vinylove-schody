@@ -1,9 +1,9 @@
-import { Projects1 } from "@/components/projects1";
+import { Realizations } from "@/components/realizations";
 
 export default function RealizacePage() {
   return (
     <div className="pt-20">
-      <Projects1 />
+      <Realizations />
     </div>
   );
 }

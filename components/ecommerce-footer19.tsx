@@ -1,6 +1,5 @@
 "use client";
 
-import { zodResolver } from "@hookform/resolvers/zod";
 import {
   LucideIcon,
   MapPin,
@@ -10,13 +9,12 @@ import {
   Send,
 } from "lucide-react";
 import { Fragment } from "react";
-import { Controller, useForm } from "react-hook-form";
 import { siFacebook, siInstagram, SimpleIcon, siX } from "simple-icons";
-import z from "zod";
 
 import { useMediaQuery } from "@/hooks/useMediaQuery";
 import { cn } from "@/lib/utils";
 
+import { ConsultationForm } from "@/components/consultation-form";
 import {
   Accordion,
   AccordionContent,
@@ -26,8 +24,6 @@ import {
 import { AspectRatio } from "@/components/ui/aspect-ratio";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardTitle } from "@/components/ui/card";
-import { Field, FieldError } from "@/components/ui/field";
-import { Input } from "@/components/ui/input";
 
 type NewsletterData = {
   title?: string;
@@ -206,15 +202,6 @@ const FOOTER_DETAILS = {
     "Profesionální výroba a montáž vinylových schodů a podlah s důrazem na detail a kvalitu.",
 };
 
-const PAYMENT_METHODS = [
-  "https://deifkwefumgah.cloudfront.net/shadcnblocks/block/ecommerce/payment-methods/amazonpay.svg",
-  "https://deifkwefumgah.cloudfront.net/shadcnblocks/block/ecommerce/payment-methods/applepay.svg",
-  "https://deifkwefumgah.cloudfront.net/shadcnblocks/block/ecommerce/payment-methods/mastercard.svg",
-  "https://deifkwefumgah.cloudfront.net/shadcnblocks/block/ecommerce/payment-methods/paypal.svg",
-  "https://deifkwefumgah.cloudfront.net/shadcnblocks/block/ecommerce/payment-methods/visa.svg",
-  "https://deifkwefumgah.cloudfront.net/shadcnblocks/block/ecommerce/payment-methods/discover.svg",
-];
-
 const SOCIAL_MEDIA_LINKS = [
   {
     icon: siFacebook,
@@ -246,7 +233,6 @@ const EcommerceFooter19 = ({
   infoSectionList = INFO_SECTION_DATA,
   footerLinks = FOOTER_LINKS,
   footerDetails = FOOTER_DETAILS,
-  paymentMethods = PAYMENT_METHODS,
   socialLinks = SOCIAL_MEDIA_LINKS,
   submenuLinks = SUBMENU,
   className,
@@ -302,26 +288,7 @@ const EcommerceFooter19 = ({
   );
 };
 
-const consultationFormSchema = z.object({
-  name: z.string().min(2, { message: "Jméno musí mít alespoň 2 znaky" }),
-  phone: z.string().min(9, { message: "Telefon musí mít alespoň 9 znaků" }),
-});
-
-type consultationFormType = z.infer<typeof consultationFormSchema>;
-
 const NewsletterSection = ({ title, description }: NewsletterFormProps) => {
-  const form = useForm({
-    resolver: zodResolver(consultationFormSchema),
-    defaultValues: {
-      name: "",
-      phone: "",
-    },
-  });
-
-  const onSubmit = (data: consultationFormType) => {
-    console.log(data);
-  };
-
   return (
     <div className="space-y-5">
       <div className="space-y-3">
@@ -329,48 +296,7 @@ const NewsletterSection = ({ title, description }: NewsletterFormProps) => {
         <p className="leading-normal text-muted-foreground">{description}</p>
       </div>
       <div className="space-y-4">
-        <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
-          <div className="grid gap-4">
-            <Controller
-              name="name"
-              control={form.control}
-              render={({ field, fieldState }) => (
-                <Field className="flex-1" data-invalid={fieldState.invalid}>
-                  <Input
-                    {...field}
-                    autoComplete="name"
-                    aria-invalid={fieldState.invalid}
-                    placeholder="Vaše jméno"
-                  />
-                  {fieldState.invalid && (
-                    <FieldError errors={[fieldState.error]} />
-                  )}
-                </Field>
-              )}
-            />
-            <Controller
-              name="phone"
-              control={form.control}
-              render={({ field, fieldState }) => (
-                <Field className="flex-1" data-invalid={fieldState.invalid}>
-                  <Input
-                    {...field}
-                    type="tel"
-                    autoComplete="tel"
-                    aria-invalid={fieldState.invalid}
-                    placeholder="Telefonní číslo"
-                  />
-                  {fieldState.invalid && (
-                    <FieldError errors={[fieldState.error]} />
-                  )}
-                </Field>
-              )}
-            />
-          </div>
-          <Button type="submit" className="w-full">
-            Odeslat poptávku
-          </Button>
-        </form>
+        <ConsultationForm isConsultation={true} />
         <p className="text-sm text-muted-foreground">
           Kliknutím souhlasíte se{" "}
           <a className="underline underline-offset-2" href="#">
