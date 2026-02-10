@@ -169,7 +169,10 @@ const Navbar3 = ({ className }: Navbar3Props) => {
       )}
     >
       <div className="container">
-        <NavigationMenu className="min-w-full [&>div:last-child]:left-1/2 [&>div:last-child]:-translate-x-1/2">
+        <NavigationMenu
+          className="min-w-full [&>div:last-child]:left-1/2 [&>div:last-child]:-translate-x-1/2"
+          suppressHydrationWarning
+        >
           <div className="flex w-full items-center justify-between gap-12 py-4">
             {/* Logo */}
             <div>
