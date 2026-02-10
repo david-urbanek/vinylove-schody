@@ -1,5 +1,4 @@
 import { About6 } from "@/components/about6";
-import { Contact7 } from "@/components/contact7";
 import { Hero } from "@/components/hero";
 import { Process1 } from "@/components/process1";
 import { ProductCarousel } from "@/components/product-carousel";
@@ -123,7 +122,6 @@ export default async function Home() {
           },
         ]}
       />
-      <Contact7 />
     </>
   );
 }
