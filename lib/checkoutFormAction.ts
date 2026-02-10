@@ -4,7 +4,6 @@ import { CustomerOrderSummaryEmail } from "@/emails/customer-order-email";
 import { OrderEmail } from "@/emails/order-email";
 import { checkoutFormSchema, CheckoutFormType } from "@/lib/schemas";
 import { CartItem } from "@/store/useCartStore";
-import { redirect } from "next/navigation";
 import { Resend } from "resend";
 
 const resend = new Resend(process.env.RESEND_API_KEY);
@@ -121,5 +120,7 @@ export async function submitOrder(
   }
 
   // Redirect to thank you page on success (outside try-catch)
-  redirect("/dekujeme");
+  return {
+    success: true,
+  };
 }

@@ -9,7 +9,7 @@ export const checkoutFormSchema = z.object({
   city: z.string().min(2, "Město je povinné"),
   zip: z.string().min(5, "PSČ je povinné"),
   orderNote: z.string().optional(),
-  interestInRealization: z.boolean().default(false),
+  interestInRealization: z.boolean(),
   projectDescription: z.string().optional(),
   products: z
     .object({

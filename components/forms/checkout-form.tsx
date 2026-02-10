@@ -9,6 +9,7 @@ import { cn } from "@/lib/utils";
 import { CartItem } from "@/store/useCartStore";
 import { zodResolver } from "@hookform/resolvers/zod";
 import Form from "next/form";
+import { redirect } from "next/navigation";
 import * as React from "react";
 import { Controller, useForm } from "react-hook-form";
 import { toast } from "sonner";
@@ -90,7 +91,7 @@ export const CheckoutForm = ({ cartItems }: CheckoutFormProps) => {
       const result = await submitOrder(cartItems, null, data);
 
       // If result is returned, it means there was an error (success redirects)
-      if (result && !result.success) {
+      if (!result.success) {
         if (result.details) {
           // Set field errors from server validation
           Object.entries(result.details).forEach(([key, messages]) => {
@@ -107,9 +108,8 @@ export const CheckoutForm = ({ cartItems }: CheckoutFormProps) => {
           result.error || "Něco se pokazilo. Zkuste to prosím znovu.",
         );
       }
-    } catch (error) {
-      console.error("Submission error:", error);
-      toast.error("Nepodařilo se odeslat formulář. Zkuste to prosím později.");
+
+      redirect("/dekujeme");
     } finally {
       setIsPending(false);
     }
@@ -299,7 +299,7 @@ export const CheckoutForm = ({ cartItems }: CheckoutFormProps) => {
                 <Checkbox
                   id="interestInRealization"
                   checked={field.value}
-                  onChange={field.onChange}
+                  onChange={(e) => field.onChange(e.target.checked)}
                 />
               )}
             />
