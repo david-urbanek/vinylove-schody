@@ -6,6 +6,7 @@ import { useRouter, useSearchParams } from "next/navigation";
 import { cn } from "@/lib/utils";
 
 import { Price, PriceValue } from "@/components/shadcnblocks/price";
+
 import { AspectRatio } from "@/components/ui/aspect-ratio";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
@@ -134,7 +135,7 @@ const ProductCard = ({
   price,
   stockStatusCode,
 }: ProductCardProps) => {
-  const { regular, sale, currency } = price;
+  const { priceWithVAT: regular, sale, currency } = price;
 
   return (
     <Card className="group relative block rounded-none border-none bg-background p-0 shadow-none">
@@ -182,18 +183,29 @@ const ProductCard = ({
           <CardTitle className="leading-normal font-normal underline-offset-3 group-hover:underline">
             {name}
           </CardTitle>
-          <Price
-            onSale={sale != null}
-            className="text-sm leading-normal font-bold"
-          >
-            <PriceValue
-              price={sale}
-              currency={currency}
-              variant="sale"
-              className="text-red-700"
-            />
-            <PriceValue price={regular} currency={currency} variant="regular" />
-          </Price>
+          <div className="mt-1 flex flex-col gap-0.5">
+            <Price className="text-lg font-bold leading-none">
+              <PriceValue
+                price={sale ?? regular}
+                currency={currency}
+                variant="regular"
+              />
+              <span className="text-xs font-normal text-muted-foreground ml-1">
+                vč. DPH
+              </span>
+            </Price>
+            {price.priceWithoutVat && (
+              <Price className="text-sm text-muted-foreground">
+                <PriceValue
+                  price={price.priceWithoutVat}
+                  currency={currency}
+                  variant="regular"
+                  className="text-muted-foreground"
+                />
+                <span className="text-xs ml-1">bez DPH</span>
+              </Price>
+            )}
+          </div>
         </div>
       </CardContent>
     </Card>

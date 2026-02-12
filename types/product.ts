@@ -6,26 +6,31 @@ export const STOCK_STATUS = {
 export type StockStatusCode = keyof typeof STOCK_STATUS;
 
 export interface ProductPrice {
-  regular: number;
-  sale?: number;
+  priceWithVAT: number;
+  priceWithoutVAT: number;
   currency: string;
 }
 
 export interface Product {
-  name: string;
-  image: {
-    src: string;
-    srcset?: string;
-    sizes?: string;
-    alt: string;
+  _id: string;
+  _type: string;
+  title: string;
+  category?: string;
+  description?: string;
+  mainImage?: any;
+  gallery?: any[];
+  techParams?: any;
+  features?: string[];
+  pattern?: {
+    title: string;
+    image?: any;
   };
-  link: string;
+  pricePerUnit?: number;
   price: ProductPrice;
-  stockStatusCode: StockStatusCode;
-  badges?: Array<{
-    text: string;
-    color?: string;
-  }>;
+  typeLabel?: string;
+  slug: {
+    current: string;
+  };
 }
 
 export type ProductCardProps = Product;

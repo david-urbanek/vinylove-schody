@@ -12,7 +12,7 @@ import { toast } from "sonner";
 
 import { useCart } from "@/hooks/useCart";
 import { useMediaQuery } from "@/hooks/useMediaQuery";
-import { cn } from "@/lib/utils";
+import { addVat, cn } from "@/lib/utils";
 import { urlFor } from "@/sanity/lib/image";
 import { STOCK_STATUS } from "@/types/product";
 
@@ -52,10 +52,6 @@ interface ProductImagesProps {
   galleryID: string;
 }
 
-interface ProductFeatures {
-  features: Array<string>;
-}
-
 interface SustainabilitySectionProps {
   sustainability: Array<{
     text: string;
@@ -68,13 +64,6 @@ interface ProductInfoSectionsProps {
     title: string;
     content: React.ReactNode;
   }>;
-}
-
-interface PriceProps {
-  regular: number;
-  sale?: number;
-  currency: string;
-  discount?: string;
 }
 
 interface QuantityProps {
@@ -172,13 +161,15 @@ const StairProductForm = ({
             {new Intl.NumberFormat("cs-CZ", {
               style: "currency",
               currency: "CZK",
-            }).format(totalPrice)}
+              maximumFractionDigits: 0,
+            }).format(addVat(pricePerPiece) * quantity)}
           </span>
           <span className="text-sm text-muted-foreground">
             {new Intl.NumberFormat("cs-CZ", {
               style: "currency",
               currency: "CZK",
-            }).format(totalPrice > 0 ? totalPrice / 1.21 : 0)}{" "}
+              maximumFractionDigits: 0,
+            }).format(totalPrice)}{" "}
             bez DPH
           </span>
         </div>
@@ -233,6 +224,8 @@ const ProductDetail7 = ({
     slug,
   } = product || {};
 
+  console.log(product);
+
   const { addItem, items } = useCart();
 
   const productLink = slug?.current
@@ -248,7 +241,8 @@ const ProductDetail7 = ({
         id: _id, // Adding ID to help with uniqueness if link is not enough, though interface might not have it strictly
         link: productLink,
         price: {
-          regular: price,
+          regular: addVat(price),
+          priceWithoutVat: price,
           currency: "CZK",
         },
         image: {
@@ -541,8 +535,22 @@ const ProductDetail7 = ({
                       {new Intl.NumberFormat("cs-CZ", {
                         style: "currency",
                         currency: "CZK",
-                      }).format(price)}{" "}
+                        maximumFractionDigits: 0,
+                      }).format(addVat(price))}{" "}
                       vč. DPH
+                    </span>
+                  </div>
+                  <div className="flex justify-between text-sm">
+                    <span className="text-muted-foreground">
+                      Cena za 1 balení bez DPH:
+                    </span>
+                    <span className="font-medium text-muted-foreground">
+                      {new Intl.NumberFormat("cs-CZ", {
+                        style: "currency",
+                        currency: "CZK",
+                        maximumFractionDigits: 0,
+                      }).format(price)}{" "}
+                      bez DPH
                     </span>
                   </div>
                   <div className="flex justify-between text-sm">
@@ -551,22 +559,52 @@ const ProductDetail7 = ({
                       {new Intl.NumberFormat("cs-CZ", {
                         style: "currency",
                         currency: "CZK",
-                      }).format(pricePerM2)}{" "}
+                        maximumFractionDigits: 0,
+                      }).format(addVat(pricePerM2))}{" "}
                       vč. DPH
+                    </span>
+                  </div>
+                  <div className="flex justify-between text-sm">
+                    <span className="text-muted-foreground">
+                      Cena za m² bez DPH:
+                    </span>
+                    <span className="font-medium text-muted-foreground">
+                      {new Intl.NumberFormat("cs-CZ", {
+                        style: "currency",
+                        currency: "CZK",
+                        maximumFractionDigits: 0,
+                      }).format(pricePerM2)}{" "}
+                      bez DPH
                     </span>
                   </div>
                 </>
               ) : (
-                <div className="flex justify-between text-sm">
-                  <span className="text-muted-foreground">Cena za kus:</span>
-                  <span className="font-medium">
-                    {new Intl.NumberFormat("cs-CZ", {
-                      style: "currency",
-                      currency: "CZK",
-                    }).format(unitPrice)}{" "}
-                    vč. DPH
-                  </span>
-                </div>
+                <>
+                  <div className="flex justify-between text-sm">
+                    <span className="text-muted-foreground">Cena za kus:</span>
+                    <span className="font-medium">
+                      {new Intl.NumberFormat("cs-CZ", {
+                        style: "currency",
+                        currency: "CZK",
+                        maximumFractionDigits: 0,
+                      }).format(addVat(unitPrice))}{" "}
+                      vč. DPH
+                    </span>
+                  </div>
+                  <div className="flex justify-between text-sm">
+                    <span className="text-muted-foreground">
+                      Cena za kus bez DPH:
+                    </span>
+                    <span className="font-medium text-muted-foreground">
+                      {new Intl.NumberFormat("cs-CZ", {
+                        style: "currency",
+                        currency: "CZK",
+                        maximumFractionDigits: 0,
+                      }).format(unitPrice)}{" "}
+                      bez DPH
+                    </span>
+                  </div>
+                </>
               )}
             </div>
 
@@ -764,13 +802,15 @@ const ProductForm = ({
             {new Intl.NumberFormat("cs-CZ", {
               style: "currency",
               currency: "CZK",
-            }).format(totalPrice)}
+              maximumFractionDigits: 0,
+            }).format(addVat(pricePerPackage) * quantity)}
           </span>
           <span className="text-sm text-muted-foreground">
             {new Intl.NumberFormat("cs-CZ", {
               style: "currency",
               currency: "CZK",
-            }).format(totalPrice > 0 ? totalPrice / 1.21 : 0)}{" "}
+              maximumFractionDigits: 0,
+            }).format(totalPrice)}{" "}
             bez DPH
           </span>
         </div>

@@ -21,7 +21,7 @@ export const useCart = () => {
 
     return items.reduce(
       (acc, item) => ({
-        totalPrice: acc.totalPrice + item.price.regular * item.quantity,
+        totalPrice: acc.totalPrice + item.price.priceWithVAT * item.quantity,
         totalItems: acc.totalItems + item.quantity,
       }),
       { totalPrice: 0, totalItems: 0 },

@@ -1,4 +1,5 @@
 import { ProductList10 } from "@/components/product/product-list10";
+import { addVat } from "@/lib/utils";
 import { client } from "@/sanity/lib/client";
 import { urlFor } from "@/sanity/lib/image";
 import { Product, ProductList } from "@/types/product";
@@ -121,7 +122,7 @@ export default async function ProductsCategoryPage(props: Params) {
     }
 
     // Format price
-    const priceRegular = item.pricePerUnit || 0;
+    const priceWithoutVAT = item.pricePerUnit || 0;
     const isSale = item.tags?.includes("sale");
 
     // Construct Link
@@ -137,11 +138,11 @@ export default async function ProductsCategoryPage(props: Params) {
       },
       link: productLink,
       price: {
-        regular: priceRegular,
-        sale: isSale ? priceRegular : undefined,
+        priceWithVAT: addVat(priceWithoutVAT),
+        priceWithoutVAT,
+        sale: isSale ? addVat(priceWithoutVAT) : undefined,
         currency: "CZK",
       },
-      stockStatusCode: "IN_STOCK",
       badges: item.tags?.map((tag: string) => {
         if (tag === "new") return { text: "Novinka", color: "blue" };
         if (tag === "sale") return { text: "Akce", color: "red" };
@@ -157,14 +158,14 @@ export default async function ProductsCategoryPage(props: Params) {
 
   if (sortOrder === "asc") {
     products.sort((a, b) => {
-      const priceA = a.price.sale ?? a.price.regular;
-      const priceB = b.price.sale ?? b.price.regular;
+      const priceA = a.price.priceWithoutVAT;
+      const priceB = b.price.priceWithoutVAT;
       return priceA - priceB;
     });
   } else if (sortOrder === "desc") {
     products.sort((a, b) => {
-      const priceA = a.price.sale ?? a.price.regular;
-      const priceB = b.price.sale ?? b.price.regular;
+      const priceA = a.price.priceWithoutVAT;
+      const priceB = b.price.priceWithoutVAT;
       return priceB - priceA;
     });
   }

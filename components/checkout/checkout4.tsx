@@ -97,7 +97,7 @@ const Checkout4 = ({
 const Cart = ({ cartItems, onRemoveItem, onUpdateQuantity }: CartProps) => {
   const totalPrice = cartItems.reduce(
     (sum, item) =>
-      sum + (item.price.sale ?? item.price.regular) * item.quantity,
+      sum + (item.price.sale ?? item.price.priceWithVAT) * item.quantity,
     0,
   );
 
@@ -183,7 +183,7 @@ const CartItemComponent = ({
   onQuantityChange,
   onRemoveClick,
 }: CartItemProps) => {
-  const { regular, currency } = price;
+  const { priceWithVAT: regular, currency } = price;
   const isSample =
     name.toLowerCase().includes("vzorek") || link.includes("sample=true");
 

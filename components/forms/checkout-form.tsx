@@ -62,7 +62,7 @@ export const CheckoutForm = ({ cartItems }: CheckoutFormProps) => {
     cartItems?.map((item) => ({
       product_id: item.link,
       quantity: item.quantity,
-      price: item.price.sale ?? item.price.regular,
+      price: item.price.sale ?? item.price.priceWithVAT,
     })) || [];
 
   const form = useForm<CheckoutFormType>({

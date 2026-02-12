@@ -29,12 +29,16 @@ export type PriceType = {
 
 const formatterCache = new Map<string, Intl.NumberFormat>();
 
-function formatCurrency(value: number, currency = "USD", locale = "en-US") {
+function formatCurrency(value: number, currency = "CZK", locale = "cs-CZ") {
   const key = `${locale}-${currency}`;
   if (!formatterCache.has(key)) {
     formatterCache.set(
       key,
-      new Intl.NumberFormat(locale, { style: "currency", currency }),
+      new Intl.NumberFormat(locale, {
+        style: "currency",
+        currency,
+        maximumFractionDigits: currency === "CZK" ? 0 : 2,
+      }),
     );
   }
   return formatterCache.get(key)!.format(value);

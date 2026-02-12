@@ -2,7 +2,7 @@
 
 import { useCallback, useEffect, useState } from "react";
 
-import { cn } from "@/lib/utils";
+import { addVat, cn } from "@/lib/utils";
 import { urlFor } from "@/sanity/lib/image";
 
 import { Price, PriceValue } from "@/components/shadcnblocks/price";
@@ -188,9 +188,27 @@ const ProductCard = ({ product }: { product: RelatedProduct }) => {
               {title}
             </CardTitle>
           </a>
-          <Price className="text-sm leading-normal font-bold">
-            <PriceValue price={pricePerUnit} currency="CZK" variant="regular" />
-          </Price>
+          <div className="flex flex-col gap-0.5">
+            <Price className="text-sm font-bold leading-none">
+              <PriceValue
+                price={addVat(pricePerUnit)}
+                currency="CZK"
+                variant="regular"
+              />
+              <span className="text-[10px] font-normal text-muted-foreground ml-1">
+                vč. DPH
+              </span>
+            </Price>
+            <Price className="text-xs text-muted-foreground">
+              <PriceValue
+                price={pricePerUnit}
+                currency="CZK"
+                variant="regular"
+                className="text-muted-foreground"
+              />
+              <span className="text-[10px] ml-1">bez DPH</span>
+            </Price>
+          </div>
         </div>
       </CardContent>
     </Card>
