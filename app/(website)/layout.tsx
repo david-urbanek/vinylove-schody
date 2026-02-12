@@ -1,5 +1,5 @@
-import { EcommerceFooter19 } from "@/components/ecommerce-footer19";
-import { Navbar3 } from "@/components/navbar3";
+import { EcommerceFooter19 } from "@/components/layout/ecommerce-footer19";
+import { Navbar3 } from "@/components/layout/navbar3";
 
 export default function WebsiteLayout({
   children,

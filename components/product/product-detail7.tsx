@@ -16,7 +16,7 @@ import { cn } from "@/lib/utils";
 import { urlFor } from "@/sanity/lib/image";
 import { STOCK_STATUS } from "@/types/product";
 
-import { ProductVariants } from "@/components/product-variants";
+import { ProductVariants } from "@/components/product/product-variants";
 
 import {
   Accordion,
@@ -509,7 +509,7 @@ const ProductDetail7 = ({
               <div className="text-xs leading-normal tracking-widest text-muted-foreground uppercase">
                 {typeLabel || "Produkt"}
               </div>
-              <h1 className="font-serif text-[2rem] leading-tight">{title}</h1>
+              <h2 className="text-[2rem] leading-tight">{title}</h2>
             </div>
 
             <div className="my-6">

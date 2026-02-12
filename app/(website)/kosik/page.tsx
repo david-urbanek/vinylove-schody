@@ -1,6 +1,6 @@
 "use client";
 
-import { Checkout4 } from "@/components/checkout4";
+import { Checkout4 } from "@/components/checkout/checkout4";
 import { useCart } from "@/hooks/useCart";
 
 export default function CartPage() {

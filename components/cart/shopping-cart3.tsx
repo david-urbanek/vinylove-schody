@@ -126,7 +126,7 @@ const ShoppingCart3 = ({
           <div className="mx-auto mb-6 flex size-16 items-center justify-center rounded-full bg-muted">
             <ShoppingCart className="size-8 text-muted-foreground" />
           </div>
-          <h1 className="mb-4 text-2xl font-semibold">Your cart is empty</h1>
+          <h2 className="mb-4 text-2xl">Your cart is empty</h2>
           <p className="mb-8 text-muted-foreground">
             Looks like you haven&apos;t added anything yet.
           </p>
@@ -141,7 +141,7 @@ const ShoppingCart3 = ({
   return (
     <section className="py-32">
       <div className="container">
-        <h1 className="mb-8 text-3xl font-semibold">Shopping Cart</h1>
+        <h2 className="mb-8 text-3xl">Shopping Cart</h2>
 
         <div className="grid gap-8 lg:grid-cols-3">
           {/* Cart Items */}

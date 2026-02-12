@@ -1,4 +1,4 @@
-import { LeadContact } from "@/components/lead-contact";
+import { LeadContact } from "@/components/contact/lead-contact";
 import { Metadata } from "next";
 
 export const metadata: Metadata = {

@@ -1,5 +1,5 @@
-import { ProductDetail7 } from "@/components/product-detail7";
-import { RelatedProducts } from "@/components/related-products";
+import { ProductDetail7 } from "@/components/product/product-detail7";
+import { RelatedProducts } from "@/components/product/related-products";
 import { client } from "@/sanity/lib/client";
 import { notFound } from "next/navigation";
 

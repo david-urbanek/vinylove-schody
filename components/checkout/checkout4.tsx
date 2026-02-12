@@ -12,7 +12,7 @@ import { AspectRatio } from "@/components/ui/aspect-ratio";
 import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
 import { CartItem } from "@/store/useCartStore";
-import { CheckoutForm } from "./forms/checkout-form";
+import { CheckoutForm } from "../forms/checkout-form";
 
 interface CartItemProps extends CartItem {
   index: number;
@@ -83,9 +83,7 @@ const Checkout4 = ({
         <div className="order-1 flex flex-col justify-center lg:order-2 lg:flex-row lg:items-center">
           <div className="mx-auto w-full max-w-xl p-4 sm:p-8 lg:p-12 xl:p-16">
             <div className="mb-10">
-              <h1 className="text-3xl font-bold tracking-tight">
-                Doručení a poptávka
-              </h1>
+              <h2 className="text-3xl tracking-tight">Doručení a poptávka</h2>
             </div>
 
             <CheckoutForm cartItems={cartItems} />

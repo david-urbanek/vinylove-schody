@@ -1,8 +1,8 @@
-import { About6 } from "@/components/about6";
-import { Hero } from "@/components/hero";
-import { Process1 } from "@/components/process1";
-import { ProductCarousel } from "@/components/product-carousel";
-import { ProductList10 } from "@/components/product-list10";
+import { About6 } from "@/components/homepage/about6";
+import { Hero } from "@/components/homepage/hero";
+import { Process1 } from "@/components/homepage/process1";
+import { ProductCarousel } from "@/components/product/product-carousel";
+import { ProductList10 } from "@/components/product/product-list10";
 import { client } from "@/sanity/lib/client";
 
 export default async function Home() {
@@ -63,7 +63,7 @@ export default async function Home() {
       promotion: {
         image:
           "https://images.unsplash.com/photo-1600585154340-be6161a56a0c?auto=format&fit=crop&w=800&q=80",
-        title: "Schody, které vydrží.",
+        title: "Schody, které Vám vydrží.",
         kicker: "Kvalita",
         cta: {
           label: "Zobrazit realizace",
@@ -78,7 +78,7 @@ export default async function Home() {
       promotion: {
         image:
           "https://images.unsplash.com/photo-1581850518616-bcb8077a2536?auto=format&fit=crop&w=800&q=80",
-        title: "Podlaha, která vás unese.",
+        title: "Podlaha, která Vás doslova unese.",
         kicker: "Odolnost",
         cta: {
           label: "Zobrazit realizace",

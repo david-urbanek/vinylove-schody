@@ -1,4 +1,4 @@
-import { Process1 } from "@/components/process1";
+import { Process1 } from "@/components/homepage/process1";
 
 export default function OhybaniVinyluPage() {
   const steps = [

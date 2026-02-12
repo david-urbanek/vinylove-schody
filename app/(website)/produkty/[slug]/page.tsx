@@ -1,4 +1,4 @@
-import { ProductList10 } from "@/components/product-list10";
+import { ProductList10 } from "@/components/product/product-list10";
 import { client } from "@/sanity/lib/client";
 import { urlFor } from "@/sanity/lib/image";
 import { Product, ProductList } from "@/types/product";

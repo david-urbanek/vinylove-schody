@@ -93,9 +93,9 @@ const LeadContact = ({ className }: LeadContactProps) => {
           {/* Left Column: Info */}
           <div className="flex flex-col gap-8">
             <div className="space-y-4">
-              <h1 className="text-3xl font-bold tracking-tighter sm:text-4xl md:text-5xl text-left">
+              <h2 className="text-3xl sm:text-4xl md:text-5xl text-left">
                 Kontaktujte nás
-              </h1>
+              </h2>
               <p className="max-w-[600px] text-muted-foreground text-lg text-left">
                 Máte dotaz nebo zájem o realizaci? Vyplňte formulář a my se Vám
                 ozveme co nejdříve. Jsme tu pro Vás a rádi Vám pomůžeme.
