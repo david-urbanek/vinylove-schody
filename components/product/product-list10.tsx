@@ -167,12 +167,12 @@ const ProductCard = ({
             <div className="flex flex-col gap-2 opacity-0 duration-700 lg:translate-y-4 lg:group-hover:translate-y-0 lg:group-hover:opacity-100">
               <Button
                 disabled={stockStatusCode === STOCK_STATUS.OUT_OF_STOCK}
-                className="w-full"
+                className="w-full bg-white text-black hover:bg-white/90"
                 asChild
               >
                 <a href={link}>
-                  <ShoppingCart />
-                  Detail
+                  <ShoppingCart className="text-black" />
+                  <span className="text-black">Detail</span>
                 </a>
               </Button>
             </div>

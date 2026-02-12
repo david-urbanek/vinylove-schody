@@ -145,7 +145,7 @@ const Cart = ({ cartItems, onRemoveItem, onUpdateQuantity }: CartProps) => {
         </div>
         <div className="flex justify-between text-sm">
           <span className="text-muted-foreground">Doprava</span>
-          <span>Vypočítáno v dalším kroku</span>
+          <span>Doprava bude vypočítána na základě poptávky</span>
         </div>
         <div className="flex justify-between text-sm">
           <span className="text-muted-foreground">Odhadovaná daň</span>

@@ -1,4 +1,4 @@
-import { Realizations } from "@/components/realizations";
+import { Realizations } from "@/components/realizations/realizations";
 
 export default function RealizacePage() {
   return (

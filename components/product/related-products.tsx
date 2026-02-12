@@ -1,6 +1,5 @@
 "use client";
 
-import { Minus, Plus, ShoppingBag } from "lucide-react";
 import { useCallback, useEffect, useState } from "react";
 
 import { cn } from "@/lib/utils";
@@ -141,26 +140,8 @@ const RelatedProducts = ({ sections, className }: RelatedProductsProps) => {
 
 const ProductCard = ({ product }: { product: RelatedProduct }) => {
   const { title, slug, pricePerUnit, mainImage, category } = product;
-  const [quantity, setQuantity] = useState(0);
 
   const link = `/produkt/${slug.current}`;
-
-  const handleBuy = (e: React.MouseEvent) => {
-    e.preventDefault();
-    setQuantity(1);
-    // Logic to add to cart should be implemented here or passed as prop
-    console.log("Add to cart:", title);
-  };
-
-  const increment = (e: React.MouseEvent) => {
-    e.preventDefault();
-    setQuantity((prev) => prev + 1);
-  };
-
-  const decrement = (e: React.MouseEvent) => {
-    e.preventDefault();
-    setQuantity((prev) => Math.max(0, prev - 1));
-  };
 
   const imageUrl = mainImage ? urlFor(mainImage).width(600).url() : "";
 
@@ -185,58 +166,14 @@ const ProductCard = ({ product }: { product: RelatedProduct }) => {
             </AspectRatio>
           </a>
 
-          <div className="absolute end-2.5 bottom-2.5 z-60 md:hidden">
-            <Button variant="secondary" size="icon" className="rounded-full">
-              <ShoppingBag />
+          <div className="absolute inset-x-4 bottom-4 z-60 hidden md:block opacity-0 translate-y-4 transition-all duration-700 group-hover:opacity-100 group-hover:translate-y-0">
+            <Button
+              asChild
+              variant="secondary"
+              className="w-full rounded-full bg-white/90 hover:bg-white"
+            >
+              <a href={link}>Detail</a>
             </Button>
-          </div>
-          {/* Desktop Overlay - Buttons or Quantity Selector */}
-          <div
-            className={cn(
-              "absolute inset-x-4 bottom-4 z-60 hidden md:block transition-all duration-700",
-              quantity > 0
-                ? "opacity-100 translate-y-0"
-                : "opacity-0 translate-y-4 group-hover:opacity-100 group-hover:translate-y-0",
-            )}
-          >
-            {quantity === 0 ? (
-              <div className="flex gap-2">
-                <Button
-                  asChild
-                  variant="secondary"
-                  className="flex-1 rounded-full bg-white/90 hover:bg-white"
-                >
-                  <a href={link}>Detail</a>
-                </Button>
-                <Button
-                  className="flex-1 rounded-full bg-primary hover:bg-primary/90"
-                  onClick={handleBuy}
-                >
-                  Koupit
-                </Button>
-              </div>
-            ) : (
-              <div className="flex w-full items-center justify-between rounded-full bg-slate-100 p-1 shadow-sm">
-                <Button
-                  variant="ghost"
-                  size="icon"
-                  className="size-8 rounded-full bg-white text-emerald-600 shadow-sm hover:bg-white hover:text-emerald-700"
-                  onClick={decrement}
-                >
-                  <Minus className="size-4" />
-                </Button>
-                <span className="text-lg font-semibold tabular-nums">
-                  {quantity}
-                </span>
-                <Button
-                  size="icon"
-                  className="size-8 rounded-full bg-emerald-600 text-white shadow-sm hover:bg-emerald-700"
-                  onClick={increment}
-                >
-                  <Plus className="size-4" />
-                </Button>
-              </div>
-            )}
           </div>
         </div>
         <div className="flex flex-col gap-1 pt-5">
