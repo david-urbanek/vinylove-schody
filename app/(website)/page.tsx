@@ -1,4 +1,4 @@
-import { About6 } from "@/components/homepage/about6";
+import { About } from "@/components/homepage/about6";
 import { Hero } from "@/components/homepage/hero";
 import { Process1 } from "@/components/homepage/process1";
 import { ProductCarousel } from "@/components/product/product-carousel";
@@ -60,8 +60,7 @@ export default async function Home() {
       title: "Vinylové schody",
       value: "stairs",
       promotion: {
-        image:
-          "https://images.unsplash.com/photo-1600585154340-be6161a56a0c?auto=format&fit=crop&w=800&q=80",
+        image: "/promo/schody-1.png",
         title: "Schody, které Vám vydrží.",
         kicker: "Kvalita",
         cta: {
@@ -75,8 +74,7 @@ export default async function Home() {
       title: "Vinylové podlahy",
       value: "floors",
       promotion: {
-        image:
-          "https://images.unsplash.com/photo-1581850518616-bcb8077a2536?auto=format&fit=crop&w=800&q=80",
+        image: "/promo/podlaha-1.png",
         title: "Podlaha, která Vás doslova unese.",
         kicker: "Odolnost",
         cta: {
@@ -92,7 +90,7 @@ export default async function Home() {
     <>
       <Hero />
       <ProductCarousel sections={carouselSections} />
-      <About6 />
+      <About />
       <Process1
         title="Jak to funguje"
         description="Jednoduchý proces od prvního kontaktu až po finální realizaci. Zakládáme si na rychlé a srozumitelné komunikaci."

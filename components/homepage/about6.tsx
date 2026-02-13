@@ -1,11 +1,11 @@
 import { cn } from "@/lib/utils";
 import Image from "next/image";
 
-interface About6Props {
+interface AboutProps {
   className?: string;
 }
 
-const About6 = ({ className }: About6Props) => {
+const About = ({ className }: AboutProps) => {
   return (
     <section className={cn("py-32", className)}>
       <div className="container">
@@ -117,4 +117,4 @@ const About6 = ({ className }: About6Props) => {
   );
 };
 
-export { About6 };
+export { About };

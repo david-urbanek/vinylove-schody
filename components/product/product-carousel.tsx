@@ -1,6 +1,7 @@
 "use client";
 
 import { ShoppingBag } from "lucide-react";
+import Image from "next/image";
 import { useCallback, useEffect, useState } from "react";
 
 import { cn } from "@/lib/utils";
@@ -208,9 +209,10 @@ const ProductCarousel = ({ className, sections }: ProductCarouselProps) => {
 const PromoCard = ({ image, title, cta, kicker }: PromoCardProps) => {
   return (
     <Card className="group relative flex size-full min-h-95 min-w-47.5 flex-col justify-between gap-5 overflow-hidden rounded-xl p-6 before:absolute before:inset-0 before:z-10 before:bg-black/20 lg:max-w-80">
-      <img
+      <Image
         src={image}
         alt={title}
+        fill
         className="absolute inset-0 z-5 size-full origin-center object-cover object-center transition-transform duration-700 group-hover:scale-110"
       />
       <a href={cta.link} className="absolute inset-0 z-10 size-full"></a>

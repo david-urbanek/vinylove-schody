@@ -14,6 +14,7 @@ import { siFacebook, siInstagram, SimpleIcon } from "simple-icons";
 import { contactInfo } from "@/data/data";
 import { useMediaQuery } from "@/hooks/useMediaQuery";
 import { cn } from "@/lib/utils";
+import Image from "next/image";
 
 import { ConsultationForm } from "@/components/forms/consultation-form";
 import {
@@ -58,13 +59,6 @@ type FooterDetailsType = {
   image: {
     src: string;
     alt: string;
-  };
-  homeLink: {
-    logo: {
-      light: string;
-      dark: string;
-    };
-    link: string;
   };
   title: string;
   description: string;
@@ -162,16 +156,8 @@ const FOOTER_LINKS: FooterLinksSection[] = [
 
 const FOOTER_DETAILS = {
   image: {
-    src: "https://images.unsplash.com/photo-1616486338812-3dadae4b4ace?auto=format&fit=crop&w=800&q=80",
+    src: "/footer/podlaha-1.png",
     alt: "",
-  },
-  homeLink: {
-    logo: {
-      light:
-        "https://deifkwefumgah.cloudfront.net/shadcnblocks/block/logos/shadcnblockscom-wordmark.svg",
-      dark: "https://deifkwefumgah.cloudfront.net/shadcnblocks/block/logos/shadcnblockscom-wordmark-white.svg",
-    },
-    link: "#",
   },
   title: "Vinylové schody na míru",
   description:
@@ -215,10 +201,12 @@ const EcommerceFooter19 = ({
         <div className="grid items-center gap-x-20 gap-y-5 lg:grid-cols-2">
           <div>
             <AspectRatio ratio={2} className="overflow-hidden rounded-2xl">
-              <img
+              <Image
                 className="block size-full object-cover object-center"
                 src={footerDetails.image.src}
                 alt={footerDetails.image.alt}
+                width={896}
+                height={1152}
               />
             </AspectRatio>
           </div>
