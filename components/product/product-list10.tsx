@@ -194,10 +194,10 @@ const ProductCard = ({
                 vč. DPH
               </span>
             </Price>
-            {price.priceWithoutVat && (
+            {price.priceWithoutVAT && (
               <Price className="text-sm text-muted-foreground">
                 <PriceValue
-                  price={price.priceWithoutVat}
+                  price={price.priceWithoutVAT}
                   currency={currency}
                   variant="regular"
                   className="text-muted-foreground"

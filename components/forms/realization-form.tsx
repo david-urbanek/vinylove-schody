@@ -10,6 +10,7 @@ import { z } from "zod";
 import { Button } from "@/components/ui/button";
 import { Field, FieldError } from "@/components/ui/field";
 import { Input } from "@/components/ui/input";
+import { toast } from "sonner";
 
 const schema = z.object({
   email: z.string().email({ message: "Neplatný email" }),
@@ -28,6 +29,7 @@ export function RealizationForm() {
 
   function onSubmit(values: RealizationFormValues) {
     sessionStorage.setItem("user_data", JSON.stringify(values));
+    toast.info("Prosím doplňte další kontaktní údaje.");
     router.push("/kontakt");
   }
 

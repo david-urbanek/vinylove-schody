@@ -2,7 +2,6 @@ import { About6 } from "@/components/homepage/about6";
 import { Hero } from "@/components/homepage/hero";
 import { Process1 } from "@/components/homepage/process1";
 import { ProductCarousel } from "@/components/product/product-carousel";
-import { ProductList10 } from "@/components/product/product-list10";
 import { client } from "@/sanity/lib/client";
 
 export default async function Home() {
@@ -93,7 +92,6 @@ export default async function Home() {
     <>
       <Hero />
       <ProductCarousel sections={carouselSections} />
-      <ProductList10 />
       <About6 />
       <Process1
         title="Jak to funguje"

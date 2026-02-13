@@ -9,8 +9,9 @@ import {
   Send,
 } from "lucide-react";
 import { Fragment } from "react";
-import { siFacebook, siInstagram, SimpleIcon, siX } from "simple-icons";
+import { siFacebook, siInstagram, SimpleIcon } from "simple-icons";
 
+import { contactInfo } from "@/data/data";
 import { useMediaQuery } from "@/hooks/useMediaQuery";
 import { cn } from "@/lib/utils";
 
@@ -106,19 +107,20 @@ const INFO_SECTION_DATA: InfoItem[] = [
   },
   {
     title: "Zavolejte nám",
-    text: "+420 123 456 789",
-    link: "tel:+420123456789",
+    text: contactInfo.phone,
+    link: `tel:${contactInfo.phone.replace(/\s/g, "")}`,
     icon: Phone,
   },
   {
     title: "Napište nám",
-    text: "info@vinylove-schody.cz",
-    link: "mailto:info@vinylove-schody.cz",
+    text: contactInfo.email,
+    link: `mailto:${contactInfo.email}`,
     icon: Send,
   },
   {
     title: "Adresa",
-    text: "Pražská 123, Brno",
+    text: contactInfo.address,
+    link: contactInfo.addressLink,
     icon: MapPin,
   },
 ];
@@ -143,42 +145,16 @@ const FOOTER_LINKS: FooterLinksSection[] = [
     ],
   },
   {
-    title: "Podpora",
-    id: "support",
+    title: "Služby",
+    id: "services",
     items: [
-      {
-        text: "Kontakt",
-        link: "#",
-      },
-      {
-        text: "Časté dotazy",
-        link: "#",
-      },
-      {
-        text: "Doprava",
-        link: "#",
-      },
-      {
-        text: "Reklamace",
-        link: "#",
-      },
-    ],
-  },
-  {
-    title: "O nás",
-    id: "about",
-    items: [
-      {
-        text: "Náš příběh",
-        link: "#",
-      },
       {
         text: "Realizace",
-        link: "#",
+        link: "/realizace",
       },
       {
-        text: "Showroom",
-        link: "#",
+        text: "Ohýbání vinylu na míru",
+        link: "/ohybani-vinylu",
       },
     ],
   },
@@ -205,15 +181,11 @@ const FOOTER_DETAILS = {
 const SOCIAL_MEDIA_LINKS = [
   {
     icon: siFacebook,
-    link: "#",
-  },
-  {
-    icon: siX,
-    link: "#",
+    link: contactInfo.socials.facebook,
   },
   {
     icon: siInstagram,
-    link: "#",
+    link: contactInfo.socials.instagram,
   },
 ];
 
@@ -356,7 +328,7 @@ const FooterLinksSection = ({ sections }: FooterLinksSectionProps) => {
       <Accordion
         value={allAccordionIds}
         type="multiple"
-        className="grid grid-cols-3 gap-4"
+        className="flex justify-end gap-10 lg:gap-20"
       >
         <AccordionItems sections={sections} />
       </Accordion>

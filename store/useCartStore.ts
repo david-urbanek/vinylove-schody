@@ -5,6 +5,13 @@ import { persist } from "zustand/middleware";
 export interface CartItem extends Product {
   quantity: number;
   id?: string;
+  name?: string;
+  link?: string;
+  image?: {
+    src: string;
+    srcset?: string;
+    alt?: string;
+  };
 }
 
 interface CartStoreState {

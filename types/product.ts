@@ -9,6 +9,7 @@ export interface ProductPrice {
   priceWithVAT: number;
   priceWithoutVAT: number;
   currency: string;
+  sale?: number;
 }
 
 export interface Product {
@@ -26,10 +27,18 @@ export interface Product {
     image?: any;
   };
   pricePerUnit?: number;
-  price: ProductPrice;
+  price?: ProductPrice;
   typeLabel?: string;
   slug: {
     current: string;
+  };
+  name?: string;
+  link?: string;
+  image?: {
+    src: string;
+    srcset?: string;
+    alt?: string;
+    sizes?: string;
   };
 }
 

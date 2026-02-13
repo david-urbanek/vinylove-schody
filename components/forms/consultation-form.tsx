@@ -9,6 +9,7 @@ import z from "zod";
 import { Button } from "@/components/ui/button";
 import { Field, FieldError } from "@/components/ui/field";
 import { Input } from "@/components/ui/input";
+import { toast } from "sonner";
 
 const consultationFormSchema = z.object({
   firstName: z.string().min(2, { message: "Jméno musí mít alespoň 2 znaky" }),
@@ -32,7 +33,7 @@ export const ConsultationForm = () => {
 
   const onSubmit = (data: consultationFormType) => {
     sessionStorage.setItem("user_data", JSON.stringify(data));
-
+    toast.info("Prosím doplňte další kontaktní údaje.");
     router.push("/kontakt");
   };
 

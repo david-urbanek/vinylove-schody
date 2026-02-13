@@ -122,7 +122,7 @@ export default async function ProductsCategoryPage(props: Params) {
     }
 
     // Format price
-    const priceWithoutVAT = item.pricePerUnit || 0;
+    const priceWithoutVAT = item.pricePerUnit;
     const isSale = item.tags?.includes("sale");
 
     // Construct Link

@@ -1,20 +1,53 @@
 import { ProductDetail7 } from "@/components/product/product-detail7";
 import { RelatedProducts } from "@/components/product/related-products";
 import { client } from "@/sanity/lib/client";
+import { Metadata, ResolvingMetadata } from "next";
 import { notFound } from "next/navigation";
 
-export default async function Page({
-  params,
-}: {
+import { urlFor } from "@/sanity/lib/image";
+import { cache } from "react";
+
+type Props = {
   params: Promise<{ slug: string }>;
-}) {
-  const { slug } = await params;
+  searchParams: Promise<{ [key: string]: string | string[] | undefined }>;
+};
+
+// Cached function to deduplicate requests
+const getProduct = cache(async (slug: string) => {
   const query = `*[slug.current == $slug][0]{
     ...,
     pattern->
   }`;
+  return client.fetch(query, { slug });
+});
 
-  const product = await client.fetch(query, { slug });
+export async function generateMetadata(
+  { params, searchParams }: Props,
+  parent: ResolvingMetadata,
+): Promise<Metadata> {
+  const { slug } = await params;
+  const product = await getProduct(slug);
+
+  if (!product) {
+    return {
+      title: "Produkt nenalezen",
+    };
+  }
+
+  return {
+    title: product.title,
+    description: product.description,
+    openGraph: {
+      images: product.mainImage
+        ? [urlFor(product.mainImage).width(1200).height(630).url()]
+        : [],
+    },
+  };
+}
+
+export default async function Page({ params }: Props) {
+  const { slug } = await params;
+  const product = await getProduct(slug);
 
   if (!product) {
     notFound();

@@ -1,7 +1,7 @@
 "use client";
 
 import { zodResolver } from "@hookform/resolvers/zod";
-import { Facebook, Linkedin, Mail, MapPin, Phone, Twitter } from "lucide-react";
+import { Facebook, Instagram, Mail, MapPin, Phone } from "lucide-react";
 import Form from "next/form";
 import { useEffect } from "react";
 import { Controller, useForm } from "react-hook-form";
@@ -19,6 +19,7 @@ import { Field, FieldError, FieldLabel } from "@/components/ui/field";
 import { Form as ShadcnForm } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
+import { contactInfo } from "@/data/data";
 import { cn } from "@/lib/utils";
 
 const formSchema = z.object({
@@ -60,6 +61,7 @@ const LeadContact = ({ className }: LeadContactProps) => {
         if (userData.firstName) form.setValue("firstName", userData.firstName);
         if (userData.lastName) form.setValue("lastName", userData.lastName);
         if (userData.phone) form.setValue("phone", userData.phone);
+        if (userData.email) form.setValue("email", userData.email);
       } catch (e) {
         console.error("Error parsing user_data from session storage", e);
       }
@@ -112,11 +114,14 @@ const LeadContact = ({ className }: LeadContactProps) => {
                     Sídlo společnosti
                   </h3>
                   <p className="text-muted-foreground leading-relaxed">
-                    Vinylové schody s.r.o.
-                    <br />
-                    Příkladová 123
-                    <br />
-                    110 00 Praha 1
+                    <a
+                      href={contactInfo.addressLink}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="hover:text-primary transition-colors hover:underline underline-offset-4"
+                    >
+                      {contactInfo.address}
+                    </a>
                   </p>
                 </div>
               </div>
@@ -129,10 +134,10 @@ const LeadContact = ({ className }: LeadContactProps) => {
                   <h3 className="font-semibold text-lg mb-1">Napište nám</h3>
                   <p className="text-muted-foreground">
                     <a
-                      href="mailto:info@vinyloveschody.cz"
+                      href={`mailto:${contactInfo.email}`}
                       className="hover:text-primary transition-colors hover:underline underline-offset-4"
                     >
-                      info@vinyloveschody.cz
+                      {contactInfo.email}
                     </a>
                   </p>
                 </div>
@@ -146,14 +151,14 @@ const LeadContact = ({ className }: LeadContactProps) => {
                   <h3 className="font-semibold text-lg mb-1">Zavolejte nám</h3>
                   <p className="text-muted-foreground">
                     <a
-                      href="tel:+420123456789"
+                      href={`tel:${contactInfo.phone.replace(/\s/g, "")}`}
                       className="hover:text-primary transition-colors hover:underline underline-offset-4"
                     >
-                      +420 123 456 789
+                      {contactInfo.phone}
                     </a>
                   </p>
                   <p className="text-sm text-muted-foreground mt-1">
-                    Po-Pá 8:00 - 16:00
+                    Po-Pá 8:00 - 17:00
                   </p>
                 </div>
               </div>
@@ -162,22 +167,20 @@ const LeadContact = ({ className }: LeadContactProps) => {
                 <h3 className="font-semibold text-lg mr-4">Sledujte nás:</h3>
                 <div className="flex gap-4">
                   <a
-                    href="#"
+                    href={contactInfo.socials.facebook}
                     className="bg-background border p-2 rounded-full hover:bg-muted transition-colors text-muted-foreground hover:text-foreground"
+                    target="_blank"
+                    rel="noopener noreferrer"
                   >
                     <Facebook className="size-5" />
                   </a>
                   <a
-                    href="#"
+                    href={contactInfo.socials.instagram}
                     className="bg-background border p-2 rounded-full hover:bg-muted transition-colors text-muted-foreground hover:text-foreground"
+                    target="_blank"
+                    rel="noopener noreferrer"
                   >
-                    <Twitter className="size-5" />
-                  </a>
-                  <a
-                    href="#"
-                    className="bg-background border p-2 rounded-full hover:bg-muted transition-colors text-muted-foreground hover:text-foreground"
-                  >
-                    <Linkedin className="size-5" />
+                    <Instagram className="size-5" />
                   </a>
                 </div>
               </div>

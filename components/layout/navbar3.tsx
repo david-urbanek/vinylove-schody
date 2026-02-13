@@ -23,6 +23,7 @@ import {
 import Link from "next/link";
 import { useState } from "react";
 
+import { contactInfo } from "@/data/data";
 import { cn } from "@/lib/utils";
 
 import { Button } from "@/components/ui/button";
@@ -375,11 +376,11 @@ const Navbar3 = ({ className }: Navbar3Props) => {
             <div className="hidden items-center gap-6 lg:flex">
               <Button variant="outline" asChild>
                 <a
-                  href="tel:+420123456789"
+                  href={`tel:${contactInfo.phone.replace(/\s/g, "")}`}
                   className="flex items-center gap-2 font-medium"
                 >
                   <Phone className="size-4" />
-                  +420 123 456 789
+                  {contactInfo.phone}
                 </a>
               </Button>
               <Button
@@ -482,11 +483,11 @@ const Navbar3 = ({ className }: Navbar3Props) => {
               </div>
               <div className="mx-[2rem] mt-auto flex flex-col gap-4 py-12">
                 <a
-                  href="tel:+420123456789"
+                  href={`tel:${contactInfo.phone.replace(/\s/g, "")}`}
                   className="flex items-center gap-2 font-medium"
                 >
                   <Phone className="size-4" />
-                  +420 123 456 789
+                  {contactInfo.phone}
                 </a>
               </div>
             </div>
