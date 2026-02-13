@@ -36,15 +36,14 @@ import {
   NavigationMenuTrigger,
 } from "@/components/ui/navigation-menu";
 
-const solutions = [
+const stairs = [
   {
     title: "Schody bez nosu",
     description:
       "Moderní a čistý design schodů pro minimalistický vzhled bez přesahu.",
     href: "/produkty/schody-bez-nosu",
     icon: ScanLine,
-    image:
-      "https://images.unsplash.com/photo-1502005229762-cf1b2da7c5d6?q=80&w=1587&auto=format&fit=crop",
+    image: "/realizace/schody/siroke/schody-1.png",
   },
   {
     title: "Schody s nosem",
@@ -52,8 +51,7 @@ const solutions = [
       "Klasické elegantní řešení s přesahujícím nosem pro tradiční interiéry.",
     href: "/produkty/schody-s-nosem",
     icon: CornerDownRight,
-    image:
-      "https://images.unsplash.com/photo-1596394516093-501ba68a0ba6?auto=format&fit=crop&w=800&q=80",
+    image: "/realizace/schody/siroke/schody-2.png",
   },
   {
     title: "Nášlapy",
@@ -61,8 +59,7 @@ const solutions = [
       "Samostatné vinylové nášlapy ideální pro renovaci stávajících schodů.",
     href: "/produkty/schody-naslapy",
     icon: Layers,
-    image:
-      "https://images.unsplash.com/photo-1516455590571-18256e5bb9ff?auto=format&fit=crop&w=800&q=80",
+    image: "/realizace/schody/siroke/schody-3.png",
   },
   {
     title: "Vetknuté schody",
@@ -70,8 +67,7 @@ const solutions = [
       "Designové levitující schodiště kotvené do zdi pro vzdušný efekt.",
     href: "/produkty/schody-vetknute",
     icon: MoveRight,
-    image:
-      "https://images.unsplash.com/photo-1505330622279-bf7d7fc918f4?auto=format&fit=crop&w=800&q=80",
+    image: "/realizace/schody/siroke/schody-4.png",
   },
 ];
 
@@ -157,7 +153,7 @@ const Navbar3 = ({ className }: Navbar3Props) => {
   const [submenu, setSubmenu] = useState<
     "schody" | "podlahy" | "sluzby" | "prislusenstvi" | null
   >(null);
-  const [activeSolution, setActiveSolution] = useState(solutions[0]);
+  const [activeSolution, setActiveSolution] = useState(stairs[0]);
   const [activeFlooring, setActiveFlooring] = useState(flooringCategories[0]);
   const [activeService, setActiveService] = useState(services[0]);
   const { totalItems, isReady } = useCart();
@@ -228,7 +224,7 @@ const Navbar3 = ({ className }: Navbar3Props) => {
                         Kategorie
                       </div>
                       <div className="grid grid-cols-1 gap-6 lg:grid-cols-2 lg:gap-8">
-                        {solutions.map((solution, index) => (
+                        {stairs.map((solution, index) => (
                           <NavigationMenuLink
                             key={index}
                             href={solution.href}
@@ -514,7 +510,7 @@ const Navbar3 = ({ className }: Navbar3Props) => {
                 Kategorie
               </div>
               <div className="border-t border-border pb-16">
-                {solutions.map((solution, index) => (
+                {stairs.map((solution, index) => (
                   <a
                     key={index}
                     href={solution.href}

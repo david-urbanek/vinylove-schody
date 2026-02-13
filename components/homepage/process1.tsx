@@ -1,4 +1,4 @@
-import { CornerDownRight, Star } from "lucide-react";
+import { CornerDownRight } from "lucide-react";
 import Link from "next/link";
 import React from "react";
 
@@ -29,7 +29,6 @@ const Process1 = ({ className, title, description, steps }: Process1Props) => {
             <div className="relative w-fit text-3xl font-bold md:text-4xl">
               {" "}
               <h2 className="w-fit">{title}</h2>
-              <Star className="absolute -top-2 -right-2 size-5 text-sky-500 md:size-10 lg:-right-14" />
             </div>
             <p className="text-muted-foreground lg:text-xl">{description}</p>
 

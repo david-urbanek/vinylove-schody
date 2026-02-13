@@ -6,6 +6,7 @@ import { Check, Star } from "lucide-react";
 import { RealizationForm } from "@/components/forms/realization-form";
 import { AspectRatio } from "@/components/ui/aspect-ratio";
 import { cn } from "@/lib/utils";
+import Image from "next/image";
 
 interface HeroProps {
   className?: string;
@@ -58,23 +59,27 @@ const Hero = ({ className }: HeroProps) => {
                   ratio={0.857142857 / 1}
                   className="overflow-hidden"
                 >
-                  <img
-                    src="https://deifkwefumgah.cloudfront.net/shadcnblocks/block/placeholder-1.svg"
+                  <Image
+                    src="/realizace/hero/podlaha-1.png"
                     alt=""
-                    className="block size-full object-cover"
+                    width={1000}
+                    height={1500}
+                    className="size-full rounded-lg"
                   />
                 </AspectRatio>
               </div>
 
-              <div className="absolute right-[8.23%] bottom-[12.87%] z-2 w-[42.25%]">
+              <div className="absolute right-[8.23%] bottom-[12.87%] z-2 w-[42.25%] ">
                 <AspectRatio
                   ratio={0.789473684 / 1}
                   className="overflow-hidden"
                 >
-                  <img
-                    src="https://deifkwefumgah.cloudfront.net/shadcnblocks/block/placeholder-2.svg"
+                  <Image
+                    src="/realizace/hero/schody-1.png"
                     alt=""
-                    className="block size-full object-cover"
+                    width={1000}
+                    height={1500}
+                    className="size-full rounded-lg"
                   />
                 </AspectRatio>
               </div>
@@ -84,10 +89,12 @@ const Hero = ({ className }: HeroProps) => {
                   ratio={0.894495413 / 1}
                   className="overflow-hidden"
                 >
-                  <img
-                    src="https://deifkwefumgah.cloudfront.net/shadcnblocks/block/placeholder-dark-3.svg"
+                  <Image
+                    src="/realizace/hero/schody-2.png"
                     alt=""
-                    className="block size-full object-cover"
+                    width={1000}
+                    height={1500}
+                    className="size-full rounded-lg"
                   />
                 </AspectRatio>
               </div>

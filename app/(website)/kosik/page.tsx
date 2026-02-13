@@ -2,15 +2,6 @@
 
 import { Checkout4 } from "@/components/checkout/checkout4";
 import { useCart } from "@/hooks/useCart";
-import { Metadata } from "next";
-
-export const metadata: Metadata = {
-  title: "Kosik",
-  description: "Kosik s vašemi produkty",
-  alternates: {
-    canonical: `/kosik`,
-  },
-};
 
 export default function CartPage() {
   const { items, removeItem, updateQuantity, isReady } = useCart();
