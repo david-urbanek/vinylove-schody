@@ -3,6 +3,7 @@ import { addVat } from "@/lib/utils";
 import { client } from "@/sanity/lib/client";
 import { urlFor } from "@/sanity/lib/image";
 import { Product, ProductList } from "@/types/product";
+import { Metadata, ResolvingMetadata } from "next";
 
 // Define the mapping configurations
 const CATEGORY_MAP: Record<
@@ -64,16 +65,36 @@ const CATEGORY_MAP: Record<
   },
 };
 
-type Params = {
-  params: Promise<{
-    slug: string;
-  }>;
+type Props = {
+  params: Promise<{ slug: string }>;
   searchParams: Promise<{
     sort?: string;
   }>;
 };
 
-export default async function ProductsCategoryPage(props: Params) {
+export async function generateMetadata(
+  { params, searchParams }: Props,
+  parent: ResolvingMetadata,
+): Promise<Metadata> {
+  const { slug } = await params;
+  const products = CATEGORY_MAP[slug];
+
+  if (!products) {
+    return {
+      title: "Produkt nenalezen",
+    };
+  }
+
+  return {
+    title: products.title,
+    alternates: {
+      canonical: `/produkty/${slug}`,
+    },
+    description: `Prohledněte naše produkty v kategorii ${products.title}. Vyberte si to nejlepší pro Váš domov.`,
+  };
+}
+
+export default async function ProductsCategoryPage(props: Props) {
   const params = await props.params;
   const { slug } = params;
   const config = CATEGORY_MAP[slug];

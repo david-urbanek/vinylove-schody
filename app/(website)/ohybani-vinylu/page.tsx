@@ -1,4 +1,14 @@
 import { Process1 } from "@/components/homepage/process1";
+import { Metadata } from "next";
+
+export const metadata: Metadata = {
+  title: "Ohýbání vinylu na míru",
+  description:
+    "Nabízíme službu profesionálního ohýbání vámi dodaného vinylu. Proměňte svou podlahu v dokonalé schodiště s naším servisem.",
+  alternates: {
+    canonical: `/ohybani-vinylu`,
+  },
+};
 
 export default function OhybaniVinyluPage() {
   const steps = [

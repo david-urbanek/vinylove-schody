@@ -19,6 +19,7 @@ export const metadata: Metadata = {
     default: "Vinylové Schody.cz - Vinylové schody a podlahy",
   },
   description: "Specialisté na vinylové schody a podlahy.",
+  metadataBase: new URL("https://vinylove-schody.cz"),
 };
 
 export default function RootLayout({
