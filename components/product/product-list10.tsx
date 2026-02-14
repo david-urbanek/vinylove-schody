@@ -5,6 +5,8 @@ import { ShoppingCart } from "lucide-react";
 import Image from "next/image";
 import { useRouter, useSearchParams } from "next/navigation";
 
+import { Badge } from "@/components/ui/badge";
+
 import { cn, getImageDimensions } from "@/lib/utils";
 
 import { Price, PriceValue } from "@/components/shadcnblocks/price";
@@ -19,11 +21,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import {
-  FeaturedPromotionCardProps,
-  Product,
-  ProductList,
-} from "@/types/product";
+import { FeaturedPromotion, Product, ProductList } from "@/types/product";
 import Link from "next/link";
 // ... existing imports
 
@@ -36,7 +34,7 @@ interface ProductList10Props {
 const ProductList10 = ({
   className,
   items,
-  title = "Vinylové podlahy a příslušenství",
+  title = "Naše nabídka",
 }: ProductList10Props) => {
   const router = useRouter();
   const searchParams = useSearchParams();
@@ -132,16 +130,14 @@ const ProductList10 = ({
 const ProductCard = ({
   link,
   mainImage,
-  name,
+  title,
   price,
   description,
+  tags,
 }: Product) => {
   const { priceWithVAT, priceWithoutVAT, currency } = price;
 
   const dimensions = getImageDimensions(mainImage.asset._ref);
-
-  console.log("dimensions jsou :", dimensions);
-  console.log("mainImage", mainImage.asset._ref);
 
   return (
     <Card className="group relative block rounded-none border-none bg-background p-0 shadow-none">
@@ -154,22 +150,24 @@ const ProductCard = ({
           >
             <Image
               src={urlFor(mainImage).url()}
-              alt={description}
+              alt={title}
               width={dimensions ? dimensions[0] : 1000}
               height={dimensions ? dimensions[1] : 1500}
               className="block size-full origin-center object-cover object-center transition-transform duration-700 group-hover:scale-110"
             />
           </AspectRatio>
-          {/* {stockStatusCode === STOCK_STATUS.OUT_OF_STOCK && (
-            <div className="absolute start-2.5 top-2.5 z-60">
-              <Badge>Vyprodáno</Badge>
+          {tags && tags.length > 0 && (
+            <div className="absolute start-2.5 top-2.5 z-60 flex flex-row gap-2 flex-wrap max-w-[80%]">
+              {tags.map((tag, index) => (
+                <Badge
+                  key={`product-10-list-tag-${index}`}
+                  style={{ backgroundColor: tag.color }}
+                >
+                  {tag.text}
+                </Badge>
+              ))}
             </div>
           )}
-          {stockStatusCode === STOCK_STATUS.IN_STOCK && price.sale && (
-            <div className="absolute start-2.5 top-2.5 z-60">
-              <Badge variant="destructive">Akce</Badge>
-            </div>
-          )} */}
           <div className="absolute inset-x-5 bottom-5 z-60 hidden md:block">
             <div className="flex flex-col gap-2 opacity-0 duration-700 lg:translate-y-4 lg:group-hover:translate-y-0 lg:group-hover:opacity-100">
               <Button
@@ -186,7 +184,7 @@ const ProductCard = ({
         </div>
         <div className="flex flex-col gap-1 pt-3">
           <CardTitle className="leading-normal font-normal underline-offset-3 group-hover:underline">
-            {name}
+            {title}
           </CardTitle>
           <div className="mt-1 flex flex-col gap-0.5">
             <Price className="text-lg font-bold leading-none">
@@ -223,7 +221,7 @@ const FeaturedPromotionCard = ({
   cta,
   link,
   image,
-}: FeaturedPromotionCardProps) => {
+}: FeaturedPromotion) => {
   return (
     <Card className="relative flex h-full min-h-[500px] flex-col justify-end overflow-hidden rounded-xl border-none p-6 shadow-xl md:min-h-[600px] md:p-10">
       <Image
@@ -250,9 +248,9 @@ const FeaturedPromotionCard = ({
             className="border-white bg-transparent text-white hover:bg-white hover:text-black"
             asChild
           >
-            <a href={cta.link} className="relative z-30">
-              {cta.label}
-            </a>
+            <Link href={link} className="relative z-30">
+              {cta}
+            </Link>
           </Button>
         </div>
       </CardHeader>

@@ -12,6 +12,11 @@ export interface ProductPrice {
   sale?: number;
 }
 
+export interface Tag {
+  text: string;
+  color: string;
+}
+
 export interface Product {
   _id: string;
   _type: string;
@@ -35,7 +40,7 @@ export interface Product {
   name?: string;
   link?: string;
   url?: string;
-  tags?: string[];
+  tags?: Tag[];
 }
 
 export type ProductCardProps = Product;
@@ -43,10 +48,7 @@ export type ProductCardProps = Product;
 export interface FeaturedPromotion {
   kicker: string;
   title: string;
-  cta: {
-    link: string;
-    label: string;
-  };
+  cta: string;
   link: string;
   image: string;
 }

@@ -1,5 +1,5 @@
 import { ProductList10 } from "@/components/product/product-list10";
-import { addVat } from "@/lib/utils";
+import { addVat, getTags } from "@/lib/utils";
 import { client } from "@/sanity/lib/client";
 import { Product, ProductList } from "@/types/product";
 import { Metadata, ResolvingMetadata } from "next";
@@ -112,7 +112,7 @@ export default async function ProductsCategoryPage(props: Props) {
   }
 
   const { query, title } = config;
-  const data = await client.fetch(query);
+  const data = await client.fetch(query, {}, { next: { revalidate: 0 } });
 
   const displayData = data || [];
 
@@ -134,32 +134,24 @@ export default async function ProductsCategoryPage(props: Props) {
 
     const mainImage = item.mainImage;
 
-    console.log("tohle je ten spravny item");
-
     // Format price
     const priceWithoutVAT = item.pricePerUnit;
-    const isSale = item.tags?.includes("sale");
 
     // Construct Link
     const productSlug = item.slug?.current || item.slug || "#";
     const productLink = `/produkt/${productSlug}`;
 
     return {
-      name: item.title || "Unnamed Product",
+      title: item.title || "Unnamed Product",
       mainImage,
       link: productLink,
       price: {
         priceWithVAT: addVat(priceWithoutVAT),
         priceWithoutVAT,
-        sale: isSale ? addVat(priceWithoutVAT) : undefined,
         currency: "CZK",
       },
-      badges: item.tags?.map((tag: string) => {
-        if (tag === "new") return { text: "Novinka", color: "blue" };
-        if (tag === "sale") return { text: "Akce", color: "red" };
-        if (tag === "clearance") return { text: "Doprodej", color: "orange" };
-        return { text: tag };
-      }),
+      //pro tohle napsat funkci
+      tags: getTags(item.tags),
     };
   });
 
@@ -183,7 +175,6 @@ export default async function ProductsCategoryPage(props: Props) {
 
   // Split into batches
   const BATCH_SIZE_PROMO = 6; // products next to promo
-  const BATCH_SIZE_FULL = 10; // products in full width
 
   const productListItems: ProductList = [];
   let currentIndex = 0;
@@ -197,7 +188,7 @@ export default async function ProductsCategoryPage(props: Props) {
           title: "Nebojte se, že na to budete sami.",
           kicker: "Profesionální realizace",
           image: promoImage,
-          cta: { label: "Více o realizacích", link: "/realizace" },
+          cta: "Více o realizacích",
           link: "/realizace",
         },
         products: slice,
@@ -215,7 +206,7 @@ export default async function ProductsCategoryPage(props: Props) {
           title: "Přenechte starosti nám.",
           kicker: "Kompletní servis",
           image: promoImage,
-          cta: { label: "Poptat realizaci", link: "/realizace" },
+          cta: "Poptat realizaci",
           link: "/realizace",
         },
         products: slice,
