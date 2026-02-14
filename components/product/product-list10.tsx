@@ -1,14 +1,15 @@
 "use client";
 
+import { urlFor } from "@/sanity/lib/image";
 import { ShoppingCart } from "lucide-react";
+import Image from "next/image";
 import { useRouter, useSearchParams } from "next/navigation";
 
-import { cn } from "@/lib/utils";
+import { cn, getImageDimensions } from "@/lib/utils";
 
 import { Price, PriceValue } from "@/components/shadcnblocks/price";
 
 import { AspectRatio } from "@/components/ui/aspect-ratio";
-import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import {
@@ -20,10 +21,10 @@ import {
 } from "@/components/ui/select";
 import {
   FeaturedPromotionCardProps,
-  ProductCardProps,
+  Product,
   ProductList,
-  STOCK_STATUS,
 } from "@/types/product";
+import Link from "next/link";
 // ... existing imports
 
 interface ProductList10Props {
@@ -130,31 +131,36 @@ const ProductList10 = ({
 
 const ProductCard = ({
   link,
-  image,
+  mainImage,
   name,
   price,
-  stockStatusCode,
-}: ProductCardProps) => {
-  const { priceWithVAT: regular, sale, currency } = price;
+  description,
+}: Product) => {
+  const { priceWithVAT, priceWithoutVAT, currency } = price;
+
+  const dimensions = getImageDimensions(mainImage.asset._ref);
+
+  console.log("dimensions jsou :", dimensions);
+  console.log("mainImage", mainImage.asset._ref);
 
   return (
     <Card className="group relative block rounded-none border-none bg-background p-0 shadow-none">
-      <a href={link} className="absolute inset-0 z-10 size-full"></a>
+      <Link href={link!} className="absolute inset-0 z-10 size-full" />
       <CardContent className="p-0">
         <div className="relative overflow-hidden">
           <AspectRatio
             ratio={0.749767365}
             className="overflow-hidden rounded-xl"
           >
-            <img
-              src={image.src}
-              srcSet={image.srcset}
-              alt={image.alt}
-              sizes={image.sizes}
+            <Image
+              src={urlFor(mainImage).url()}
+              alt={description}
+              width={dimensions ? dimensions[0] : 1000}
+              height={dimensions ? dimensions[1] : 1500}
               className="block size-full origin-center object-cover object-center transition-transform duration-700 group-hover:scale-110"
             />
           </AspectRatio>
-          {stockStatusCode === STOCK_STATUS.OUT_OF_STOCK && (
+          {/* {stockStatusCode === STOCK_STATUS.OUT_OF_STOCK && (
             <div className="absolute start-2.5 top-2.5 z-60">
               <Badge>Vyprodáno</Badge>
             </div>
@@ -163,11 +169,10 @@ const ProductCard = ({
             <div className="absolute start-2.5 top-2.5 z-60">
               <Badge variant="destructive">Akce</Badge>
             </div>
-          )}
+          )} */}
           <div className="absolute inset-x-5 bottom-5 z-60 hidden md:block">
             <div className="flex flex-col gap-2 opacity-0 duration-700 lg:translate-y-4 lg:group-hover:translate-y-0 lg:group-hover:opacity-100">
               <Button
-                disabled={stockStatusCode === STOCK_STATUS.OUT_OF_STOCK}
                 className="w-full bg-white text-black hover:bg-white/90"
                 asChild
               >
@@ -186,8 +191,8 @@ const ProductCard = ({
           <div className="mt-1 flex flex-col gap-0.5">
             <Price className="text-lg font-bold leading-none">
               <PriceValue
-                price={sale ?? regular}
-                currency={currency}
+                price={price.priceWithVAT}
+                currency={price.currency}
                 variant="regular"
               />
               <span className="text-xs font-normal text-muted-foreground ml-1">
@@ -220,12 +225,13 @@ const FeaturedPromotionCard = ({
   image,
 }: FeaturedPromotionCardProps) => {
   return (
-    <Card
-      style={{
-        backgroundImage: `url(${image})`,
-      }}
-      className="relative flex h-full min-h-[500px] flex-col justify-end overflow-hidden rounded-xl border-none bg-cover bg-center bg-no-repeat p-6 shadow-xl md:min-h-[600px] md:p-10"
-    >
+    <Card className="relative flex h-full min-h-[500px] flex-col justify-end overflow-hidden rounded-xl border-none p-6 shadow-xl md:min-h-[600px] md:p-10">
+      <Image
+        src={image}
+        alt={title}
+        fill
+        className="object-cover object-center"
+      />
       <div className="absolute inset-0 z-0 bg-gradient-to-t from-black/80 via-black/40 to-transparent" />
       <a href={link} className="absolute inset-0 z-10 size-full">
         <span className="sr-only">Zobrazit {title}</span>

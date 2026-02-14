@@ -17,7 +17,7 @@ export interface Product {
   _type: string;
   title: string;
   category?: string;
-  description?: string;
+  description: string;
   mainImage?: any;
   gallery?: any[];
   techParams?: any;
@@ -26,20 +26,16 @@ export interface Product {
     title: string;
     image?: any;
   };
-  pricePerUnit?: number;
-  price?: ProductPrice;
+  pricePerUnit: number;
+  price: ProductPrice;
   typeLabel?: string;
   slug: {
     current: string;
   };
   name?: string;
   link?: string;
-  image?: {
-    src: string;
-    srcset?: string;
-    alt?: string;
-    sizes?: string;
-  };
+  url?: string;
+  tags?: string[];
 }
 
 export type ProductCardProps = Product;

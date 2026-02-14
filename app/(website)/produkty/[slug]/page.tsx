@@ -1,7 +1,6 @@
 import { ProductList10 } from "@/components/product/product-list10";
 import { addVat } from "@/lib/utils";
 import { client } from "@/sanity/lib/client";
-import { urlFor } from "@/sanity/lib/image";
 import { Product, ProductList } from "@/types/product";
 import { Metadata, ResolvingMetadata } from "next";
 
@@ -98,6 +97,8 @@ export default async function ProductsCategoryPage(props: Props) {
   const params = await props.params;
   const { slug } = params;
   const config = CATEGORY_MAP[slug];
+  const isStairs = slug.includes("schody") || slug === "zakonceni-u-steny";
+  const promoImage = isStairs ? "/promo/schody-1.png" : "/promo/podlaha-1.png";
 
   if (!config) {
     return (
@@ -131,16 +132,9 @@ export default async function ProductsCategoryPage(props: Props) {
     // Check if already in Product shape (mock data)
     if (item.stockStatusCode) return item as Product;
 
-    // Construct image URL
-    let imageUrl = "https://placehold.co/800x600?text=No+Image";
-    let imageSrcSet = undefined;
+    const mainImage = item.mainImage;
 
-    if (typeof item.mainImage === "string") {
-      imageUrl = item.mainImage;
-    } else if (item.mainImage) {
-      imageUrl = urlFor(item.mainImage).width(800).url();
-      imageSrcSet = `${urlFor(item.mainImage).width(800).url()} 800w, ${urlFor(item.mainImage).width(1600).url()} 1600w`;
-    }
+    console.log("tohle je ten spravny item");
 
     // Format price
     const priceWithoutVAT = item.pricePerUnit;
@@ -152,11 +146,7 @@ export default async function ProductsCategoryPage(props: Props) {
 
     return {
       name: item.title || "Unnamed Product",
-      image: {
-        src: imageUrl,
-        srcset: imageSrcSet,
-        alt: item.title || "Product Image",
-      },
+      mainImage,
       link: productLink,
       price: {
         priceWithVAT: addVat(priceWithoutVAT),
@@ -179,14 +169,14 @@ export default async function ProductsCategoryPage(props: Props) {
 
   if (sortOrder === "asc") {
     products.sort((a, b) => {
-      const priceA = a.price.priceWithoutVAT;
-      const priceB = b.price.priceWithoutVAT;
+      const priceA = a.pricePerUnit;
+      const priceB = b.pricePerUnit;
       return priceA - priceB;
     });
   } else if (sortOrder === "desc") {
     products.sort((a, b) => {
-      const priceA = a.price.priceWithoutVAT;
-      const priceB = b.price.priceWithoutVAT;
+      const priceA = a.pricePerUnit;
+      const priceB = b.pricePerUnit;
       return priceB - priceA;
     });
   }
@@ -206,8 +196,7 @@ export default async function ProductsCategoryPage(props: Props) {
         featuredPromotion: {
           title: "Nebojte se, že na to budete sami.",
           kicker: "Profesionální realizace",
-          image:
-            "https://images.unsplash.com/photo-1628147481068-1bc7d2539074?auto=format&fit=crop&w=800&q=80",
+          image: promoImage,
           cta: { label: "Více o realizacích", link: "/realizace" },
           link: "/realizace",
         },
@@ -225,8 +214,7 @@ export default async function ProductsCategoryPage(props: Props) {
         featuredPromotion: {
           title: "Přenechte starosti nám.",
           kicker: "Kompletní servis",
-          image:
-            "https://images.unsplash.com/photo-1502005229762-cf1b2da7c5d6?q=80&w=1587&auto=format&fit=crop",
+          image: promoImage,
           cta: { label: "Poptat realizaci", link: "/realizace" },
           link: "/realizace",
         },
