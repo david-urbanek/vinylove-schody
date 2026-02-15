@@ -14,9 +14,10 @@ import { useCart } from "@/hooks/useCart";
 import { useMediaQuery } from "@/hooks/useMediaQuery";
 import { addVat, cn } from "@/lib/utils";
 import { urlFor } from "@/sanity/lib/image";
-import { STOCK_STATUS } from "@/types/product";
+import { ProductPrice, STOCK_STATUS } from "@/types/product";
 
 import { ProductVariants } from "@/components/product/product-variants";
+import { Price, PriceValue } from "@/components/shadcnblocks/price";
 
 import {
   Accordion,
@@ -80,14 +81,6 @@ interface Hinges {
   max?: number;
 }
 
-interface ProductFormProps {
-  availability: boolean;
-  hinges: Record<FieldName, Hinges>;
-  pricePerPackage: number;
-  packageSize: number;
-  onAddToCart: (quantity: number) => void;
-}
-
 type FormType = z.infer<typeof formSchema>;
 type FieldName = keyof FormType;
 
@@ -106,7 +99,7 @@ interface ProductDetail7Props {
 
 interface StairProductFormProps {
   availability: boolean;
-  pricePerPiece: number;
+  price: ProductPrice;
   allowSample?: boolean;
   onAddToCart: (quantity: number) => void;
   onOrderSample?: () => void;
@@ -114,7 +107,7 @@ interface StairProductFormProps {
 
 const StairProductForm = ({
   availability,
-  pricePerPiece,
+  price,
   allowSample = true,
   onAddToCart,
   onOrderSample,
@@ -127,7 +120,7 @@ const StairProductForm = ({
   });
 
   const quantity = form.watch("quantity");
-  const totalPrice = quantity * pricePerPiece;
+  // const totalPrice = quantity * pricePerPiece;
 
   function onSubmit(values: FormType) {
     onAddToCart(values.quantity);
@@ -157,21 +150,19 @@ const StairProductForm = ({
         </div>
 
         <div className="flex items-baseline gap-2">
-          <span className="text-2xl font-bold">
-            {new Intl.NumberFormat("cs-CZ", {
-              style: "currency",
-              currency: "CZK",
-              maximumFractionDigits: 0,
-            }).format(addVat(pricePerPiece) * quantity)}
-          </span>
-          <span className="text-sm text-muted-foreground">
-            {new Intl.NumberFormat("cs-CZ", {
-              style: "currency",
-              currency: "CZK",
-              maximumFractionDigits: 0,
-            }).format(totalPrice)}{" "}
-            bez DPH
-          </span>
+          <Price className="text-2xl font-bold">
+            <PriceValue
+              price={addVat(price.priceWithoutVAT || 0) * quantity}
+              currency={price.currency}
+            />
+          </Price>
+          <Price className="text-sm text-muted-foreground">
+            <PriceValue
+              price={(price.priceWithoutVAT || 0) * quantity}
+              currency={price.currency}
+            />
+            <span>bez DPH</span>
+          </Price>
         </div>
 
         <div className="flex flex-col gap-3 sm:flex-row w-full">
@@ -468,11 +459,8 @@ const ProductDetail7 = ({
 
   // Pricing & Packaging
   const packageSize = techParams?.m2InPackage || DEFAULT_PACKAGE_SIZE;
-  const price = pricePerUnit || 0; // For floors, this is package price
-  const pricePerM2 = packageSize > 0 ? price / packageSize : 0;
-
-  // For stairs AND skirting AND transition profiles AND accessories
-  const unitPrice = pricePerUnit || 0;
+  const pricePerM2 =
+    packageSize > 0 ? (price?.priceWithoutVAT || 0) / packageSize : 0;
 
   return (
     <section className={cn("py-10", className)}>
@@ -517,78 +505,72 @@ const ProductDetail7 = ({
                     <span className="text-muted-foreground">
                       Cena za 1 balení:
                     </span>
-                    <span className="font-medium">
-                      {new Intl.NumberFormat("cs-CZ", {
-                        style: "currency",
-                        currency: "CZK",
-                        maximumFractionDigits: 0,
-                      }).format(addVat(price))}{" "}
-                      vč. DPH
-                    </span>
+                    <Price className="font-medium">
+                      <PriceValue
+                        price={price?.priceWithVAT}
+                        currency={price?.currency}
+                      />
+                      <span>vč. DPH</span>
+                    </Price>
                   </div>
                   <div className="flex justify-between text-sm">
                     <span className="text-muted-foreground">
                       Cena za 1 balení bez DPH:
                     </span>
-                    <span className="font-medium text-muted-foreground">
-                      {new Intl.NumberFormat("cs-CZ", {
-                        style: "currency",
-                        currency: "CZK",
-                        maximumFractionDigits: 0,
-                      }).format(price)}{" "}
-                      bez DPH
-                    </span>
+                    <Price className="font-medium text-muted-foreground">
+                      <PriceValue
+                        price={price?.priceWithoutVAT}
+                        currency={price?.currency}
+                      />
+                      <span>bez DPH</span>
+                    </Price>
                   </div>
                   <div className="flex justify-between text-sm">
                     <span className="text-muted-foreground">Cena za m²:</span>
-                    <span className="font-medium">
-                      {new Intl.NumberFormat("cs-CZ", {
-                        style: "currency",
-                        currency: "CZK",
-                        maximumFractionDigits: 0,
-                      }).format(addVat(pricePerM2))}{" "}
-                      vč. DPH
-                    </span>
+                    <Price className="font-medium">
+                      <PriceValue
+                        price={addVat(pricePerM2)}
+                        currency={price?.currency}
+                      />
+                      <span>vč. DPH</span>
+                    </Price>
                   </div>
                   <div className="flex justify-between text-sm">
                     <span className="text-muted-foreground">
                       Cena za m² bez DPH:
                     </span>
-                    <span className="font-medium text-muted-foreground">
-                      {new Intl.NumberFormat("cs-CZ", {
-                        style: "currency",
-                        currency: "CZK",
-                        maximumFractionDigits: 0,
-                      }).format(pricePerM2)}{" "}
-                      bez DPH
-                    </span>
+                    <Price className="font-medium text-muted-foreground">
+                      <PriceValue
+                        price={pricePerM2}
+                        currency={price?.currency}
+                      />
+                      <span>bez DPH</span>
+                    </Price>
                   </div>
                 </>
               ) : (
                 <>
                   <div className="flex justify-between text-sm">
                     <span className="text-muted-foreground">Cena za kus:</span>
-                    <span className="font-medium">
-                      {new Intl.NumberFormat("cs-CZ", {
-                        style: "currency",
-                        currency: "CZK",
-                        maximumFractionDigits: 0,
-                      }).format(addVat(unitPrice))}{" "}
-                      vč. DPH
-                    </span>
+                    <Price className="font-medium">
+                      <PriceValue
+                        price={price?.priceWithVAT}
+                        currency={price?.currency}
+                      />
+                      <span>vč. DPH</span>
+                    </Price>
                   </div>
                   <div className="flex justify-between text-sm">
                     <span className="text-muted-foreground">
                       Cena za kus bez DPH:
                     </span>
-                    <span className="font-medium text-muted-foreground">
-                      {new Intl.NumberFormat("cs-CZ", {
-                        style: "currency",
-                        currency: "CZK",
-                        maximumFractionDigits: 0,
-                      }).format(unitPrice)}{" "}
-                      bez DPH
-                    </span>
+                    <Price className="font-medium text-muted-foreground">
+                      <PriceValue
+                        price={price?.priceWithoutVAT}
+                        currency={price?.currency}
+                      />
+                      <span>bez DPH</span>
+                    </Price>
                   </div>
                 </>
               )}
@@ -631,7 +613,7 @@ const ProductDetail7 = ({
                   },
                 }}
                 availability={true}
-                pricePerPackage={price}
+                price={price}
                 packageSize={packageSize}
                 onAddToCart={handleAddToCart}
                 onOrderSample={handleOrderSample}
@@ -639,7 +621,7 @@ const ProductDetail7 = ({
             ) : (
               <StairProductForm
                 availability={true}
-                pricePerPiece={unitPrice}
+                price={price}
                 allowSample={isStair}
                 onAddToCart={handleAddToCart}
                 onOrderSample={handleOrderSample}
@@ -661,7 +643,7 @@ const formSchema = z.object({
 interface ProductFormProps {
   availability: boolean;
   hinges: Record<FieldName, Hinges>;
-  pricePerPackage: number;
+  price: ProductPrice;
   packageSize: number;
   onAddToCart: (quantity: number) => void;
   onOrderSample?: () => void;
@@ -672,7 +654,7 @@ interface ProductFormProps {
 const ProductForm = ({
   availability,
   hinges,
-  pricePerPackage,
+  price,
   packageSize,
   onAddToCart,
   onOrderSample,
@@ -688,7 +670,6 @@ const ProductForm = ({
 
   const quantity = form.watch("quantity");
   const totalM2 = quantity * packageSize;
-  const totalPrice = quantity * pricePerPackage;
 
   function onSubmit(values: FormType) {
     onAddToCart(values.quantity);
@@ -784,21 +765,19 @@ const ProductForm = ({
         </div>
 
         <div className="flex items-baseline gap-2">
-          <span className="text-2xl font-bold">
-            {new Intl.NumberFormat("cs-CZ", {
-              style: "currency",
-              currency: "CZK",
-              maximumFractionDigits: 0,
-            }).format(addVat(pricePerPackage) * quantity)}
-          </span>
-          <span className="text-sm text-muted-foreground">
-            {new Intl.NumberFormat("cs-CZ", {
-              style: "currency",
-              currency: "CZK",
-              maximumFractionDigits: 0,
-            }).format(totalPrice)}{" "}
-            bez DPH
-          </span>
+          <Price className="text-2xl font-bold">
+            <PriceValue
+              price={addVat(price.priceWithoutVAT || 0) * quantity}
+              currency={price.currency}
+            />
+          </Price>
+          <Price className="text-sm text-muted-foreground">
+            <PriceValue
+              price={(price.priceWithoutVAT || 0) * quantity}
+              currency={price.currency}
+            />
+            <span>bez DPH</span>
+          </Price>
         </div>
 
         <div className="flex flex-col gap-3 sm:flex-row w-full">

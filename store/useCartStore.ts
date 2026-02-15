@@ -36,24 +36,21 @@ export const useCartStore = create<CartStoreState>()(
 
       addItem: (product, quantity = 1) => {
         const { items } = get();
-        // Používáš 'link' jako ID, což je v pohodě, pokud je unikátní
-        const link = product.link;
-        const existingItem = items.find((item) => item.link === link);
+        // Use unique ID strategy
+        const itemId = product.isSample ? `${product._id}-sample` : product._id;
+
+        const existingItem = items.find((item) => item.id === itemId);
 
         if (existingItem) {
           if (product.isSample) {
-            set({
-              items: items.map((item) =>
-                item.link === link
-                  ? { ...item, quantity: item.quantity }
-                  : item,
-              ),
-            });
+            // Samples usually don't stack quantity in the same way or allowed max 1?
+            // Existing logic just returns existing item effectively doing nothing if sample exists.
+            // We'll keep it as is: no quantity update for samples if already in cart.
             return existingItem;
           }
           set({
             items: items.map((item) =>
-              item.link === link
+              item.id === itemId
                 ? { ...item, quantity: item.quantity + quantity }
                 : item,
             ),
@@ -117,7 +114,7 @@ export const useCartStore = create<CartStoreState>()(
 
       removeItem: (id) => {
         set({
-          items: get().items.filter((item) => item.link !== id),
+          items: get().items.filter((item) => item.id !== id),
         });
       },
 
@@ -129,7 +126,7 @@ export const useCartStore = create<CartStoreState>()(
 
         set({
           items: get().items.map((item) =>
-            item.link === id ? { ...item, quantity } : item,
+            item.id === id ? { ...item, quantity } : item,
           ),
         });
       },

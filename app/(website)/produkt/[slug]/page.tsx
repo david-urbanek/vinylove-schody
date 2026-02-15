@@ -68,6 +68,7 @@ export default async function Page({ params }: Props) {
       priceWithVAT: addVat(data.pricePerUnit),
       currency: "CZK",
     },
+    link: `/produkt/${data.slug.current}`,
   };
 
   // 1. Fetch Variants (Same Product Type, variants)

@@ -122,14 +122,13 @@ const Cart = ({ cartItems, onRemoveItem, onUpdateQuantity }: CartProps) => {
     <div className="space-y-8">
       <ul className="space-y-6">
         {cartItems.map((cartItem, index) => (
-          <Link href={cartItem.link || ""} key={index}>
-            <CartItemComponent
-              {...cartItem}
-              // Fallback to empty string if link is undefined to match callback signature
-              onRemoveClick={handleRemove(cartItem.id)}
-              onQuantityChange={handleQuantityChange(cartItem.id)}
-            />
-          </Link>
+          <CartItemComponent
+            key={index}
+            {...cartItem}
+            // Fallback to empty string if link is undefined to match callback signature
+            onRemoveClick={handleRemove(cartItem.id)}
+            onQuantityChange={handleQuantityChange(cartItem.id)}
+          />
         ))}
       </ul>
 
@@ -198,24 +197,26 @@ const CartItemComponent = (props: CartItemProps) => {
   return (
     <div className="flex gap-5">
       <div className="w-24 shrink-0">
-        <AspectRatio
-          ratio={1}
-          className="overflow-hidden rounded-xl bg-background"
-        >
-          {image ? (
-            <Image
-              src={image.src}
-              alt={image.alt}
-              className="size-full object-cover"
-              width={100}
-              height={100}
-            />
-          ) : (
-            <div className="flex h-full w-full items-center justify-center bg-muted text-xs text-muted-foreground">
-              Bez obr.
-            </div>
-          )}
-        </AspectRatio>
+        <Link href={link || "#"} className="block">
+          <AspectRatio
+            ratio={1}
+            className="overflow-hidden rounded-xl bg-background"
+          >
+            {image ? (
+              <Image
+                src={image.src}
+                alt={image.alt}
+                className="size-full object-cover"
+                width={100}
+                height={100}
+              />
+            ) : (
+              <div className="flex h-full w-full items-center justify-center bg-muted text-xs text-muted-foreground">
+                Bez obr.
+              </div>
+            )}
+          </AspectRatio>
+        </Link>
       </div>
       <div className="min-w-0 flex-1">
         <div className="flex justify-between gap-3">
