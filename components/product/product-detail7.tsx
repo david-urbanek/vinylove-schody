@@ -14,7 +14,7 @@ import { useCart } from "@/hooks/useCart";
 import { useMediaQuery } from "@/hooks/useMediaQuery";
 import { addVat, cn } from "@/lib/utils";
 import { urlFor } from "@/sanity/lib/image";
-import { ProductPrice, STOCK_STATUS } from "@/types/product";
+import { ProductPrice } from "@/types/product";
 
 import { ProductVariants } from "@/components/product/product-variants";
 import { Price, PriceValue } from "@/components/shadcnblocks/price";
@@ -234,13 +234,10 @@ const ProductDetail7 = ({
 
   const handleOrderSample = () => {
     const sampleTitle = `Vzorek - ${title || "Produkt"}`;
-    const sampleId = `sample-${_id}`;
+    const sampleId = `${_id}-sample`;
 
     // Check if sample is already in cart
-    const sameSampleExists = items.some(
-      (item) =>
-        (item.link || item._id) === (`${productLink}?sample=true` || sampleId),
-    );
+    const sameSampleExists = items.some((item) => item.id === sampleId);
 
     if (sameSampleExists) {
       toast.info("Vzorek již je v košíku", {
@@ -250,28 +247,18 @@ const ProductDetail7 = ({
       return;
     }
 
-    const sampleBgImage = pattern?.image
-      ? urlFor(pattern.image).url()
-      : mainImage
-        ? urlFor(mainImage).url()
-        : "";
-
     addItem(
       {
         ...product,
         title: sampleTitle,
         _id: sampleId,
-        link: `${productLink}?sample=true`,
+        link: productLink,
         price: {
           priceWithVAT: 0,
           priceWithoutVAT: 0,
           currency: "CZK",
         },
-        image: {
-          src: sampleBgImage,
-          alt: sampleTitle,
-        },
-        stockStatusCode: STOCK_STATUS.IN_STOCK,
+        isSample: true,
       },
       1,
     );

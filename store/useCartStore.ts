@@ -7,7 +7,6 @@ import { persist } from "zustand/middleware";
 export interface CartItem {
   id: string;
   quantity: number;
-  _id: string;
   link: string;
   url: string;
   title: string;
@@ -37,7 +36,7 @@ export const useCartStore = create<CartStoreState>()(
       addItem: (product, quantity = 1) => {
         const { items } = get();
         // Use unique ID strategy
-        const itemId = product.isSample ? `${product._id}-sample` : product._id;
+        const itemId = product._id;
 
         const existingItem = items.find((item) => item.id === itemId);
 
@@ -62,12 +61,11 @@ export const useCartStore = create<CartStoreState>()(
             product.pattern?.image?.asset._ref,
           );
           const newSampleItem: CartItem = {
-            id: product._id + "-sample",
+            id: product._id,
             link: product.link,
             url: "https://vinylove-schody.cz" + product.link,
-            quantity: quantity,
-            _id: product._id, // Ensure _id is present
-            title: "Vzorek - " + product.title,
+            quantity: 1, // Samples always have quantity 1
+            title: product.title,
             price: {
               priceWithoutVAT: 0,
               currency: "CZK",
@@ -93,7 +91,6 @@ export const useCartStore = create<CartStoreState>()(
             link: product.link,
             url: "https://vinylove-schody.cz" + product.link,
             quantity: quantity,
-            _id: product._id, // Ensure _id is present
             title: product.title,
             price: product.price,
             image: {
@@ -126,7 +123,9 @@ export const useCartStore = create<CartStoreState>()(
 
         set({
           items: get().items.map((item) =>
-            item.id === id ? { ...item, quantity } : item,
+            item.id === id
+              ? { ...item, quantity: item.isSample ? 1 : quantity }
+              : item,
           ),
         });
       },
