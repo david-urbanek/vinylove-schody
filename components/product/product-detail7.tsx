@@ -212,7 +212,7 @@ const ProductDetail7 = ({
     _id,
     _type,
     title,
-    category,
+    price,
     description,
     mainImage,
     gallery,
@@ -224,7 +224,7 @@ const ProductDetail7 = ({
     slug,
   } = product || {};
 
-  console.log(product);
+  console.log("Tohle je real product", product);
 
   const { addItem, items } = useCart();
 

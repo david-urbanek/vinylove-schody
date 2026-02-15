@@ -5,7 +5,10 @@ import { Metadata, ResolvingMetadata } from "next";
 import { notFound } from "next/navigation";
 
 import { urlFor } from "@/sanity/lib/image";
+import { Product } from "@/types/product";
 import { cache } from "react";
+
+import { addVat } from "@/lib/utils";
 
 type Props = {
   params: Promise<{ slug: string }>;
@@ -13,7 +16,7 @@ type Props = {
 };
 
 // Cached function to deduplicate requests
-const getProduct = cache(async (slug: string) => {
+const getData = cache(async (slug: string) => {
   const query = `*[slug.current == $slug][0]{
     ...,
     pattern->
@@ -26,7 +29,7 @@ export async function generateMetadata(
   parent: ResolvingMetadata,
 ): Promise<Metadata> {
   const { slug } = await params;
-  const product = await getProduct(slug);
+  const product = await getData(slug);
 
   if (!product) {
     return {
@@ -52,11 +55,20 @@ export async function generateMetadata(
 
 export default async function Page({ params }: Props) {
   const { slug } = await params;
-  const product = await getProduct(slug);
+  const data = await getData(slug);
 
-  if (!product) {
+  if (!data) {
     notFound();
   }
+
+  const product: Product = {
+    ...data,
+    price: {
+      priceWithoutVAT: data.pricePerUnit,
+      priceWithVAT: addVat(data.pricePerUnit),
+      currency: "CZK",
+    },
+  };
 
   // 1. Fetch Variants (Same Product Type, variants)
   let variantsQuery;
