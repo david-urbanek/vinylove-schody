@@ -5,7 +5,6 @@ import Link from "next/link";
 import { useCallback } from "react";
 
 import { cn } from "@/lib/utils";
-import { urlFor } from "@/sanity/lib/image";
 
 import { Price, PriceValue } from "@/components/shadcnblocks/price";
 import QuantityInput from "@/components/shadcnblocks/quantity-input";
@@ -13,10 +12,10 @@ import { AspectRatio } from "@/components/ui/aspect-ratio";
 import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
 import { CartItem } from "@/store/useCartStore";
+import Image from "next/image";
 import { CheckoutForm } from "../forms/checkout-form";
 
 interface CartItemProps extends CartItem {
-  index: number;
   onRemoveClick: () => void;
   onQuantityChange: (newQty: number) => void;
 }
@@ -99,7 +98,7 @@ const Checkout4 = ({
 
 const Cart = ({ cartItems, onRemoveItem, onUpdateQuantity }: CartProps) => {
   const totalPrice = cartItems.reduce((sum, item) => {
-    const itemPrice = item.price?.sale ?? item.price?.priceWithVAT ?? 0;
+    const itemPrice = item.price?.priceWithVAT ?? 0;
     return sum + itemPrice * item.quantity;
   }, 0);
 
@@ -123,15 +122,14 @@ const Cart = ({ cartItems, onRemoveItem, onUpdateQuantity }: CartProps) => {
     <div className="space-y-8">
       <ul className="space-y-6">
         {cartItems.map((cartItem, index) => (
-          <li key={cartItem.link || index}>
+          <Link href={cartItem.link || ""} key={index}>
             <CartItemComponent
               {...cartItem}
               // Fallback to empty string if link is undefined to match callback signature
-              onRemoveClick={handleRemove(cartItem.link || "")}
-              onQuantityChange={handleQuantityChange(cartItem.link || "")}
-              index={index}
+              onRemoveClick={handleRemove(cartItem.id)}
+              onQuantityChange={handleQuantityChange(cartItem.id)}
             />
-          </li>
+          </Link>
         ))}
       </ul>
 
@@ -182,41 +180,20 @@ const Cart = ({ cartItems, onRemoveItem, onUpdateQuantity }: CartProps) => {
 const CartItemComponent = (props: CartItemProps) => {
   const {
     image,
-    mainImage,
-    name,
     title,
     link,
-    slug,
     price,
     quantity,
     onQuantityChange,
     onRemoveClick,
+    isSample,
   } = props;
 
-  const displayPrice = price?.sale ?? price?.priceWithVAT ?? 0;
-  const currency = price?.currency || "CZK";
+  const displayPrice = price.priceWithVAT;
+  const currency = price.currency;
 
-  const displayName = name || title || "Produkt";
   // Determine link. If no link/slug, default to #.
   // Store uses link as ID, so removing an item without link might be tricky, but we handle it in Cart
-  const displayLink =
-    link || (slug?.current ? `/produkt/${slug.current}` : "#");
-
-  // Determine Image
-  let imageSrc = "";
-  if (image?.src) {
-    imageSrc = image.src;
-  } else if (mainImage) {
-    try {
-      imageSrc = urlFor(mainImage).url();
-    } catch {
-      // Ignore error
-    }
-  }
-
-  const isSample =
-    displayName.toLowerCase().includes("vzorek") ||
-    displayLink.includes("sample=true");
 
   return (
     <div className="flex gap-5">
@@ -225,11 +202,13 @@ const CartItemComponent = (props: CartItemProps) => {
           ratio={1}
           className="overflow-hidden rounded-xl bg-background"
         >
-          {imageSrc ? (
-            <img
-              src={imageSrc}
-              alt={displayName}
+          {image ? (
+            <Image
+              src={image.src}
+              alt={image.alt}
               className="size-full object-cover"
+              width={100}
+              height={100}
             />
           ) : (
             <div className="flex h-full w-full items-center justify-center bg-muted text-xs text-muted-foreground">
@@ -241,12 +220,12 @@ const CartItemComponent = (props: CartItemProps) => {
       <div className="min-w-0 flex-1">
         <div className="flex justify-between gap-3">
           <div>
-            <a
-              href={displayLink}
+            <Link
+              href={link}
               className="line-clamp-2 font-medium hover:underline"
             >
-              {displayName}
-            </a>
+              {title}
+            </Link>
           </div>
           <Button
             size="icon"

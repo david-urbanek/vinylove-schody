@@ -233,27 +233,7 @@ const ProductDetail7 = ({
     : `/produkt/${_id}`;
 
   const handleAddToCart = (quantity: number) => {
-    const price = pricePerUnit || 0;
-
-    addItem(
-      {
-        ...product, // Spread original product properties to maintain structure
-        title: title || "Unknown Product",
-        _id: _id,
-        link: productLink,
-        price: {
-          priceWithVAT: addVat(price),
-          priceWithoutVAT: price,
-          currency: "CZK",
-        },
-        image: {
-          src: mainImage ? urlFor(mainImage).url() : "",
-          alt: title || "Product Image",
-        },
-        stockStatusCode: STOCK_STATUS.IN_STOCK,
-      },
-      quantity,
-    );
+    addItem(product, quantity);
 
     toast.success("Produkt byl přidán do košíku", {
       description: `${quantity}x ${title || "Produkt"}`,

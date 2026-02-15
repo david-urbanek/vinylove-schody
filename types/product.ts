@@ -38,9 +38,10 @@ export interface Product {
     current: string;
   };
   name?: string;
-  link?: string;
+  link: string;
   url?: string;
   tags?: Tag[];
+  isSample?: boolean;
 }
 
 export type ProductCardProps = Product;
