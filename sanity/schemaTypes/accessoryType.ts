@@ -9,12 +9,14 @@ export const accessoryType = defineType({
       name: "title",
       title: "Název",
       type: "string",
+      validation: (Rule) => Rule.required(),
     }),
     defineField({
       name: "typeLabel",
       title: "Kategorie produktu",
       type: "string",
       initialValue: "Příslušenství",
+      validation: (Rule) => Rule.required(),
     }),
     defineField({
       name: "slug",
@@ -44,11 +46,13 @@ export const accessoryType = defineType({
       name: "pricePerUnit",
       title: "Cena za kus (Kč)",
       type: "number",
+      validation: (Rule) => Rule.required(),
     }),
     defineField({
       name: "description",
       title: "Popis",
       type: "text",
+      validation: (Rule) => Rule.required(),
     }),
     defineField({
       name: "mainImage",
@@ -57,6 +61,7 @@ export const accessoryType = defineType({
       options: {
         hotspot: true,
       },
+      validation: (Rule) => Rule.required(),
     }),
     defineField({
       name: "gallery",

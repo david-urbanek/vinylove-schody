@@ -9,12 +9,14 @@ export const patternType = defineType({
       name: "title",
       title: "Název",
       type: "string",
+      validation: (Rule) => Rule.required(),
     }),
     defineField({
       name: "typeLabel",
       title: "Kategorie produktu",
       type: "string",
       initialValue: "Dekor",
+      validation: (Rule) => Rule.required(),
     }),
     defineField({
       name: "slug",
@@ -44,6 +46,7 @@ export const patternType = defineType({
       options: {
         hotspot: true,
       },
+      validation: (Rule) => Rule.required(),
     }),
   ],
 });

@@ -9,12 +9,14 @@ export const staircaseSoklType = defineType({
       name: "title",
       title: "Název",
       type: "string",
+      validation: (Rule) => Rule.required(),
     }),
     defineField({
       name: "typeLabel",
       title: "Kategorie produktu",
       type: "string",
       initialValue: "Zakončení u stěny",
+      validation: (Rule) => Rule.required(),
     }),
     defineField({
       name: "type",
@@ -33,6 +35,8 @@ export const staircaseSoklType = defineType({
     defineField({
       name: "slug",
       title: "Slug",
+      description:
+        "Je potřeba dodržovat strukturu URL adresy: zakonceni-steny-[název]",
       type: "slug",
       options: {
         source: "title", // Or generate based on type/title
@@ -89,6 +93,7 @@ export const staircaseSoklType = defineType({
       name: "pricePerUnit",
       title: "Cena za běžný metr (Kč/bm)",
       type: "number",
+      validation: (Rule) => Rule.required(),
     }),
     defineField({
       name: "mainImage",
@@ -97,6 +102,7 @@ export const staircaseSoklType = defineType({
       options: {
         hotspot: true,
       },
+      validation: (Rule) => Rule.required(),
     }),
     defineField({
       name: "gallery",

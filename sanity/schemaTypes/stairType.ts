@@ -9,12 +9,14 @@ export const stairType = defineType({
       name: "title",
       title: "Název",
       type: "string",
+      validation: (Rule) => Rule.required(),
     }),
     defineField({
       name: "typeLabel",
       title: "Kategorie produktu",
       type: "string",
       initialValue: "Schody",
+      validation: (Rule) => Rule.required(),
     }),
     defineField({
       name: "slug",
@@ -50,6 +52,7 @@ export const stairType = defineType({
         layout: "dropdown",
       },
       type: "string",
+      validation: (Rule) => Rule.required(),
     }),
     defineField({
       name: "type",
@@ -64,17 +67,20 @@ export const stairType = defineType({
         layout: "dropdown",
       },
       type: "string",
+      validation: (Rule) => Rule.required(),
     }),
     defineField({
       name: "pattern",
       title: "Dekor",
       type: "reference",
       to: [{ type: "pattern" }],
+      validation: (Rule) => Rule.required(),
     }),
     defineField({
       name: "description",
       title: "Popis schodů",
       type: "text",
+      validation: (Rule) => Rule.required(),
     }),
     defineField({
       name: "mainImage",
@@ -83,6 +89,7 @@ export const stairType = defineType({
       options: {
         hotspot: true,
       },
+      validation: (Rule) => Rule.required(),
     }),
     defineField({
       name: "gallery",
@@ -94,17 +101,39 @@ export const stairType = defineType({
       name: "techParams",
       title: "Technické parametry",
       type: "object",
+      validation: (Rule) => Rule.required(),
       fields: [
-        { name: "wearLayer", type: "number", title: "Nášlapná vrstva (mm)" },
-        { name: "stairLength", type: "number", title: "Délka schodu (mm)" },
-        { name: "stairDepth", type: "number", title: "Hloubka nášlapu (mm)" },
-        { name: "stairNoseHeight", type: "number", title: "Výška nosu (mm)" },
+        defineField({
+          name: "wearLayer",
+          type: "number",
+          title: "Nášlapná vrstva (mm)",
+          validation: (Rule) => Rule.required(),
+        }),
+        defineField({
+          name: "stairLength",
+          type: "number",
+          title: "Délka schodu (mm)",
+          validation: (Rule) => Rule.required(),
+        }),
+        defineField({
+          name: "stairDepth",
+          type: "number",
+          title: "Hloubka nášlapu (mm)",
+          validation: (Rule) => Rule.required(),
+        }),
+        defineField({
+          name: "stairNoseHeight",
+          type: "number",
+          title: "Výška nosu (mm)",
+          validation: (Rule) => Rule.required(),
+        }),
       ],
     }),
     defineField({
       name: "pricePerUnit",
       title: "Cena za kus (Kč)",
       type: "number",
+      validation: (Rule) => Rule.required(),
     }),
     defineField({
       name: "tags",
