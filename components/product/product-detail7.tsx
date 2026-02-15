@@ -237,12 +237,13 @@ const ProductDetail7 = ({
 
     addItem(
       {
-        name: title || "Unknown Product",
-        id: _id, // Adding ID to help with uniqueness if link is not enough, though interface might not have it strictly
+        ...product, // Spread original product properties to maintain structure
+        title: title || "Unknown Product",
+        _id: _id,
         link: productLink,
         price: {
-          regular: addVat(price),
-          priceWithoutVat: price,
+          priceWithVAT: addVat(price),
+          priceWithoutVAT: price,
           currency: "CZK",
         },
         image: {
@@ -250,8 +251,7 @@ const ProductDetail7 = ({
           alt: title || "Product Image",
         },
         stockStatusCode: STOCK_STATUS.IN_STOCK,
-        // eslint-disable-next-line @typescript-eslint/no-explicit-any
-      } as any,
+      },
       quantity,
     );
 
@@ -266,7 +266,10 @@ const ProductDetail7 = ({
     const sampleId = `sample-${_id}`;
 
     // Check if sample is already in cart
-    const sameSampleExists = items.some((item) => item.id === sampleId);
+    const sameSampleExists = items.some(
+      (item) =>
+        (item.link || item._id) === (`${productLink}?sample=true` || sampleId),
+    );
 
     if (sameSampleExists) {
       toast.info("Vzorek již je v košíku", {
@@ -276,26 +279,29 @@ const ProductDetail7 = ({
       return;
     }
 
+    const sampleBgImage = pattern?.image
+      ? urlFor(pattern.image).url()
+      : mainImage
+        ? urlFor(mainImage).url()
+        : "";
+
     addItem(
       {
-        name: sampleTitle,
-        id: sampleId,
+        ...product,
+        title: sampleTitle,
+        _id: sampleId,
         link: `${productLink}?sample=true`,
         price: {
-          regular: 0, // Samples are usually free or specific price. Assuming free for now based on context.
+          priceWithVAT: 0,
+          priceWithoutVAT: 0,
           currency: "CZK",
         },
         image: {
-          src: pattern?.image
-            ? urlFor(pattern.image).url()
-            : mainImage
-              ? urlFor(mainImage).url()
-              : "",
+          src: sampleBgImage,
           alt: sampleTitle,
         },
         stockStatusCode: STOCK_STATUS.IN_STOCK,
-        // eslint-disable-next-line @typescript-eslint/no-explicit-any
-      } as any,
+      },
       1,
     );
 

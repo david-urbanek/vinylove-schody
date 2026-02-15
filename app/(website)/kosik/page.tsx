@@ -1,13 +1,14 @@
 "use client";
 
 import { Checkout4 } from "@/components/checkout/checkout4";
+import { Spinner } from "@/components/ui/spinner";
 import { useCart } from "@/hooks/useCart";
 
 export default function CartPage() {
   const { items, removeItem, updateQuantity, isReady } = useCart();
 
   if (!isReady) {
-    return null; // Or a loading spinner
+    return <Spinner />;
   }
 
   return (

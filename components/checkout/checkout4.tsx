@@ -67,6 +67,8 @@ const Checkout4 = ({
     );
   }
 
+  console.log("cartItems", cartItems);
+
   return (
     <section className={cn("min-h-screen", className)}>
       <div className="grid min-h-screen lg:grid-cols-2">
@@ -96,11 +98,12 @@ const Checkout4 = ({
 };
 
 const Cart = ({ cartItems, onRemoveItem, onUpdateQuantity }: CartProps) => {
-  const totalPrice = cartItems.reduce(
-    (sum, item) =>
-      sum + (item.price?.sale ?? item.price?.priceWithVAT ?? 0) * item.quantity,
-    0,
-  );
+  const totalPrice = cartItems.reduce((sum, item) => {
+    const itemPrice = item.price?.sale ?? item.price?.priceWithVAT ?? 0;
+    return sum + itemPrice * item.quantity;
+  }, 0);
+
+  const vatAmount = totalPrice - totalPrice / 1.21; // Extract VAT from total price
 
   const handleRemove = useCallback(
     (productId: string) => () => {
@@ -120,7 +123,7 @@ const Cart = ({ cartItems, onRemoveItem, onUpdateQuantity }: CartProps) => {
     <div className="space-y-8">
       <ul className="space-y-6">
         {cartItems.map((cartItem, index) => (
-          <li key={cartItem.id || cartItem.link || index}>
+          <li key={cartItem.link || index}>
             <CartItemComponent
               {...cartItem}
               // Fallback to empty string if link is undefined to match callback signature
@@ -150,12 +153,12 @@ const Cart = ({ cartItems, onRemoveItem, onUpdateQuantity }: CartProps) => {
           <span>Doprava bude vypočítána na základě poptávky</span>
         </div>
         <div className="flex justify-between text-sm">
-          <span className="text-muted-foreground">Odhadovaná daň</span>
+          <span className="text-muted-foreground">DPH (21%)</span>
           <span>
             {new Intl.NumberFormat("cs-CZ", {
               style: "currency",
               currency: "CZK",
-            }).format(totalPrice * 0.21)}
+            }).format(vatAmount)}
           </span>
         </div>
       </div>
@@ -163,7 +166,7 @@ const Cart = ({ cartItems, onRemoveItem, onUpdateQuantity }: CartProps) => {
       <Separator />
 
       <div className="flex justify-between">
-        <span className="text-xl font-semibold">Celkem</span>
+        <span className="text-xl font-semibold">Celkem (vč. DPH)</span>
         <Price className="text-xl font-semibold">
           <PriceValue
             price={totalPrice}
@@ -190,10 +193,8 @@ const CartItemComponent = (props: CartItemProps) => {
     onRemoveClick,
   } = props;
 
-  const { priceWithVAT: regular, currency } = price || {
-    priceWithVAT: 0,
-    currency: "CZK",
-  };
+  const displayPrice = price?.sale ?? price?.priceWithVAT ?? 0;
+  const currency = price?.currency || "CZK";
 
   const displayName = name || title || "Produkt";
   // Determine link. If no link/slug, default to #.
@@ -266,7 +267,11 @@ const CartItemComponent = (props: CartItemProps) => {
             />
           </div>
           <Price className="text-lg font-semibold">
-            <PriceValue price={regular} currency={currency} variant="regular" />
+            <PriceValue
+              price={displayPrice}
+              currency={currency}
+              variant="regular"
+            />
           </Price>
         </div>
       </div>
