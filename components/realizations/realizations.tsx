@@ -10,58 +10,44 @@ const realizationsData = [
   {
     title: "Schody s nosem",
     description:
-      "Vytvořte si dominantu interiéru. Robustní MDF deska (22 mm) zajišťuje stabilitu, zatímco přesahový nos dodává schodišti klasickou eleganci. Podstupnici můžete sladit s dekorem vinylu pro celistvý vzhled, nebo zvolit bílou variantu pro moderní kontrast. Možnost integrace LED osvětlení podtrhne atmosféru vašeho domova.",
-    image:
-      "https://deifkwefumgah.cloudfront.net/shadcnblocks/block/photos/ali-moradi-qNic6LXHw-w-unsplash.jpg",
+      "Proměňte své schodiště v dominantu domova. Kombinace robustní 22mm MDF desky a elegantního přesahu dodá interiéru nadčasový vzhled. Vyberte si mezi celistvým dekorem nebo moderním kontrastem s bílou podstupnicí. A pro dokonalou večerní atmosféru? Doporučujeme integrované LED osvětlení, které schody doslova rozzáří.",
+    image: "/realizace/schody/siroke/schody-5.png",
     tag: "Populární",
   },
   {
     title: "Schody bez nosu",
     description:
-      "Čisté linie pro milovníky minimalismu. Moderní 'krabicový' vzhled bez přesahů, kde schod plynule přechází v podstupnici. Ideální pro současné interiéry. Nabízíme lepenou i click variantu s precizním zpracováním hran pro dokonalý detail.",
-    image:
-      "https://deifkwefumgah.cloudfront.net/shadcnblocks/block/photos/israel-andrade-YI_9SivVt_s-unsplash.jpg",
+      "Dokonalý minimalismus pro moderní interiér. Čisté, ostré linie a precizní 'krabicový' vzhled bez přesahů vytvoří dojem luxusní celistvosti. Schod plynule přechází v podstupnici a opticky sjednocuje prostor. Ideální volba pro ty, kteří hledají špičkový design bez kompromisů.",
+    image: "/realizace/schody/siroke/schody-6.png",
     tag: "Moderní",
   },
   {
     title: "Nášlap",
     description:
-      "Ekonomické a funkční řešení pro renovace. Samostatný nášlapný díl na pevné MDF desce, který jednoduše promění staré schodiště v nové. Rychlá instalace bez bourání se zachováním špičkové kvality povrchu.",
-    image:
-      "https://deifkwefumgah.cloudfront.net/shadcnblocks/block/photos/nastuh-abootalebi-eHD8Y1Znfpk-unsplash.jpg",
-    tag: "Ekonomické",
+      "Nejchytřejší způsob, jak dát starým schodům nový život. Zapomeňte na náročné bourání – naše vinylové nášlapy na pevné MDF desce promění vaše schodiště k nepoznání během chvilky. Získáte prémiový povrch, vysokou odolnost a moderní vzhled za zlomek ceny kompletní rekonstrukce.",
+    image: "/realizace/schody/siroke/schody-7.png",
+    tag: "Moderní",
   },
   {
     title: "Vetknuté vinylové schody",
     description:
-      "Vrchol designu a technické preciznosti. Schody 'levitující' v prostoru, nasunuté na skrytou ocelovou konstrukci. Toto řešení vyžaduje mistrovskou přípravu, ale odmění se vám dechberoucím vzdušným efektem, který ohromí každou návštěvu.",
-    image:
-      "https://deifkwefumgah.cloudfront.net/shadcnblocks/block/photos/simone-hutsch-lISGL8VWpPE-unsplash.jpg",
+      "Dechberoucí lehkost a designový vrchol vašeho domu. Levitující schody, které jako by pluly prostorem, okamžitě přitáhnou pozornost každé návštěvy. Skrytá ocelová konstrukce zajišťuje nekompromisní pevnost, zatímco vzdušný design opticky zvětší váš interiér. Dopřejte si exkluzivitu, kterou jen tak někdo nemá.",
+    image: "/realizace/schody/siroke/schody-4.png",
     tag: "Luxusní",
   },
   {
-    title: "Samonosné ocelové schody",
+    title: "Schody na přání",
     description:
-      "Investice na celý život. Ocelová konstrukce vyrobená s milimetrovou přesností laserem unese jakoukoliv zátěž. Nabízíme neuvěřitelnou záruku 50 let. Je to páteř vašeho domu, která nikdy nezestárne.",
-    image:
-      "https://deifkwefumgah.cloudfront.net/shadcnblocks/block/photos/simone-hutsch-uR__S5GX8Io-unsplash.jpg",
-    tag: "Industriální",
+      "Máte vlastní představu nebo atypický prostor? Žádný problém. Milujeme výzvy a rádi zrealizujeme i ty nejodvážnější nápady. Ať už jde o netradiční tvary nebo specifické požadavky, společně najdeme cestu, jak vaši vizi proměnit v perfektní realitu.",
+    image: "/realizace/schody/siroke/schody-8.png",
+    tag: "Výzva",
   },
   {
-    title: "Samonosné sádro-betonové schody",
+    title: "Podlahy",
     description:
-      "Pokrok v materiálech. Unikátní technologie lehké betonové směsi v sádrovém bednění. Výsledkem jsou schody, které nevržou, jsou dokonale pevné a přitom nezatěžují statiku domu jako plný beton. Záruka 30 let na tichou a klidnou chůzi.",
-    image:
-      "https://images.unsplash.com/photo-1595846519845-68e298c2edd8?q=80&w=2670&auto=format&fit=crop&ixlib=rb-4.0.3",
+      "Základ vašeho domova, na který se můžete spolehnout. Naše vinylové podlahy v sobě spojují věrnou krásu dřeva či kamene s nekompromisní odolností. Jsou tiché, teplé na dotek a zvládnou i ten nejnáročnější provoz. Ať už zvolíte lepenou klasiku nebo moderní click systém, garantujeme precizní pokládku, která vydrží roky.",
+    image: "/realizace/podlahy/siroke/podlaha-1.png",
     tag: "Odolné",
-  },
-  {
-    title: "Výroba betonových schodů na míru",
-    description:
-      "Žádný kompromis, jen vaše představa. Realizujeme betonová schodiště jakýchkoliv tvarů – od elegantních točitých až po velkorysá přímočará ramena. Přizpůsobíme se vaší stavbě do posledního detailu.",
-    image:
-      "https://images.unsplash.com/photo-1628147481068-1bc7d2539074?q=80&w=2670&auto=format&fit=crop&ixlib=rb-4.0.3",
-    tag: "Na míru",
   },
 ];
 

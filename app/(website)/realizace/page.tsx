@@ -3,7 +3,7 @@ import { Metadata } from "next";
 
 export const metadata: Metadata = {
   title: "Realizace",
-  description: "Realizace vinylových schodů a podlahy",
+  description: "Realizace na míru vinylových schodů a podlah",
   alternates: {
     canonical: `/realizace`,
   },
