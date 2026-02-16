@@ -13,9 +13,16 @@ export const checkoutFormSchema = z.object({
   projectDescription: z.string().optional(),
   products: z
     .object({
-      product_id: z.string(),
+      id: z.string(),
       quantity: z.number(),
-      price: z.number(),
+      price: z.object({
+        priceWithVAT: z.number(),
+        priceWithoutVAT: z.number(),
+        currency: z.string(),
+      }),
+      title: z.string(),
+      image: z.string(),
+      url: z.string(),
     })
     .array(),
 });

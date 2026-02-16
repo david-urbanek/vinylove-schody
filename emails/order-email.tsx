@@ -12,27 +12,10 @@ import {
   Text,
 } from "@react-email/components";
 
-interface ProductPrice {
-  regular: number;
-  sale?: number;
-  currency: string;
-}
-
-interface CartItem {
-  product_id: string;
-  link: string;
-  name: string;
-  image: string;
-  price: ProductPrice;
-  quantity: number;
-  details: {
-    label: string;
-    value: string;
-  }[];
-}
+import { EmailCartItem } from "@/types/product";
 
 interface OrderEmailProps {
-  items: CartItem[];
+  products: EmailCartItem[];
   totalPrice: number;
   customer: {
     firstName: string;
@@ -48,7 +31,7 @@ interface OrderEmailProps {
 }
 
 export const OrderEmail = ({
-  items,
+  products,
   totalPrice,
   customer,
 }: OrderEmailProps) => {
@@ -107,26 +90,21 @@ export const OrderEmail = ({
               </Heading>
 
               <div className="space-y-2">
-                {items.map((item) => (
-                  <div key={item.product_id} className="mb-3">
+                {products.map((item) => (
+                  <div key={item.id} className="mb-3">
                     <Link
-                      href={item.link}
+                      href={item.url}
                       className="text-[16px] font-medium text-foreground underline"
                     >
-                      {item.name}
+                      {item.title}
                     </Link>
-                    <Text className="m-0 text-[14px] text-muted-foreground mt-1">
-                      {item.details.map((detail, i) => (
-                        <span key={i}>
-                          {detail.label}: {detail.value}
-                          {i < item.details.length - 1 && " · "}
-                        </span>
-                      ))}
-                    </Text>
                     <Text className="m-0 text-[14px] text-foreground">
                       Cena:{" "}
-                      {formatPrice(item.price.regular, item.price.currency)} ×{" "}
-                      {item.quantity} ks
+                      {formatPrice(
+                        item.price.priceWithVAT,
+                        item.price.currency,
+                      )}{" "}
+                      × {item.quantity} ks
                     </Text>
                   </div>
                 ))}

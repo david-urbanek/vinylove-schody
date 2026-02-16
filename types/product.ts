@@ -46,6 +46,15 @@ export interface Product {
   type?: string;
 }
 
+export interface EmailCartItem {
+  id: string;
+  quantity: number;
+  price: ProductPrice;
+  title: string;
+  image: string;
+  url: string;
+}
+
 export type ProductCardProps = Product;
 
 export interface FeaturedPromotion {

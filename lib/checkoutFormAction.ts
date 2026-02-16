@@ -1,18 +1,13 @@
 "use server";
 
-import { CustomerOrderSummaryEmail } from "@/emails/customer-order-email";
+import { CustomerOrderEmail } from "@/emails/customer-order-email";
 import { OrderEmail } from "@/emails/order-email";
 import { checkoutFormSchema, CheckoutFormType } from "@/lib/schemas";
-import { CartItem } from "@/store/useCartStore";
 import { Resend } from "resend";
 
 const resend = new Resend(process.env.RESEND_API_KEY);
 
-export async function submitOrder(
-  cartItems: CartItem[],
-  prevState: unknown,
-  data: CheckoutFormType,
-) {
+export async function submitOrder(data: CheckoutFormType) {
   // 1. Validation on server side
   const result = checkoutFormSchema.safeParse(data);
 
@@ -38,24 +33,9 @@ export async function submitOrder(
   } = result.data;
 
   // 2. Prepare data for email
-  const enrichedItems = products.map((p) => {
-    const originalItem = cartItems.find((ci) => ci.link === p.product_id);
-    return {
-      product_id: p.product_id,
-      name: originalItem?.name || "Unknown Product",
-      image: originalItem?.image?.src || "",
-      link: originalItem?.link || "",
-      quantity: p.quantity,
-      price: {
-        regular: p.price,
-        currency: "CZK",
-      },
-      details: [],
-    };
-  });
 
-  const totalPrice = enrichedItems.reduce(
-    (sum, item) => sum + item.price.regular * item.quantity,
+  const totalPrice = products.reduce(
+    (sum, item) => sum + item.price.priceWithVAT * item.quantity,
     0,
   );
 
@@ -66,7 +46,7 @@ export async function submitOrder(
       to: ["david.urbanek@virtuio.cz"],
       subject: `Nová poptávka - ${firstName} ${lastName}`,
       react: OrderEmail({
-        items: enrichedItems,
+        products,
         totalPrice,
         customer: {
           firstName,
@@ -95,8 +75,8 @@ export async function submitOrder(
       from: "Vinylové schody <david.urbanek@virtuio.cz>",
       to: [email, "david.urbanek@virtuio.cz"],
       subject: `Potvrzení poptávky - Vinylové schody`,
-      react: CustomerOrderSummaryEmail({
-        items: enrichedItems,
+      react: CustomerOrderEmail({
+        products,
         totalPrice,
         customer: {
           firstName,

@@ -8,8 +8,7 @@ import { checkoutFormSchema, CheckoutFormType } from "@/lib/schemas";
 import { cn } from "@/lib/utils";
 import { CartItem } from "@/store/useCartStore";
 import { zodResolver } from "@hookform/resolvers/zod";
-import Form from "next/form";
-import { redirect } from "next/navigation";
+import { redirect, useRouter } from "next/navigation";
 import * as React from "react";
 import { Controller, useForm } from "react-hook-form";
 import { toast } from "sonner";
@@ -56,13 +55,18 @@ interface CheckoutFormProps {
 }
 
 export const CheckoutForm = ({ cartItems }: CheckoutFormProps) => {
+  const router = useRouter();
   const [isPending, setIsPending] = React.useState(false);
+  console.log("tohle jsou moje cartItems", cartItems);
 
   const defaultProducts =
     cartItems?.map((item) => ({
-      product_id: item.link,
+      id: item.id,
       quantity: item.quantity,
-      price: item.price.sale ?? item.price.priceWithVAT,
+      price: item.price,
+      title: item.title,
+      image: item.image?.src || "",
+      url: item.url,
     })) || [];
 
   const form = useForm<CheckoutFormType>({
@@ -85,10 +89,12 @@ export const CheckoutForm = ({ cartItems }: CheckoutFormProps) => {
   const interestInRealization = form.watch("interestInRealization");
 
   const onSubmit = async (data: CheckoutFormType) => {
+    console.log("✅ ON SUBMIT SPUŠTĚN!");
+    console.log("Odesílaná data:", data);
     setIsPending(true);
     try {
       // Call server action
-      const result = await submitOrder(cartItems, null, data);
+      const result = await submitOrder(data);
 
       // If result is returned, it means there was an error (success redirects)
       if (!result.success) {
@@ -107,18 +113,24 @@ export const CheckoutForm = ({ cartItems }: CheckoutFormProps) => {
         toast.error(
           result.error || "Něco se pokazilo. Zkuste to prosím znovu.",
         );
+      } else {
+        redirect("/dekujeme");
       }
-
-      redirect("/dekujeme");
     } finally {
       setIsPending(false);
     }
   };
 
   return (
-    <Form
+    <form
       action=""
-      onSubmit={form.handleSubmit(onSubmit)}
+      onSubmit={form.handleSubmit(
+        (data) => onSubmit(data),
+        (errors) => {
+          console.log("❌ VALIDAČNÍ CHYBY:", errors);
+          toast.error("Zkontrolujte prosím zadané údaje.");
+        },
+      )}
       className="space-y-6"
     >
       <div className="space-y-8">
@@ -344,6 +356,6 @@ export const CheckoutForm = ({ cartItems }: CheckoutFormProps) => {
       >
         {isPending ? "Odesílám..." : "Odeslat poptávku"}
       </Button>
-    </Form>
+    </form>
   );
 };

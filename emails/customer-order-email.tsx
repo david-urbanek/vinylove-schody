@@ -1,3 +1,4 @@
+import { EmailCartItem } from "@/types/product";
 import {
   Body,
   Column,
@@ -16,27 +17,8 @@ import {
 } from "@react-email/components";
 import * as React from "react";
 
-interface ProductPrice {
-  regular: number;
-  sale?: number;
-  currency: string;
-}
-
-interface CartItem {
-  product_id: string;
-  link: string;
-  name: string;
-  image: string;
-  price: ProductPrice;
-  quantity: number;
-  details: {
-    label: string;
-    value: string;
-  }[];
-}
-
-interface CustomerOrderSummaryEmailProps {
-  items: CartItem[];
+interface CustomerOrderEmailProps {
+  products: EmailCartItem[];
   totalPrice: number;
   customer: {
     firstName: string;
@@ -51,11 +33,11 @@ interface CustomerOrderSummaryEmailProps {
   };
 }
 
-export const CustomerOrderSummaryEmail = ({
-  items,
+export const CustomerOrderEmail = ({
+  products,
   totalPrice,
   customer,
-}: CustomerOrderSummaryEmailProps) => {
+}: CustomerOrderEmailProps) => {
   const formattedDate = new Intl.DateTimeFormat("cs-CZ", {
     dateStyle: "long",
     timeStyle: "short",
@@ -131,13 +113,13 @@ export const CustomerOrderSummaryEmail = ({
               </Heading>
 
               <div className="space-y-4">
-                {items.map((item, index) => (
-                  <React.Fragment key={item.product_id}>
+                {products.map((item, index) => (
+                  <React.Fragment key={item.id}>
                     <Row className="mb-4">
                       <Column className="w-[80px] align-top">
                         <Img
                           src={item.image}
-                          alt={item.name}
+                          alt={item.title}
                           width="80"
                           height="80"
                           className="rounded-lg object-cover border border-solid border-border"
@@ -145,30 +127,25 @@ export const CustomerOrderSummaryEmail = ({
                       </Column>
                       <Column className="pl-4 align-top">
                         <Link
-                          href="https://google.com"
+                          href={item.url}
                           className="m-0 font-medium text-[16px] text-foreground"
                         >
-                          {item.name}
+                          {item.title}
                         </Link>
-                        <Text className="m-0 text-[14px] text-muted-foreground mt-1">
-                          {item.details.map((detail, i) => (
-                            <span key={i}>
-                              {detail.label}: {detail.value}
-                              {i < item.details.length - 1 && " · "}
-                            </span>
-                          ))}
-                        </Text>
                       </Column>
                       <Column className="text-right align-top w-[100px]">
                         <Text className="m-0 font-semibold text-[16px] text-foreground">
-                          {formatPrice(item.price.regular, item.price.currency)}
+                          {formatPrice(
+                            item.price.priceWithVAT,
+                            item.price.currency,
+                          )}
                         </Text>
                         <Text className="m-0 text-[14px] text-muted-foreground mt-1">
                           Množství: {item.quantity}
                         </Text>
                       </Column>
                     </Row>
-                    {index < items.length - 1 && (
+                    {index < products.length - 1 && (
                       <Hr className="border-border my-4 mx-0 w-full" />
                     )}
                   </React.Fragment>
@@ -295,4 +272,4 @@ export const CustomerOrderSummaryEmail = ({
   );
 };
 
-export default CustomerOrderSummaryEmail;
+export default CustomerOrderEmail;
