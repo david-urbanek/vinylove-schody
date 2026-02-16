@@ -10,7 +10,7 @@ const resend = new Resend(process.env.RESEND_API_KEY);
 
 export async function submitOrder(
   cartItems: CartItem[],
-  prevState: any,
+  prevState: unknown,
   data: CheckoutFormType,
 ) {
   // 1. Validation on server side

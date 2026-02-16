@@ -20,6 +20,7 @@ import {
   ShoppingBag,
   X,
 } from "lucide-react";
+import Image from "next/image";
 import Link from "next/link";
 import { useState } from "react";
 
@@ -176,10 +177,12 @@ const Navbar3 = ({ className }: Navbar3Props) => {
               {(!open || !submenu) && (
                 <>
                   <Link href="/" className="flex items-center">
-                    <img
+                    <Image
                       src="/logo/full-logo.svg"
                       alt="Vinylové schody"
                       className="h-7 w-auto md:h-10"
+                      width={1000}
+                      height={1000}
                     />
                   </Link>
                 </>
@@ -203,10 +206,12 @@ const Navbar3 = ({ className }: Navbar3Props) => {
                     >
                       <div className="flex h-full flex-col overflow-clip rounded-lg border border-input bg-background">
                         <div className="relative flex-1 overflow-hidden">
-                          <img
+                          <Image
                             src={activeSolution.image}
                             alt={activeSolution.title}
                             className="absolute inset-0 size-full object-cover object-center transition-transform duration-300 group-hover:scale-105"
+                            width={1000}
+                            height={1000}
                           />
                         </div>
                         <div className="p-5 xl:p-8">
@@ -257,10 +262,12 @@ const Navbar3 = ({ className }: Navbar3Props) => {
                     >
                       <div className="flex h-full flex-col overflow-clip rounded-lg border border-input bg-background">
                         <div className="relative flex-1 overflow-hidden">
-                          <img
+                          <Image
                             src={activeFlooring.image}
                             alt={activeFlooring.title}
                             className="absolute inset-0 size-full object-cover object-center transition-transform duration-300 group-hover:scale-105"
+                            width={1000}
+                            height={1000}
                           />
                         </div>
                         <div className="p-5 xl:p-8">
@@ -491,12 +498,18 @@ const Navbar3 = ({ className }: Navbar3Props) => {
           {/* Mobile Menu > Vinylové schody */}
           {open && submenu === "schody" && (
             <div className="fixed inset-0 top-[72px] flex h-[calc(100vh-72px)] w-full flex-col overflow-scroll border-t border-border bg-background lg:hidden">
-              <a href="#" className="block space-y-6 px-8 py-8">
+              <Link
+                href="/produkty/schody"
+                className="block space-y-6 px-8 py-8"
+                onClick={() => setOpen(false)}
+              >
                 <div className="w-full overflow-clip rounded-lg">
-                  <img
-                    src="https://deifkwefumgah.cloudfront.net/shadcnblocks/block/placeholder-1.svg"
+                  <Image
+                    src="/realizace/schody/siroke/schody-2.png"
                     alt="Placeholder image"
                     className="aspect-2/1 h-full w-full object-cover object-center"
+                    width={1000}
+                    height={1000}
                   />
                 </div>
                 <div>
@@ -505,16 +518,17 @@ const Navbar3 = ({ className }: Navbar3Props) => {
                     Kompletní řešení pro vaše schodiště.
                   </div>
                 </div>
-              </a>
+              </Link>
               <div className="px-8 py-3.5 text-xs tracking-widest text-muted-foreground uppercase">
                 Kategorie
               </div>
               <div className="border-t border-border pb-16">
                 {stairs.map((solution, index) => (
-                  <a
+                  <Link
                     key={index}
                     href={solution.href}
                     className="group flex w-full items-start gap-x-4 border-b border-border px-8 py-7 text-left hover:bg-accent"
+                    onClick={() => setOpen(false)}
                   >
                     <div className="shrink-0">
                       <solution.icon className="size-6" />
@@ -525,7 +539,7 @@ const Navbar3 = ({ className }: Navbar3Props) => {
                         {solution.description}
                       </div>
                     </div>
-                  </a>
+                  </Link>
                 ))}
               </div>
             </div>
@@ -533,12 +547,18 @@ const Navbar3 = ({ className }: Navbar3Props) => {
           {/* Mobile Menu > Vinylové podlahy */}
           {open && submenu === "podlahy" && (
             <div className="fixed inset-0 top-[72px] flex h-[calc(100vh-72px)] w-full flex-col overflow-scroll border-t border-border bg-background lg:hidden">
-              <a href="#" className="block space-y-6 px-8 py-8">
+              <Link
+                href="#"
+                className="block space-y-6 px-8 py-8"
+                onClick={() => setOpen(false)}
+              >
                 <div className="w-full overflow-clip rounded-lg">
-                  <img
+                  <Image
                     src="https://images.unsplash.com/photo-1581850518616-bcb8077a2536?auto=format&fit=crop&w=800&q=80"
                     alt="Vinylové podlahy"
                     className="aspect-2/1 h-full w-full object-cover object-center"
+                    width={100}
+                    height={100}
                   />
                 </div>
                 <div>
@@ -547,16 +567,17 @@ const Navbar3 = ({ className }: Navbar3Props) => {
                     Široký výběr dekorů a provedení pro každý interiér.
                   </div>
                 </div>
-              </a>
+              </Link>
               <div className="px-8 py-3.5 text-xs tracking-widest text-muted-foreground uppercase">
                 Kategorie
               </div>
               <div className="border-t border-border pb-16">
                 {flooringCategories.map((category, index) => (
-                  <a
+                  <Link
                     key={index}
                     href={category.href}
                     className="group flex w-full items-start gap-x-4 border-b border-border px-8 py-7 text-left hover:bg-accent"
+                    onClick={() => setOpen(false)}
                   >
                     <div className="shrink-0">
                       <category.icon className="size-6" />
@@ -567,7 +588,7 @@ const Navbar3 = ({ className }: Navbar3Props) => {
                         {category.description}
                       </div>
                     </div>
-                  </a>
+                  </Link>
                 ))}
               </div>
             </div>
@@ -580,10 +601,11 @@ const Navbar3 = ({ className }: Navbar3Props) => {
               </div>
               <div className="border-t border-border pb-16">
                 {services.map((service, index) => (
-                  <a
+                  <Link
                     key={index}
                     href={service.href}
                     className="group flex w-full items-start gap-x-4 border-b border-border px-8 py-7 text-left hover:bg-accent"
+                    onClick={() => setOpen(false)}
                   >
                     <div className="shrink-0">
                       <service.icon className="size-6" />
@@ -594,7 +616,7 @@ const Navbar3 = ({ className }: Navbar3Props) => {
                         {service.description}
                       </div>
                     </div>
-                  </a>
+                  </Link>
                 ))}
               </div>
             </div>
@@ -607,10 +629,11 @@ const Navbar3 = ({ className }: Navbar3Props) => {
               </div>
               <div>
                 {categories.map((accessory, index) => (
-                  <a
+                  <Link
                     key={index}
                     href={accessory.href}
                     className="group flex w-full items-start gap-x-4 border-b border-border px-8 py-7 text-left hover:bg-accent"
+                    onClick={() => setOpen(false)}
                   >
                     <div className="shrink-0">
                       <accessory.icon className="size-6" />
@@ -621,7 +644,7 @@ const Navbar3 = ({ className }: Navbar3Props) => {
                         {accessory.description}
                       </div>
                     </div>
-                  </a>
+                  </Link>
                 ))}
               </div>
             </div>

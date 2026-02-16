@@ -15,6 +15,7 @@ import { contactInfo } from "@/data/data";
 import { useMediaQuery } from "@/hooks/useMediaQuery";
 import { cn } from "@/lib/utils";
 import Image from "next/image";
+import Link from "next/link";
 
 import { ConsultationForm } from "@/components/forms/consultation-form";
 import {
@@ -121,20 +122,68 @@ const INFO_SECTION_DATA: InfoItem[] = [
 
 const FOOTER_LINKS: FooterLinksSection[] = [
   {
-    title: "Produkty",
-    id: "products",
+    title: "Vinylové schody",
+    id: "stairs",
     items: [
       {
-        text: "Vinylové schody",
-        link: "#",
+        text: "Schody bez nosu",
+        link: "/produkty/schody-bez-nosu",
       },
       {
-        text: "Vinylové podlahy",
-        link: "#",
+        text: "Schody s nosem",
+        link: "/produkty/schody-s-nosem",
       },
       {
-        text: "Příslušenství",
-        link: "#",
+        text: "Nášlapy",
+        link: "/produkty/schody-naslapy",
+      },
+      {
+        text: "Vetknuté schody",
+        link: "/produkty/schody-vetknute",
+      },
+    ],
+  },
+  {
+    title: "Vinylové podlahy",
+    id: "floors",
+    items: [
+      {
+        text: "Lepené podlahy",
+        link: "/produkty/podlahy-lepena",
+      },
+      {
+        text: "Click systém",
+        link: "/produkty/podlahy-click",
+      },
+    ],
+  },
+  {
+    title: "Příslušenství",
+    id: "accessories",
+    items: [
+      {
+        text: "Obvodové lišty",
+        link: "/produkty/obvodove-listy",
+      },
+      {
+        text: "Zakončení u stěny",
+        link: "/produkty/zakonceni-u-steny",
+      },
+      {
+        text: "Přechodové lišty",
+        link: "/produkty/prechodove-listy",
+      },
+      {
+        text: "Lepidla",
+        link: "/produkty/lepidla",
+      },
+      {
+        text: "Stěrky",
+        link: "/produkty/sterky",
+      },
+      {
+        text: "Penetrace",
+        link: "/produkty/penetrace",
       },
     ],
   },
@@ -217,13 +266,15 @@ const EcommerceFooter19 = ({
         <InfoSection list={infoSectionList} />
         <div className="grid grid-cols-1 gap-7.5 lg:grid-cols-5 xl:grid-cols-2">
           <div className="space-y-5 lg:max-xl:col-span-2">
-            <a href="/" className="inline-block w-full max-w-80">
-              <img
+            <Link href="/" className="inline-block w-full max-w-80">
+              <Image
                 className="h-10 w-auto"
                 src="/logo/full-logo.svg"
                 alt="Vinylové schody"
+                width={100}
+                height={100}
               />
-            </a>
+            </Link>
             <p className="max-w-100 text-sm leading-relaxed text-muted-foreground">
               {footerDetails.description}
             </p>
@@ -368,36 +419,28 @@ const AccordionItems = ({ sections }: { sections: FooterLinksSection[] }) => {
   );
 };
 
-const PaymentMethods = ({ cards }: { cards: string[] }) => {
-  return (
-    <ul className="flex flex-wrap items-center gap-3">
-      {cards.map((card) => (
-        <li key={crypto.randomUUID()}>
-          <img className="w-9.5" src={card} alt="card" />
-        </li>
-      ))}
-    </ul>
-  );
-};
-
 const SocialMediaSection = ({ links }: SocialMediaSectionProps) => {
   return (
     <ul className="flex flex-wrap gap-4">
       {links.map(({ icon, link }) => (
         <li key={crypto.randomUUID()}>
           <Button size="icon-lg" asChild className="rounded-full">
-            <a href={link}>
-              <img
+            <Link href={link}>
+              <Image
                 className="size-4.5 dark:hidden"
                 alt={icon.title}
                 src={`https://cdn.simpleicons.org/${icon.slug}/white`}
+                width={100}
+                height={100}
               />
-              <img
+              <Image
                 className="hidden size-4.5 dark:block"
                 alt={icon.title}
                 src={`https://cdn.simpleicons.org/${icon.slug}/black`}
+                width={100}
+                height={100}
               />
-            </a>
+            </Link>
           </Button>
         </li>
       ))}

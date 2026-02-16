@@ -25,8 +25,8 @@ const getData = cache(async (slug: string) => {
 });
 
 export async function generateMetadata(
-  { params, searchParams }: Props,
-  parent: ResolvingMetadata,
+  { params }: Props,
+  _parent: ResolvingMetadata,
 ): Promise<Metadata> {
   const { slug } = await params;
   const product = await getData(slug);

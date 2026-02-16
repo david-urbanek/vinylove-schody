@@ -89,8 +89,8 @@ export default async function Home() {
   return (
     <>
       <Hero />
-      <ProductCarousel sections={carouselSections} />
-      <About />
+      <ProductCarousel sections={carouselSections} className="pb-10" />
+      <About className="pt-10" />
       <Process1
         title="Jak to funguje"
         description="Jednoduchý proces od prvního kontaktu až po finální realizaci. Zakládáme si na rychlé a srozumitelné komunikaci."
