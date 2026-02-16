@@ -34,6 +34,7 @@ export async function generateMetadata(
   if (!product) {
     return {
       title: "Produkt nenalezen",
+      description: "Produkt nenalezen",
     };
   }
 
@@ -92,7 +93,7 @@ export default async function Page({ params }: Props) {
     product._type === "transitionProfile"
   ) {
     // For skirting and transition profiles, filter by type
-    variantsQuery = `*[_type == $type && _id != $id]{
+    variantsQuery = `*[_type == $type]{
       _id,
       title,
       slug,
@@ -101,7 +102,6 @@ export default async function Page({ params }: Props) {
     }`;
     variantsParams = {
       type: product._type,
-      id: product._id,
     };
   } else if (product._type === "accessory") {
     variantsQuery = null;
@@ -119,7 +119,7 @@ export default async function Page({ params }: Props) {
     };
   } else if (product._type === "floor") {
     // For floors, filter by category and collection
-    variantsQuery = `*[_type == $type && category == $category && collection == $collection]{
+    variantsQuery = `*[_type == $type && category == $category]{
       _id,
       title,
       slug,
@@ -128,7 +128,6 @@ export default async function Page({ params }: Props) {
     variantsParams = {
       type: product._type,
       category: product.category,
-      collection: product.collection,
     };
   } else {
     // Fallback for unknown types

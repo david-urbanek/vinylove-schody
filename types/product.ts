@@ -30,6 +30,7 @@ export interface Product {
   pattern?: {
     title: string;
     image?: any;
+    _id: string;
   };
   pricePerUnit: number;
   price: ProductPrice;
@@ -42,6 +43,7 @@ export interface Product {
   url?: string;
   tags?: Tag[];
   isSample?: boolean;
+  type?: string;
 }
 
 export type ProductCardProps = Product;

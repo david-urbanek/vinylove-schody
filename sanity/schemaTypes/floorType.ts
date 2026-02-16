@@ -49,6 +49,7 @@ export const floorType = defineType({
         layout: "dropdown",
       },
       type: "string",
+      validation: (Rule) => Rule.required(),
     }),
     defineField({
       name: "collection",
@@ -68,6 +69,7 @@ export const floorType = defineType({
       title: "Dekor",
       type: "reference",
       to: [{ type: "pattern" }],
+      validation: (Rule) => Rule.required(),
     }),
     defineField({
       name: "manufacturer",
@@ -86,6 +88,7 @@ export const floorType = defineType({
       name: "description",
       title: "Popis podlahy",
       type: "text",
+      validation: (Rule) => Rule.required(),
     }),
     defineField({
       name: "mainImage",
@@ -94,6 +97,7 @@ export const floorType = defineType({
       options: {
         hotspot: true,
       },
+      validation: (Rule) => Rule.required(),
     }),
     defineField({
       name: "gallery",
@@ -105,17 +109,44 @@ export const floorType = defineType({
       name: "techParams",
       title: "Technické parametry",
       type: "object",
+      validation: (Rule) => Rule.required(),
       fields: [
-        { name: "dimensions", type: "string", title: "Rozměr lamely (mm)" },
-        { name: "thickness", type: "number", title: "Celková tloušťka (mm)" },
-        { name: "wearLayer", type: "number", title: "Nášlapná vrstva (mm)" },
-        { name: "piecesInPackage", type: "number", title: "Kusů v balení" },
+        {
+          name: "dimensions",
+          type: "string",
+          title: "Rozměr lamely (mm)",
+          validation: (Rule) => Rule.required(),
+        },
+        {
+          name: "thickness",
+          type: "number",
+          title: "Celková tloušťka (mm)",
+          validation: (Rule) => Rule.required(),
+        },
+        {
+          name: "wearLayer",
+          type: "number",
+          title: "Nášlapná vrstva (mm)",
+          validation: (Rule) => Rule.required(),
+        },
+        {
+          name: "piecesInPackage",
+          type: "number",
+          title: "Kusů v balení",
+          validation: (Rule) => Rule.required(),
+        },
         {
           name: "weightPackage",
           type: "number",
           title: "Hmotnost balení (kg)",
+          validation: (Rule) => Rule.required(),
         },
-        { name: "m2InPackage", type: "number", title: "Počet m² v balení" },
+        {
+          name: "m2InPackage",
+          type: "number",
+          title: "Počet m² v balení",
+          validation: (Rule) => Rule.required(),
+        },
       ],
     }),
     defineField({

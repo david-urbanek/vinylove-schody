@@ -55,21 +55,6 @@ export const stairType = defineType({
       validation: (Rule) => Rule.required(),
     }),
     defineField({
-      name: "type",
-      title: "Typ",
-      options: {
-        list: [
-          { title: "Rovný", value: "rovny" },
-          { title: "Atypický", value: "atypicky" },
-          { title: "Nášlapy", value: "schody-naslapy" },
-          { title: "Vetknuté schody", value: "schody-vetknute" },
-        ],
-        layout: "dropdown",
-      },
-      type: "string",
-      validation: (Rule) => Rule.required(),
-    }),
-    defineField({
       name: "pattern",
       title: "Dekor",
       type: "reference",
