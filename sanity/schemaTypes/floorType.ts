@@ -108,44 +108,28 @@ export const floorType = defineType({
     defineField({
       name: "techParams",
       title: "Technické parametry",
-      type: "object",
+      type: "array",
+      // Tady definujeme, co tam bude hned po kliknutí na "Create new"
+      initialValue: [
+        { label: "Rozměr lamely", unit: "mm" },
+        { label: "Celková tloušťka", unit: "mm" },
+        { label: "Nášlapná vrstva", unit: "mm" },
+        { label: "Kusů v balení", unit: "ks" },
+        { label: "Hmotnost balení", unit: "kg" },
+        { label: "Počet m² v balení", unit: "m²" },
+      ],
       validation: (Rule) => Rule.required(),
-      fields: [
+      of: [
         {
-          name: "dimensions",
-          type: "string",
-          title: "Rozměr lamely (mm)",
-          validation: (Rule) => Rule.required(),
-        },
-        {
-          name: "thickness",
-          type: "number",
-          title: "Celková tloušťka (mm)",
-          validation: (Rule) => Rule.required(),
-        },
-        {
-          name: "wearLayer",
-          type: "number",
-          title: "Nášlapná vrstva (mm)",
-          validation: (Rule) => Rule.required(),
-        },
-        {
-          name: "piecesInPackage",
-          type: "number",
-          title: "Kusů v balení",
-          validation: (Rule) => Rule.required(),
-        },
-        {
-          name: "weightPackage",
-          type: "number",
-          title: "Hmotnost balení (kg)",
-          validation: (Rule) => Rule.required(),
-        },
-        {
-          name: "m2InPackage",
-          type: "number",
-          title: "Počet m² v balení",
-          validation: (Rule) => Rule.required(),
+          type: "object",
+          fields: [
+            { name: "label", type: "string", title: "Název" },
+            { name: "value", type: "string", title: "Hodnota" },
+            { name: "unit", type: "string", title: "Jednotka" },
+          ],
+          preview: {
+            select: { title: "label", subtitle: "value" },
+          },
         },
       ],
     }),

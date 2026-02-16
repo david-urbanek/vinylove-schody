@@ -39,7 +39,7 @@ interface RelatedProductsProps {
   className?: string;
 }
 
-const RelatedProducts = ({ sections, className }: RelatedProductsProps) => {
+const RecommendedProducts = ({ sections, className }: RelatedProductsProps) => {
   const [api, setApi] = useState<CarouselApi>();
   const [scrollProgress, setScrollProgress] = useState(0);
 
@@ -215,4 +215,4 @@ const ProductCard = ({ product }: { product: RelatedProduct }) => {
   );
 };
 
-export { RelatedProducts };
+export { RecommendedProducts };

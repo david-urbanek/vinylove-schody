@@ -72,51 +72,26 @@ export const skirtingType = defineType({
     defineField({
       name: "techParams",
       title: "Technické parametry",
-      type: "object",
-      validation: (Rule) => Rule.required(),
-      fields: [
-        defineField({
-          name: "length",
-          title: "Délka (mm)",
-          type: "number",
-          description: "Typicky 2400 mm nebo 2500 mm",
-          validation: (Rule) => Rule.required(),
-        }),
-        defineField({
-          name: "height",
-          title: "Výška (mm)",
-          type: "number",
-          description: "Např. 40, 60 nebo 80 mm",
-          validation: (Rule) => Rule.required(),
-        }),
-        defineField({
-          name: "width",
-          title: "Hloubka/Šířka (mm)",
-          type: "number",
-          description: "Jak moc lišta odstává od stěny (např. 12–20 mm)",
-          validation: (Rule) => Rule.required(),
-        }),
-        defineField({
-          name: "material",
-          title: "Materiál",
-          type: "string",
-          options: {
-            list: [
-              { title: "MDF", value: "mdf" },
-              { title: "PVC", value: "pvc" },
-              { title: "Hliník", value: "aluminium" },
-              { title: "Dýha", value: "veneer" },
-            ],
+      type: "array",
+      initialValue: [
+        { label: "Délka", unit: "mm" },
+        { label: "Výška", unit: "mm" },
+        { label: "Hloubka/Šířka", unit: "mm" },
+        { label: "Materiál", unit: "" },
+        { label: "Kabelový kanálek", unit: "" },
+      ],
+      of: [
+        {
+          type: "object",
+          fields: [
+            { name: "label", type: "string", title: "Název" },
+            { name: "value", type: "string", title: "Hodnota" },
+            { name: "unit", type: "string", title: "Jednotka" },
+          ],
+          preview: {
+            select: { title: "label", subtitle: "value" },
           },
-          validation: (Rule) => Rule.required(),
-        }),
-        defineField({
-          name: "cableChannel",
-          title: "Kabelový kanálek",
-          type: "boolean",
-          initialValue: false,
-          validation: (Rule) => Rule.required(),
-        }),
+        },
       ],
     }),
     defineField({

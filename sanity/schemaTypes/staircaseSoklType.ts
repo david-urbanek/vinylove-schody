@@ -47,46 +47,27 @@ export const staircaseSoklType = defineType({
     defineField({
       name: "techParams",
       title: "Technické parametry",
-      type: "object",
-      fields: [
-        defineField({
-          name: "thickness",
-          title: "Tloušťka (mm)",
-          type: "number",
-          hidden: ({ document }) => (document as any)?.type !== "mdf",
-        }),
-        defineField({
-          name: "height",
-          title: "Výška (mm)",
-          type: "number",
-          hidden: ({ document }) => (document as any)?.type !== "mdf",
-        }),
-        defineField({
-          name: "length",
-          title: "Délka (mm)",
-          type: "number",
-          hidden: ({ document }) => (document as any)?.type !== "mdf",
-        }),
-        defineField({
-          name: "stripHeight",
-          title: "Výška pásku (mm)",
-          type: "number",
-          initialValue: 40,
-          hidden: ({ document }) => (document as any)?.type !== "pasek",
-        }),
-        defineField({
-          name: "mdfDecor",
-          title: "Dekor / Barva MDF lišty",
-          type: "reference",
-          to: [{ type: "pattern" }],
-          hidden: ({ document }) => (document as any)?.type !== "mdf",
-        }),
-        defineField({
-          name: "siliconeColor",
-          title: "Odstín tmelu/silikonu",
-          type: "string",
-          hidden: ({ document }) => (document as any)?.type !== "silikon",
-        }),
+      type: "array",
+      initialValue: [
+        { label: "Tloušťka", unit: "mm" },
+        { label: "Výška", unit: "mm" },
+        { label: "Délka", unit: "mm" },
+        { label: "Výška pásku", unit: "mm" },
+        { label: "Dekor / Barva MDF lišty", unit: "" },
+        { label: "Odstín tmelu/silikonu", unit: "" },
+      ],
+      of: [
+        {
+          type: "object",
+          fields: [
+            { name: "label", type: "string", title: "Název" },
+            { name: "value", type: "string", title: "Hodnota" },
+            { name: "unit", type: "string", title: "Jednotka" },
+          ],
+          preview: {
+            select: { title: "label", subtitle: "value" },
+          },
+        },
       ],
     }),
     defineField({

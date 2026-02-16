@@ -1,5 +1,5 @@
 import { ProductDetail7 } from "@/components/product/product-detail7";
-import { RelatedProducts } from "@/components/product/related-products";
+import { RecommendedProducts } from "@/components/product/recomended-products";
 import { client } from "@/sanity/lib/client";
 import { Metadata, ResolvingMetadata } from "next";
 import { notFound } from "next/navigation";
@@ -71,6 +71,8 @@ export default async function Page({ params }: Props) {
     },
     link: `/produkt/${data.slug.current}`,
   };
+
+  console.log(product);
 
   // 1. Fetch Variants (Same Product Type, variants)
   let variantsQuery;
@@ -253,7 +255,7 @@ export default async function Page({ params }: Props) {
   return (
     <>
       <ProductDetail7 product={product} relatedProducts={relatedProducts} />
-      <RelatedProducts sections={sections} />
+      <RecommendedProducts sections={sections} />
     </>
   );
 }

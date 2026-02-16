@@ -85,33 +85,25 @@ export const stairType = defineType({
     defineField({
       name: "techParams",
       title: "Technické parametry",
-      type: "object",
-      validation: (Rule) => Rule.required(),
-      fields: [
-        defineField({
-          name: "wearLayer",
-          type: "number",
-          title: "Nášlapná vrstva (mm)",
-          validation: (Rule) => Rule.required(),
-        }),
-        defineField({
-          name: "stairLength",
-          type: "number",
-          title: "Délka schodu (mm)",
-          validation: (Rule) => Rule.required(),
-        }),
-        defineField({
-          name: "stairDepth",
-          type: "number",
-          title: "Hloubka nášlapu (mm)",
-          validation: (Rule) => Rule.required(),
-        }),
-        defineField({
-          name: "stairNoseHeight",
-          type: "number",
-          title: "Výška nosu (mm)",
-          validation: (Rule) => Rule.required(),
-        }),
+      type: "array",
+      initialValue: [
+        { label: "Nášlapná vrstva", unit: "mm" },
+        { label: "Délka schodu", unit: "mm" },
+        { label: "Hloubka nášlapu", unit: "mm" },
+        { label: "Výška nosu", unit: "mm" },
+      ],
+      of: [
+        {
+          type: "object",
+          fields: [
+            { name: "label", type: "string", title: "Název" },
+            { name: "value", type: "string", title: "Hodnota" },
+            { name: "unit", type: "string", title: "Jednotka" },
+          ],
+          preview: {
+            select: { title: "label", subtitle: "value" },
+          },
+        },
       ],
     }),
     defineField({

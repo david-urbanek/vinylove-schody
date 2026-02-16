@@ -1,11 +1,8 @@
 "use client";
 
-import { zodResolver } from "@hookform/resolvers/zod";
 import { Info, LucideIcon, Minus, Plus } from "lucide-react";
 import PhotoSwipeLightbox from "photoswipe/lightbox";
 import { Fragment, useEffect, useRef, useState } from "react";
-import { ControllerRenderProps, useForm } from "react-hook-form";
-import { z } from "zod";
 
 import "photoswipe/style.css";
 import { toast } from "sonner";
@@ -14,10 +11,12 @@ import { useCart } from "@/hooks/useCart";
 import { useMediaQuery } from "@/hooks/useMediaQuery";
 import { addVat, cn } from "@/lib/utils";
 import { urlFor } from "@/sanity/lib/image";
-import { ProductPrice } from "@/types/product";
 
 import { ProductVariants } from "@/components/product/product-variants";
 import { Price, PriceValue } from "@/components/shadcnblocks/price";
+
+import { FloorProductForm } from "./forms/floor-product-form";
+import { SimpleProductForm } from "./forms/simple-product-form";
 
 import {
   Accordion,
@@ -27,7 +26,6 @@ import {
 } from "@/components/ui/accordion";
 import { AspectRatio } from "@/components/ui/aspect-ratio";
 import { Badge } from "@/components/ui/badge";
-import { Button } from "@/components/ui/button";
 import {
   Carousel,
   type CarouselApi,
@@ -36,8 +34,6 @@ import {
   CarouselNext,
   CarouselPrevious,
 } from "@/components/ui/carousel";
-import { Form, FormControl, FormField, FormItem } from "@/components/ui/form";
-import { Input } from "@/components/ui/input";
 
 // ... existing code
 
@@ -67,22 +63,12 @@ interface ProductInfoSectionsProps {
   }>;
 }
 
-interface QuantityProps {
-  field: ControllerRenderProps<FormType>;
-  max?: number;
-  min?: number;
+interface ProductInfoSectionsProps {
+  info: Array<{
+    title: string;
+    content: React.ReactNode;
+  }>;
 }
-
-interface Hinges {
-  label: string;
-  id: string;
-  name: FieldName;
-  min?: number;
-  max?: number;
-}
-
-type FormType = z.infer<typeof formSchema>;
-type FieldName = keyof FormType;
 
 // Fallback values if not provided in Sanity
 const DEFAULT_PRICE = 0;
@@ -96,100 +82,6 @@ interface ProductDetail7Props {
 }
 
 // ... imports
-
-interface StairProductFormProps {
-  availability: boolean;
-  price: ProductPrice;
-  allowSample?: boolean;
-  onAddToCart: (quantity: number) => void;
-  onOrderSample?: () => void;
-}
-
-const StairProductForm = ({
-  availability,
-  price,
-  allowSample = true,
-  onAddToCart,
-  onOrderSample,
-}: StairProductFormProps) => {
-  const form = useForm<FormType>({
-    resolver: zodResolver(formSchema),
-    defaultValues: {
-      quantity: 1,
-    },
-  });
-
-  const quantity = form.watch("quantity");
-  // const totalPrice = quantity * pricePerPiece;
-
-  function onSubmit(values: FormType) {
-    onAddToCart(values.quantity);
-  }
-
-  return (
-    <Form {...form}>
-      <form
-        onSubmit={form.handleSubmit(onSubmit)}
-        className="flex flex-col gap-6 py-4"
-      >
-        <div className="space-y-2">
-          <span className="text-sm font-medium">Počet kusů:</span>
-          <div className="flex w-32 items-center">
-            <FormField
-              control={form.control}
-              name="quantity"
-              render={({ field }) => (
-                <FormItem>
-                  <FormControl>
-                    <Quantity field={field} min={1} max={999} />
-                  </FormControl>
-                </FormItem>
-              )}
-            />
-          </div>
-        </div>
-
-        <div className="flex items-baseline gap-2">
-          <Price className="text-2xl font-bold">
-            <PriceValue
-              price={addVat(price.priceWithoutVAT || 0) * quantity}
-              currency={price.currency}
-            />
-          </Price>
-          <Price className="text-sm text-muted-foreground">
-            <PriceValue
-              price={(price.priceWithoutVAT || 0) * quantity}
-              currency={price.currency}
-            />
-            <span>bez DPH</span>
-          </Price>
-        </div>
-
-        <div className="flex flex-col gap-3 sm:flex-row w-full">
-          <Button
-            size="lg"
-            type="submit"
-            className="flex-1"
-            disabled={!availability}
-          >
-            {availability ? "PŘIDAT DO KOŠÍKU" : "Vyprodáno"}
-          </Button>
-          {allowSample && (
-            <Button
-              size="lg"
-              variant="outline"
-              type="button"
-              className="flex-1"
-              onClick={onOrderSample}
-            >
-              OBJEDNAT VZOREK
-            </Button>
-          )}
-        </div>
-      </form>
-    </Form>
-  );
-};
 
 // ... existing ProductDetail7 component ...
 
@@ -210,12 +102,9 @@ const ProductDetail7 = ({
     techParams,
     features,
     pattern,
-    pricePerUnit,
     typeLabel,
     slug,
   } = product || {};
-
-  console.log("Tohle je real product", product);
 
   const { addItem, items } = useCart();
 
@@ -297,138 +186,13 @@ const ProductDetail7 = ({
   const isAccessory = _type === "accessory";
   const isFloor = _type === "floor";
 
-  // Tech params content construction
-  let techContent;
-  if (isStair) {
-    techContent = techParams ? (
-      <ul className="list-disc pl-5 space-y-1">
-        {techParams.dimensions && (
-          <li>
-            <strong>Rozměr:</strong> {techParams.dimensions}
-          </li>
-        )}
-        {techParams.stairLength && (
-          <li>
-            <strong>Délka:</strong> {techParams.stairLength} mm
-          </li>
-        )}
-        {techParams.stairDepth && (
-          <li>
-            <strong>Hloubka:</strong> {techParams.stairDepth} mm
-          </li>
-        )}
-        {techParams.stairNoseHeight && (
-          <li>
-            <strong>Výška nosu:</strong> {techParams.stairNoseHeight} mm
-          </li>
-        )}
-        {techParams.thickness && (
-          <li>
-            <strong>Tloušťka:</strong> {techParams.thickness} mm
-          </li>
-        )}
-        {techParams.wearLayer && (
-          <li>
-            <strong>Nášlapná vrstva:</strong> {techParams.wearLayer} mm
-          </li>
-        )}
-      </ul>
-    ) : null;
-  } else if (isSkirting) {
-    techContent = techParams ? (
-      <ul className="list-disc pl-5 space-y-1">
-        {techParams.length && (
-          <li>
-            <strong>Délka:</strong> {techParams.length} mm
-          </li>
-        )}
-        {techParams.height && (
-          <li>
-            <strong>Výška:</strong> {techParams.height} mm
-          </li>
-        )}
-        {techParams.width && (
-          <li>
-            <strong>Hloubka/Šířka:</strong> {techParams.width} mm
-          </li>
-        )}
-        {techParams.material && (
-          <li>
-            <strong>Materiál:</strong> {techParams.material}
-          </li>
-        )}
-        {techParams.cableChannel !== undefined && (
-          <li>
-            <strong>Kabelový kanálek:</strong>{" "}
-            {techParams.cableChannel ? "Ano" : "Ne"}
-          </li>
-        )}
-      </ul>
-    ) : null;
-  } else if (isTransitionProfile) {
-    techContent = techParams ? (
-      <ul className="list-disc pl-5 space-y-1">
-        {techParams.length && (
-          <li>
-            <strong>Délka:</strong> {techParams.length} mm
-          </li>
-        )}
-        {techParams.width && (
-          <li>
-            <strong>Šířka:</strong> {techParams.width} mm
-          </li>
-        )}
-        {techParams.elevation && (
-          <li>
-            <strong>Převýšení:</strong> {techParams.elevation}
-          </li>
-        )}
-        {techParams.mounting && (
-          <li>
-            <strong>Montáž:</strong> {techParams.mounting}
-          </li>
-        )}
-      </ul>
-    ) : null;
-  } else if (isAccessory) {
-    // Accessories usually don't have detailed tech params or they are in description
-    techContent = null;
-  } else {
-    techContent = techParams ? (
-      <ul className="list-disc pl-5 space-y-1">
-        {techParams.dimensions && (
-          <li>
-            <strong>Rozměr lamely:</strong> {techParams.dimensions}
-          </li>
-        )}
-        {techParams.thickness && (
-          <li>
-            <strong>Tloušťka:</strong> {techParams.thickness} mm
-          </li>
-        )}
-        {techParams.wearLayer && (
-          <li>
-            <strong>Nášlapná vrstva:</strong> {techParams.wearLayer} mm
-          </li>
-        )}
-        {techParams.piecesInPackage && (
-          <li>
-            <strong>Kusů v balení:</strong> {techParams.piecesInPackage}
-          </li>
-        )}
-        {techParams.m2InPackage && (
-          <li>
-            <strong>m² v balení:</strong> {techParams.m2InPackage}
-          </li>
-        )}
-        {techParams.weightPackage && (
-          <li>
-            <strong>Hmotnost balení:</strong> {techParams.weightPackage} kg
-          </li>
-        )}
-      </ul>
-    ) : null;
-  }
+  const techContent = techParams?.map((param: any, index: number) => {
+    return (
+      <li key={index}>
+        <strong>{param.label}:</strong> {param.value} {param.unit}
+      </li>
+    );
+  });
 
   // Construct Accordion Data
   const accordionData = [
@@ -589,7 +353,7 @@ const ProductDetail7 = ({
             )}
 
             {isFloor ? (
-              <ProductForm
+              <FloorProductForm
                 hinges={{
                   quantity: {
                     label: "Množství",
@@ -602,11 +366,12 @@ const ProductDetail7 = ({
                 availability={true}
                 price={price}
                 packageSize={packageSize}
+                allowSample={true}
                 onAddToCart={handleAddToCart}
                 onOrderSample={handleOrderSample}
               />
             ) : (
-              <StairProductForm
+              <SimpleProductForm
                 availability={true}
                 price={price}
                 allowSample={isStair}
@@ -620,255 +385,6 @@ const ProductDetail7 = ({
         </div>
       </div>
     </section>
-  );
-};
-
-const formSchema = z.object({
-  quantity: z.number().min(1),
-});
-
-interface ProductFormProps {
-  availability: boolean;
-  hinges: Record<FieldName, Hinges>;
-  price: ProductPrice;
-  packageSize: number;
-  onAddToCart: (quantity: number) => void;
-  onOrderSample?: () => void;
-}
-
-// ...
-
-const ProductForm = ({
-  availability,
-  hinges,
-  price,
-  packageSize,
-  onAddToCart,
-  onOrderSample,
-}: ProductFormProps) => {
-  const submitButtonRef = useRef<HTMLButtonElement>(null);
-  const stickyButtonWrapperRef = useRef<HTMLDivElement>(null);
-  const form = useForm<FormType>({
-    resolver: zodResolver(formSchema),
-    defaultValues: {
-      quantity: 1,
-    },
-  });
-
-  const quantity = form.watch("quantity");
-  const totalM2 = quantity * packageSize;
-
-  function onSubmit(values: FormType) {
-    onAddToCart(values.quantity);
-  }
-
-  useEffect(() => {
-    const observer = new IntersectionObserver(
-      (entries) => {
-        entries.forEach((entry) => {
-          if (stickyButtonWrapperRef.current) {
-            stickyButtonWrapperRef.current.classList.toggle(
-              "opacity-0",
-              entry.isIntersecting,
-            );
-          }
-        });
-      },
-      {
-        threshold: 0.02,
-      },
-    );
-    if (submitButtonRef.current) {
-      observer.observe(submitButtonRef.current);
-    }
-  }, []);
-
-  const quantityHinges = hinges?.quantity;
-
-  return (
-    <Form {...form}>
-      <form
-        className="flex flex-col gap-6 py-4"
-        onSubmit={form.handleSubmit(onSubmit)}
-      >
-        <div className="flex flex-col gap-4 sm:flex-row sm:items-end sm:gap-8">
-          <div className="space-y-2">
-            <span className="text-sm font-medium">Počet m²:</span>
-            <div className="flex h-10 items-center overflow-hidden rounded-md border shadow-xs bg-muted/50">
-              <Button
-                onClick={() =>
-                  form.setValue(
-                    "quantity",
-                    Math.max(quantityHinges.min || 1, quantity - 1),
-                  )
-                }
-                variant="ghost"
-                type="button"
-                size="icon"
-                className="size-10 shrink-0 rounded-none bg-background hover:bg-muted"
-              >
-                <Minus className="size-4" />
-              </Button>
-              <div className="flex h-full w-24 items-center justify-center border-x bg-background px-2 text-center text-sm font-medium">
-                {totalM2.toFixed(3)}
-              </div>
-              <Button
-                onClick={() =>
-                  form.setValue(
-                    "quantity",
-                    Math.min(quantityHinges.max || 999, quantity + 1),
-                  )
-                }
-                variant="ghost"
-                type="button"
-                size="icon"
-                className="size-10 shrink-0 rounded-none bg-background hover:bg-muted"
-              >
-                <Plus className="size-4" />
-              </Button>
-            </div>
-          </div>
-
-          <div className="pb-3 text-muted-foreground">=</div>
-
-          <div className="space-y-2">
-            <span className="text-sm font-medium">Počet balení:</span>
-            <FormField
-              control={form.control}
-              name="quantity"
-              render={({ field }) => (
-                <FormItem>
-                  <FormControl>
-                    <Quantity
-                      field={field}
-                      min={quantityHinges.min}
-                      max={quantityHinges.max}
-                    />
-                  </FormControl>
-                </FormItem>
-              )}
-            />
-          </div>
-        </div>
-
-        <div className="flex items-baseline gap-2">
-          <Price className="text-2xl font-bold">
-            <PriceValue
-              price={addVat(price.priceWithoutVAT || 0) * quantity}
-              currency={price.currency}
-            />
-          </Price>
-          <Price className="text-sm text-muted-foreground">
-            <PriceValue
-              price={(price.priceWithoutVAT || 0) * quantity}
-              currency={price.currency}
-            />
-            <span>bez DPH</span>
-          </Price>
-        </div>
-
-        <div className="flex flex-col gap-3 sm:flex-row w-full">
-          <Button
-            size="lg"
-            type="submit"
-            className="flex-1"
-            ref={submitButtonRef}
-            disabled={!availability}
-          >
-            {availability ? "PŘIDAT DO KOŠÍKU" : "Vyprodáno"}
-          </Button>
-          <Button
-            size="lg"
-            variant="outline"
-            type="button"
-            className="flex-1"
-            onClick={onOrderSample}
-          >
-            OBJEDNAT VZOREK
-          </Button>
-        </div>
-        {availability && (
-          <div
-            ref={stickyButtonWrapperRef}
-            className="fixed bottom-0 left-0 z-10 w-full bg-background p-4 opacity-0 transition-opacity duration-300 md:hidden"
-          >
-            <Button
-              size="lg"
-              type="submit"
-              className="w-full"
-              disabled={!availability}
-            >
-              PŘIDAT DO KOŠÍKU
-            </Button>
-          </div>
-        )}
-      </form>
-    </Form>
-  );
-};
-
-const Quantity = ({ field, max, min }: QuantityProps) => {
-  return (
-    <div className="flex h-10 w-32 shrink-0 items-center justify-between overflow-hidden rounded-md border shadow-xs bg-muted/50">
-      <Button
-        onClick={() =>
-          field.onChange(Math.max(min || 1, Number(field.value || 1) - 1))
-        }
-        variant="ghost"
-        type="button"
-        size="icon"
-        className="size-10 shrink-0 rounded-none bg-background hover:bg-muted"
-      >
-        <Minus className="size-4" />
-      </Button>
-      <Input
-        {...field}
-        value={field.value ?? ""}
-        onChange={(e) => {
-          const raw = e.target.value;
-          const parsed = parseInt(raw, 10);
-          if (raw === "") {
-            field.onChange("");
-          } else if (!isNaN(parsed)) {
-            field.onChange(parsed);
-          }
-        }}
-        type="number"
-        min={min ? min : 1}
-        max={max ? max : 999}
-        className="h-full w-full rounded-none border-x border-y-0 !bg-background px-1 text-center shadow-none focus-visible:ring-0"
-      />
-      <Button
-        onClick={() =>
-          field.onChange(Math.min(max || 999, Number(field.value || 1) + 1))
-        }
-        variant="ghost"
-        type="button"
-        size="icon"
-        className="size-10 shrink-0 rounded-none bg-background hover:bg-muted"
-      >
-        <Plus className="size-4" />
-      </Button>
-    </div>
-  );
-};
-
-const SustainabilitySection = ({
-  sustainability,
-}: SustainabilitySectionProps) => {
-  if (!sustainability) return;
-  return (
-    <div className="flex flex-wrap gap-10 pt-1 pb-8">
-      {sustainability.map((item, index) => (
-        <div
-          key={`product-detail-7-sustainability-${index}`}
-          className="flex flex-col flex-wrap items-center gap-1"
-        >
-          <item.icon className="size-9 stroke-foreground stroke-1" />
-          <div className="text-xs font-light">{item.text}</div>
-        </div>
-      ))}
-    </div>
   );
 };
 

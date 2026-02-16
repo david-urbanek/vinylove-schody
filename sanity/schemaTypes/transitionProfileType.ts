@@ -56,34 +56,25 @@ export const transitionProfileType = defineType({
     defineField({
       name: "techParams",
       title: "Technické parametry",
-      type: "object",
-      fields: [
-        defineField({
-          name: "length",
-          type: "number",
-          title: "Délka (mm)",
-          validation: (Rule) => Rule.required(),
-        }),
-        defineField({
-          name: "width",
-          type: "number",
-          title: "Šířka (mm)",
-          validation: (Rule) => Rule.required(),
-        }),
-        defineField({
-          name: "height",
-          type: "string",
-          title: "Výška (mm)",
-          description: "Např. 0-12 mm",
-          validation: (Rule) => Rule.required(),
-        }),
-        defineField({
-          name: "mounting",
-          type: "string",
-          title: "Montáž",
-          options: { list: ["Samolepicí", "Narážecí", "Šroubovací"] },
-          validation: (Rule) => Rule.required(),
-        }),
+      type: "array",
+      initialValue: [
+        { label: "Délka", unit: "mm" },
+        { label: "Šířka", unit: "mm" },
+        { label: "Výška", unit: "mm" },
+        { label: "Montáž", unit: "" },
+      ],
+      of: [
+        {
+          type: "object",
+          fields: [
+            { name: "label", type: "string", title: "Název" },
+            { name: "value", type: "string", title: "Hodnota" },
+            { name: "unit", type: "string", title: "Jednotka" },
+          ],
+          preview: {
+            select: { title: "label", subtitle: "value" },
+          },
+        },
       ],
     }),
   ],
