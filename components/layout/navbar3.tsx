@@ -552,11 +552,11 @@ const Navbar3 = ({ className }: Navbar3Props) => {
               >
                 <div className="w-full overflow-clip rounded-lg">
                   <Image
-                    src="https://images.unsplash.com/photo-1581850518616-bcb8077a2536?auto=format&fit=crop&w=800&q=80"
+                    src="/realizace/podlahy/siroke/podlaha-1.png"
                     alt="Vinylové podlahy"
                     className="aspect-2/1 h-full w-full object-cover object-center"
-                    width={100}
-                    height={100}
+                    width={1000}
+                    height={1000}
                   />
                 </div>
                 <div>

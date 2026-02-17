@@ -1,0 +1,5 @@
+sanity documents query "*[_type == 'floor'][0...20]._id" --apiVersion 2021-03-25  
+  | groq "*" -o ndjson 
+  | xargs sanity documents delete
+
+  sanity documents query '*[_type == "stair"]._id' --apiVersion 2021-03-25 | jq -r '.[]' | xargs -I {} sanity documents delete {}

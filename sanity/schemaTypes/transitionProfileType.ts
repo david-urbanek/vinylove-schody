@@ -21,9 +21,21 @@ export const transitionProfileType = defineType({
     defineField({
       name: "slug",
       title: "Slug",
+      description:
+        "Je potřeba dodržovat strukturu URL adresy: prechodova-lista-[název]",
       type: "slug",
-      options: { source: "title" },
-      validation: (Rule) => Rule.required(),
+      options: { source: "title", maxLength: 96 },
+      validation: (Rule) =>
+        Rule.required().custom((slug) => {
+          const current = slug?.current || "";
+          if (!current.startsWith("prechodova-lista-")) {
+            return 'Slug musí začínat předponou "prechodova-lista-"';
+          }
+          if (current === "prechodova-lista-") {
+            return "Za pomlčkou musí následovat název (např. prechodova-lista-dub-classic)";
+          }
+          return true;
+        }),
     }),
     defineField({
       name: "pattern",

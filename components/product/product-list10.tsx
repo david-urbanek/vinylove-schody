@@ -57,11 +57,11 @@ const ProductList10 = ({
           <h2 className="font-serif text-3xl md:text-4xl lg:text-5xl text-foreground font-medium tracking-tight">
             {title}
           </h2>
-          <div className="flex items-center gap-3 w-full md:w-auto">
+          <div className="hidden md:flex items-center gap-3 w-auto">
             <span className="text-sm font-medium text-muted-foreground whitespace-nowrap">
               Řadit podle:
             </span>
-            <div className="w-full md:w-48">
+            <div className="w-48">
               <Select value={sortOrder} onValueChange={handleSortChange}>
                 <SelectTrigger>
                   <SelectValue placeholder="Seřadit podle" />
@@ -81,10 +81,27 @@ const ProductList10 = ({
           </p>
         ) : (
           <>
-            <p className="mb-10 md:mb-16 text-lg text-muted-foreground text-center md:text-left max-w-2xl text-balance">
+            <p className="mb-6 md:mb-16 text-lg text-muted-foreground text-left max-w-2xl text-balance">
               Prohlédněte si naši širokou nabídku produktů v kategorii {title}.
               Vyberte si to nejlepší pro váš domov.
             </p>
+            <div className="flex md:hidden items-center gap-3 w-full mb-10">
+              <span className="text-sm font-medium text-muted-foreground whitespace-nowrap">
+                Řadit podle:
+              </span>
+              <div className="w-full">
+                <Select value={sortOrder} onValueChange={handleSortChange}>
+                  <SelectTrigger>
+                    <SelectValue placeholder="Seřadit podle" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="default">Doporučeno</SelectItem>
+                    <SelectItem value="asc">Od nejlevnějšího</SelectItem>
+                    <SelectItem value="desc">Od nejdražšího</SelectItem>
+                  </SelectContent>
+                </Select>
+              </div>
+            </div>
             <div className="flex flex-col gap-12 lg:gap-20">
               {items.map((item, index) => (
                 <div

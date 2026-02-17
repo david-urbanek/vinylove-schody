@@ -1,68 +1,9 @@
 import { ProductList10 } from "@/components/product/product-list10";
+import { CATEGORY_MAP } from "@/data/data";
 import { addVat, getTags } from "@/lib/utils";
 import { client } from "@/sanity/lib/client";
 import { Product, ProductList } from "@/types/product";
 import { Metadata, ResolvingMetadata } from "next";
-
-// Define the mapping configurations
-const CATEGORY_MAP: Record<
-  string,
-  { query: string; title: string; params?: Record<string, string> }
-> = {
-  // Floors
-  "podlahy-click": {
-    query: `*[_type == "floor" && category == "podlahy-click"]`,
-    title: "Vinylové podlahy Click",
-  },
-  "podlahy-lepena": {
-    query: `*[_type == "floor" && category == "podlahy-lepene"]`,
-    title: "Lepené vinylové podlahy",
-  },
-
-  // Stairs
-  "schody-bez-nosu": {
-    query: `*[_type == "stair" && category == "schody-bez-nosu"]`,
-    title: "Schody bez nosu",
-  },
-  "schody-s-nosem": {
-    query: `*[_type == "stair" && category == "schody-s-nosem"]`,
-    title: "Schody s nosem",
-  },
-  "schody-naslapy": {
-    query: `*[_type == "stair" && category == "schody-naslapy"]`,
-    title: "Nášlapy",
-  },
-  "schody-vetknute": {
-    query: `*[_type == "stair" && category == "schody-vetknute"]`,
-    title: "Vetknuté schody",
-  },
-
-  // Others (All items of type)
-  "obvodove-listy": {
-    query: `*[_type == "skirting"]`,
-    title: "Obvodové lišty",
-  },
-  "prechodove-listy": {
-    query: `*[_type == "transitionProfile"]`,
-    title: "Přechodové lišty",
-  },
-  "zakonceni-u-steny": {
-    query: `*[_type == "staircaseSokl"]`,
-    title: "Zakončení u stěny",
-  },
-  lepidla: {
-    query: `*[_type == "accessory" && type == "lepidla"]`,
-    title: "Lepidla",
-  },
-  sterky: {
-    query: `*[_type == "accessory" && type == "sterky"]`,
-    title: "Stěrky",
-  },
-  penetrace: {
-    query: `*[_type == "accessory" && type == "penetrace"]`,
-    title: "Penetrace",
-  },
-};
 
 type Props = {
   params: Promise<{ slug: string }>;

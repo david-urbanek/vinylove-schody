@@ -21,12 +21,24 @@ export const accessoryType = defineType({
     defineField({
       name: "slug",
       title: "Slug",
+      description:
+        "Je potřeba dodržovat strukturu URL adresy: prislusenstvi-[název]",
       type: "slug",
       options: {
         source: "title",
         maxLength: 96,
       },
-      validation: (Rule) => Rule.required(),
+      validation: (Rule) =>
+        Rule.required().custom((slug) => {
+          const current = slug?.current || "";
+          if (!current.startsWith("prislusenstvi-")) {
+            return 'Slug musí začínat předponou "prislusenstvi-"';
+          }
+          if (current === "prislusenstvi-") {
+            return "Za pomlčkou musí následovat název (např. prislusenstvi-lepidlo-flex)";
+          }
+          return true;
+        }),
     }),
     defineField({
       name: "type",

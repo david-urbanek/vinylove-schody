@@ -21,6 +21,8 @@ export const skirtingType = defineType({
     defineField({
       name: "slug",
       title: "Slug",
+      description:
+        "Je potřeba dodržovat strukturu URL adresy: obvodova-lista-[název]",
       type: "slug",
       options: {
         source: "title",
