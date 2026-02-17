@@ -6,6 +6,7 @@ import { useCallback, useEffect, useState } from "react";
 
 import { cn } from "@/lib/utils";
 import { urlFor } from "@/sanity/lib/image";
+import { Product, Tag } from "@/types/product";
 
 import { Price, PriceValue } from "@/components/shadcnblocks/price";
 import { AspectRatio } from "@/components/ui/aspect-ratio";
@@ -33,31 +34,6 @@ import {
   TooltipTrigger,
 } from "@/components/ui/tooltip";
 
-// Sanity types
-interface SanityImage {
-  asset: {
-    _ref: string;
-  };
-}
-
-interface SanityPattern {
-  title: string;
-  image?: SanityImage;
-}
-
-interface SanityProduct {
-  _id: string;
-  title: string;
-  slug: { current: string };
-  mainImage: SanityImage;
-  gallery?: SanityImage[];
-  pattern?: SanityPattern;
-  pricePerUnit: number;
-  tags?: string[];
-  typeLabel: string;
-  category: string;
-}
-
 interface PromoData {
   image: string;
   title: string;
@@ -72,42 +48,18 @@ interface CarouselSection {
   title: string;
   value: string;
   promotion: PromoData;
-  products: SanityProduct[];
+  products: Product[];
 }
 
 type PromoCardProps = PromoData;
 
-type BadgeData = {
-  text: string;
-  color: string;
-};
-
-type ProductCardProps = SanityProduct;
-
 interface ProductColorsProps {
-  pattern?: SanityPattern;
+  pattern?: Product["pattern"];
 }
 
 interface BadgesProps {
-  badges?: Array<BadgeData>;
+  badges?: Tag[];
 }
-
-// Removed hardcoded PRODUCTS_LIST - now passed as props
-
-// Helper to map tags to badge data
-const mapTagsToBadges = (tags?: string[]): BadgeData[] => {
-  if (!tags) return [];
-
-  const badgeMap: Record<string, { text: string; color: string }> = {
-    new: { text: "Novinka", color: "#0ea5e9" },
-    sale: { text: "Akce", color: "#ef4444" },
-    clearance: { text: "Doprodej", color: "#f59e0b" },
-  };
-
-  return tags.map((tag) => badgeMap[tag] || { text: tag, color: "#6b7280" });
-};
-
-/* OLD HARDCODED DATA REMOVED - SEE LINES 106-388 IN ORIGINAL FILE */
 
 interface ProductCarouselProps {
   className?: string;
@@ -232,31 +184,24 @@ const PromoCard = ({ image, title, cta, kicker }: PromoCardProps) => {
 };
 
 const ProductCard = ({
-  _id,
   title,
-  slug,
   mainImage,
   gallery,
-  pricePerUnit,
+  price,
   typeLabel,
   pattern,
   tags,
-}: ProductCardProps) => {
+  link,
+}: Product) => {
   // Generate image URLs using Sanity's urlFor
   const mainImageUrl = mainImage ? urlFor(mainImage).width(800).url() : "";
   const galleryImages = gallery && gallery.length > 0 ? gallery : [];
-
-  // Map tags to badges
-  const badges = mapTagsToBadges(tags);
-
-  // Generate product link
-  const productLink = `/produkt/${slug.current}`;
 
   return (
     <Card className="relative block rounded-none border-none bg-background p-0 shadow-none">
       <CardContent className="p-0">
         <div className="group relative overflow-hidden">
-          <a href={productLink}>
+          <a href={link}>
             <AspectRatio ratio={1} className="overflow-hidden rounded-xl">
               {/* Main image */}
               <div className="absolute inset-0 size-full transition-opacity duration-700 z-20 group-hover:opacity-0">
@@ -280,7 +225,7 @@ const ProductCard = ({
             </AspectRatio>
           </a>
           <div className="absolute start-2.5 top-2.5 z-60">
-            <Badges badges={badges} />
+            <Badges badges={tags} />
           </div>
           <div className="absolute end-2.5 bottom-2.5 z-60 md:hidden">
             <Button variant="secondary" size="icon" className="rounded-full">
@@ -292,12 +237,32 @@ const ProductCard = ({
           <span className="text-xs leading-loose font-bold text-muted-foreground uppercase">
             {typeLabel}
           </span>
-          <a href={productLink} className="underline-offset-4 hover:underline">
+          <a href={link} className="underline-offset-4 hover:underline">
             <CardTitle className="leading-normal">{title}</CardTitle>
           </a>
-          <Price onSale={false} className="text-sm leading-normal font-bold">
-            <PriceValue price={pricePerUnit} currency="CZK" variant="regular" />
-          </Price>
+          <div className="flex flex-col gap-0.5">
+            <Price className="text-sm leading-normal font-bold">
+              <PriceValue
+                price={price.priceWithVAT}
+                currency={price.currency}
+                variant="regular"
+              />
+              <span className="text-xs font-normal text-muted-foreground ml-1">
+                vč. DPH
+              </span>
+            </Price>
+            {price.priceWithoutVAT && (
+              <Price className="text-xs text-muted-foreground">
+                <PriceValue
+                  price={price.priceWithoutVAT}
+                  currency={price.currency}
+                  variant="regular"
+                  className="text-muted-foreground"
+                />
+                <span className="text-xs ml-1">bez DPH</span>
+              </Price>
+            )}
+          </div>
           {pattern && <ProductColors pattern={pattern} />}
         </div>
       </CardContent>

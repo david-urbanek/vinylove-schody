@@ -2,13 +2,40 @@ import { About } from "@/components/homepage/about6";
 import { Hero } from "@/components/homepage/hero";
 import { Process1 } from "@/components/homepage/process1";
 import { ProductCarousel } from "@/components/product/product-carousel";
+import { addVat, getTags } from "@/lib/utils";
 import { client } from "@/sanity/lib/client";
+import { Product } from "@/types/product";
+
+// Transform raw Sanity data into Product[]
+function toProduct(item: any): Product {
+  return {
+    _id: item._id,
+    _type: item._type,
+    title: item.title,
+    description: item.description || "",
+    slug: item.slug,
+    mainImage: item.mainImage,
+    gallery: item.gallery,
+    pattern: item.pattern,
+    pricePerUnit: item.pricePerUnit,
+    price: {
+      priceWithoutVAT: item.pricePerUnit,
+      priceWithVAT: addVat(item.pricePerUnit),
+      currency: "CZK",
+    },
+    link: `/produkt/${item.slug?.current}`,
+    typeLabel: item.typeLabel,
+    category: item.category,
+    tags: getTags(item.tags),
+  };
+}
 
 export default async function Home() {
   // Fetch floors with balanced distribution
   const clickFloors = await client.fetch(`
     *[_type == "floor" && category == "podlahy-click"] | order(_createdAt desc) [0...8] {
       _id,
+      _type,
       title,
       slug,
       mainImage,
@@ -24,6 +51,7 @@ export default async function Home() {
   const glueFloors = await client.fetch(`
     *[_type == "floor" && category == "podlahy-lepene"] | order(_createdAt desc) [0...7] {
       _id,
+      _type,
       title,
       slug,
       mainImage,
@@ -36,12 +64,14 @@ export default async function Home() {
     }
   `);
 
-  const floors = [...clickFloors, ...glueFloors];
+  const floors = [...clickFloors, ...glueFloors].map(toProduct);
 
   // Fetch stairs (~15 products)
-  const stairs = await client.fetch(`
+  const stairs = (
+    await client.fetch(`
     *[_type == "stair"] | order(_createdAt desc) [0...15] {
       _id,
+      _type,
       title,
       slug,
       mainImage,
@@ -52,7 +82,8 @@ export default async function Home() {
       typeLabel,
       category
     }
-  `);
+  `)
+  ).map(toProduct);
 
   // Prepare sections for ProductCarousel
   const carouselSections = [
