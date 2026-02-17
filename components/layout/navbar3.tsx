@@ -174,7 +174,14 @@ const Navbar3 = ({ className }: Navbar3Props) => {
             <div className="shrink-0">
               {(!open || !submenu) && (
                 <>
-                  <Link href="/" className="flex items-center">
+                  <Link
+                    href="/"
+                    className="flex items-center"
+                    onClick={() => {
+                      setOpen(false);
+                      setSubmenu(null);
+                    }}
+                  >
                     <Image
                       src="/logo/full-logo.svg"
                       alt="Vinylové schody"

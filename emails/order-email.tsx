@@ -17,6 +17,7 @@ import { EmailCartItem } from "@/types/product";
 interface OrderEmailProps {
   products: EmailCartItem[];
   totalPrice: number;
+  totalPriceWithoutVAT: number;
   customer: {
     firstName: string;
     lastName: string;
@@ -33,6 +34,7 @@ interface OrderEmailProps {
 export const OrderEmail = ({
   products,
   totalPrice,
+  totalPriceWithoutVAT,
   customer,
 }: OrderEmailProps) => {
   const formattedDate = new Intl.DateTimeFormat("cs-CZ", {
@@ -90,31 +92,56 @@ export const OrderEmail = ({
               </Heading>
 
               <div className="space-y-2">
-                {products.map((item) => (
-                  <div key={item.id} className="mb-3">
+                {products.map((item, index) => (
+                  <div
+                    key={item.id}
+                    className={`mb-3 ${
+                      index < products.length - 1
+                        ? "border-b border-border pb-3"
+                        : ""
+                    }`}
+                  >
                     <Link
                       href={item.url}
-                      className="text-[16px] font-medium text-foreground underline"
+                      className="text-[16px] font-medium text-foreground underline block mb-1"
                     >
                       {item.title}
                     </Link>
-                    <Text className="m-0 text-[14px] text-foreground">
-                      Cena:{" "}
-                      {formatPrice(
-                        item.price.priceWithVAT,
-                        item.price.currency,
-                      )}{" "}
-                      × {item.quantity} ks
-                    </Text>
+                    <div className="flex justify-between text-[14px] text-muted-foreground">
+                      <span>Množství: {item.quantity} ks</span>
+                      <div className="text-right">
+                        <div className="font-semibold text-foreground">
+                          {formatPrice(
+                            item.price.priceWithVAT * item.quantity,
+                            item.price.currency,
+                          )}{" "}
+                          <span className="text-[10px] font-normal text-muted-foreground">
+                            vč. DPH
+                          </span>
+                        </div>
+                        <div className="text-[12px]">
+                          {formatPrice(
+                            item.price.priceWithoutVAT * item.quantity,
+                            item.price.currency,
+                          )}{" "}
+                          <span className="text-[10px]">bez DPH</span>
+                        </div>
+                      </div>
+                    </div>
                   </div>
                 ))}
               </div>
 
               <Hr className="border-border my-4 mx-0 w-full" />
 
-              <Text className="text-lg font-semibold m-0 text-foreground">
-                Celková cena: {formatPrice(totalPrice)}
-              </Text>
+              <div className="text-right space-y-1">
+                <Text className="text-[14px] m-0 text-muted-foreground">
+                  Cena bez DPH: {formatPrice(totalPriceWithoutVAT)}
+                </Text>
+                <Text className="text-lg font-semibold m-0 text-foreground">
+                  Cena s DPH: {formatPrice(totalPrice)}
+                </Text>
+              </div>
             </Section>
 
             <Hr className="border-border my-[26px] mx-0 w-full" />

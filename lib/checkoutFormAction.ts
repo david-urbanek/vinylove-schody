@@ -39,6 +39,11 @@ export async function submitOrder(data: CheckoutFormType) {
     0,
   );
 
+  const totalPriceWithoutVAT = products.reduce(
+    (sum, item) => sum + item.price.priceWithoutVAT * item.quantity,
+    0,
+  );
+
   try {
     // 3. Send Email to the businessowner
     await resend.emails.send({
@@ -48,6 +53,7 @@ export async function submitOrder(data: CheckoutFormType) {
       react: OrderEmail({
         products,
         totalPrice,
+        totalPriceWithoutVAT,
         customer: {
           firstName,
           lastName,
@@ -78,6 +84,7 @@ export async function submitOrder(data: CheckoutFormType) {
       react: CustomerOrderEmail({
         products,
         totalPrice,
+        totalPriceWithoutVAT,
         customer: {
           firstName,
           lastName,

@@ -20,6 +20,7 @@ import * as React from "react";
 interface CustomerOrderEmailProps {
   products: EmailCartItem[];
   totalPrice: number;
+  totalPriceWithoutVAT: number;
   customer: {
     firstName: string;
     lastName: string;
@@ -36,6 +37,7 @@ interface CustomerOrderEmailProps {
 export const CustomerOrderEmail = ({
   products,
   totalPrice,
+  totalPriceWithoutVAT,
   customer,
 }: CustomerOrderEmailProps) => {
   const formattedDate = new Intl.DateTimeFormat("cs-CZ", {
@@ -50,7 +52,7 @@ export const CustomerOrderEmail = ({
     }).format(amount);
   };
 
-  const tax = totalPrice * 0.21;
+  const tax = totalPrice - totalPriceWithoutVAT;
 
   return (
     <Html>
@@ -133,12 +135,22 @@ export const CustomerOrderEmail = ({
                           {item.title}
                         </Link>
                       </Column>
-                      <Column className="text-right align-top w-[100px]">
+                      <Column className="text-right align-top w-[140px]">
                         <Text className="m-0 font-semibold text-[16px] text-foreground">
                           {formatPrice(
-                            item.price.priceWithVAT,
+                            item.price.priceWithVAT * item.quantity,
                             item.price.currency,
-                          )}
+                          )}{" "}
+                          <span className="text-[12px] font-normal text-muted-foreground">
+                            s DPH
+                          </span>
+                        </Text>
+                        <Text className="m-0 text-[14px] text-muted-foreground mt-1">
+                          {formatPrice(
+                            item.price.priceWithoutVAT * item.quantity,
+                            item.price.currency,
+                          )}{" "}
+                          <span className="text-[12px]">bez DPH</span>
                         </Text>
                         <Text className="m-0 text-[14px] text-muted-foreground mt-1">
                           Množství: {item.quantity}
@@ -159,12 +171,24 @@ export const CustomerOrderEmail = ({
               <Row>
                 <Column className="w-1/2">
                   <Text className="text-muted-foreground text-[14px] m-0">
-                    Mezisoučet
+                    Cena bez DPH
                   </Text>
                 </Column>
                 <Column className="w-1/2 text-right">
                   <Text className="text-foreground text-[14px] m-0 font-normal">
-                    {formatPrice(totalPrice)}
+                    {formatPrice(totalPriceWithoutVAT)}
+                  </Text>
+                </Column>
+              </Row>
+              <Row className="mt-2">
+                <Column className="w-1/2">
+                  <Text className="text-muted-foreground text-[14px] m-0">
+                    DPH (21%)
+                  </Text>
+                </Column>
+                <Column className="w-1/2 text-right">
+                  <Text className="text-foreground text-[14px] m-0">
+                    {formatPrice(tax)}
                   </Text>
                 </Column>
               </Row>
@@ -180,23 +204,11 @@ export const CustomerOrderEmail = ({
                   </Text>
                 </Column>
               </Row>
-              <Row className="mt-2">
-                <Column className="w-1/2">
-                  <Text className="text-muted-foreground text-[14px] m-0">
-                    Odhadovaná daň
-                  </Text>
-                </Column>
-                <Column className="w-1/2 text-right">
-                  <Text className="text-foreground text-[14px] m-0">
-                    {formatPrice(tax)}
-                  </Text>
-                </Column>
-              </Row>
               <Hr className="border-border my-4 mx-0 w-full" />
               <Row>
                 <Column className="w-1/2">
                   <Text className="text-lg font-semibold m-0 text-foreground">
-                    Celkem
+                    Celkem s DPH
                   </Text>
                 </Column>
                 <Column className="w-1/2 text-right">
