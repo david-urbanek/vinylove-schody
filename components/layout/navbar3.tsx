@@ -78,16 +78,14 @@ const flooringCategories = [
     description: "Maximálně odolné řešení pro vysokou zátěž.",
     href: "/produkty/podlahy-lepena",
     icon: Layers,
-    image:
-      "https://images.unsplash.com/photo-1622349788647-38e41eb20f0f?auto=format&fit=crop&w=800&q=80",
+    image: "/realizace/podlahy/siroke/podlaha-1.png",
   },
   {
     title: "Click systém",
     description: "Rychlá a jednoduchá pokládka.",
     href: "/produkty/podlahy-click",
     icon: ScanLine,
-    image:
-      "https://images.unsplash.com/photo-1534349762930-c6ec8c7d0fb9?auto=format&fit=crop&w=800&q=80",
+    image: "/realizace/podlahy/siroke/podlaha-2.png",
   },
 ];
 
