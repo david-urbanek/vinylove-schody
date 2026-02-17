@@ -11,8 +11,6 @@ export default function CartPage() {
     return <Spinner />;
   }
 
-  console.log("items", items);
-
   return (
     <div className="container mx-auto py-8">
       <Checkout4

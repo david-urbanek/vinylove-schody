@@ -171,9 +171,9 @@ const Navbar3 = ({ className }: Navbar3Props) => {
           className="min-w-full [&>div:last-child]:left-1/2 [&>div:last-child]:-translate-x-1/2"
           suppressHydrationWarning
         >
-          <div className="flex w-full items-center justify-between gap-12 py-4">
+          <div className="flex w-full items-center justify-between gap-4 py-4 lg:gap-6 xl:gap-12">
             {/* Logo */}
-            <div>
+            <div className="shrink-0">
               {(!open || !submenu) && (
                 <>
                   <Link href="/" className="flex items-center">
@@ -189,7 +189,7 @@ const Navbar3 = ({ className }: Navbar3Props) => {
               )}
               {open && submenu && (
                 <Button variant="outline" onClick={() => setSubmenu(null)}>
-                  Back
+                  Zpět
                   <ChevronLeft className="ml-2 size-4" />
                 </Button>
               )}
@@ -376,8 +376,8 @@ const Navbar3 = ({ className }: Navbar3Props) => {
                 </NavigationMenuContent>
               </NavigationMenuItem>
             </NavigationMenuList>
-            <div className="hidden items-center gap-6 lg:flex">
-              <Button variant="outline" asChild>
+            <div className="hidden shrink-0 items-center gap-4 lg:flex xl:gap-6">
+              <Button variant="outline" asChild className="whitespace-nowrap">
                 <a
                   href={`tel:${contactInfo.phone.replace(/\s/g, "")}`}
                   className="flex items-center gap-2 font-medium"

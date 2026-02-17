@@ -35,8 +35,6 @@ import {
   CarouselPrevious,
 } from "@/components/ui/carousel";
 
-// ... existing code
-
 interface ProductImagesProps {
   images: Array<{
     src: string;
@@ -63,13 +61,6 @@ interface ProductInfoSectionsProps {
   }>;
 }
 
-interface ProductInfoSectionsProps {
-  info: Array<{
-    title: string;
-    content: React.ReactNode;
-  }>;
-}
-
 // Fallback values if not provided in Sanity
 const DEFAULT_PRICE = 0;
 // Note: Packaging info is now dynamic, but we keep defaults just in case
@@ -80,10 +71,6 @@ interface ProductDetail7Props {
   product: any; // We can type this more strictly later based on Sanity Schema
   relatedProducts?: any[];
 }
-
-// ... imports
-
-// ... existing ProductDetail7 component ...
 
 const ProductDetail7 = ({
   className,
@@ -398,7 +385,7 @@ const ProductInfoSections = ({ info }: ProductInfoSectionsProps) => {
           value={`product-info-${index}`}
           key={`product-detail-7-info-${index}`}
         >
-          <AccordionTrigger className="group/trigger py-5 font-merriweather text-xl hover:no-underline [&>svg:last-of-type]:hidden">
+          <AccordionTrigger className="group/trigger py-5 font-sans text-xl hover:no-underline [&>svg:last-of-type]:hidden">
             {item.title}
             <div className="relative size-5">
               <Plus className="absolute top-0 left-0 size-full stroke-1 transition-opacity duration-300 group-data-[state=open]/trigger:opacity-0" />

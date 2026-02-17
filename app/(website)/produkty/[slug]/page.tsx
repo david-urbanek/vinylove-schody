@@ -161,14 +161,14 @@ export default async function ProductsCategoryPage(props: Props) {
 
   if (sortOrder === "asc") {
     products.sort((a, b) => {
-      const priceA = a.pricePerUnit;
-      const priceB = b.pricePerUnit;
+      const priceA = a.price.priceWithoutVAT;
+      const priceB = b.price.priceWithoutVAT;
       return priceA - priceB;
     });
   } else if (sortOrder === "desc") {
     products.sort((a, b) => {
-      const priceA = a.pricePerUnit;
-      const priceB = b.pricePerUnit;
+      const priceA = a.price.priceWithoutVAT;
+      const priceB = b.price.priceWithoutVAT;
       return priceB - priceA;
     });
   }

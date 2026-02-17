@@ -72,8 +72,6 @@ export default async function Page({ params }: Props) {
     link: `/produkt/${data.slug.current}`,
   };
 
-  console.log(product);
-
   // 1. Fetch Variants (Same Product Type, variants)
   let variantsQuery;
   let variantsParams;

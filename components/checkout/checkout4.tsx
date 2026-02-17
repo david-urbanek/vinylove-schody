@@ -66,8 +66,6 @@ const Checkout4 = ({
     );
   }
 
-  console.log("cartItems", cartItems);
-
   return (
     <section className={cn("min-h-screen", className)}>
       <div className="grid min-h-screen lg:grid-cols-2">

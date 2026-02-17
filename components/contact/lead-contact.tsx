@@ -2,7 +2,6 @@
 
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Facebook, Instagram, Mail, MapPin, Phone } from "lucide-react";
-import Form from "next/form";
 import { useEffect } from "react";
 import { Controller, useForm } from "react-hook-form";
 import * as z from "zod";
@@ -84,7 +83,6 @@ const LeadContact = ({ className }: LeadContactProps) => {
   }, [form]);
 
   function onSubmit(values: LeadFormValues) {
-    console.log(values);
     // TODO: Add submission logic
   }
 
@@ -197,8 +195,7 @@ const LeadContact = ({ className }: LeadContactProps) => {
             </CardHeader>
             <CardContent>
               <ShadcnForm {...form}>
-                <Form
-                  action=""
+                <form
                   onSubmit={form.handleSubmit(onSubmit)}
                   className="space-y-4"
                 >
@@ -320,7 +317,7 @@ const LeadContact = ({ className }: LeadContactProps) => {
                       Odeslat zprávu
                     </Button>
                   </div>
-                </Form>
+                </form>
               </ShadcnForm>
             </CardContent>
           </Card>

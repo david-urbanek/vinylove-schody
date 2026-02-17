@@ -7,6 +7,7 @@ import { useEffect } from "react";
 
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
+import { contactInfo } from "@/data/data";
 import { useCartStore } from "@/store/useCartStore";
 
 export default function ThankYouPage() {
@@ -199,19 +200,19 @@ export default function ThankYouPage() {
             </p>
             <div className="flex flex-wrap items-center justify-center gap-4">
               <a
-                href="tel:+420123456789"
+                href={`tel:${contactInfo.phone.replace(/\s/g, "")}`}
                 className="flex items-center gap-2 text-foreground transition-colors hover:text-green-500"
               >
                 <Phone className="size-5" />
-                <span className="font-medium">+420 123 456 789</span>
+                <span className="font-medium">{contactInfo.phone}</span>
               </a>
               <span className="text-muted-foreground">•</span>
               <a
-                href="mailto:info@vinyloveschody.cz"
+                href={`mailto:${contactInfo.email}`}
                 className="flex items-center gap-2 text-foreground transition-colors hover:text-green-500"
               >
                 <Mail className="size-5" />
-                <span className="font-medium">info@vinyloveschody.cz</span>
+                <span className="font-medium">{contactInfo.email}</span>
               </a>
             </div>
           </motion.div>
