@@ -4,6 +4,7 @@ import { useCallback, useEffect, useState } from "react";
 
 import { addVat, cn } from "@/lib/utils";
 import { urlFor } from "@/sanity/lib/image";
+import Image from "next/image";
 
 import { Price, PriceValue } from "@/components/shadcnblocks/price";
 import { AspectRatio } from "@/components/ui/aspect-ratio";
@@ -156,10 +157,12 @@ const ProductCard = ({ product }: { product: RelatedProduct }) => {
             >
               {imageUrl && (
                 <div className="absolute inset-0 size-full">
-                  <img
+                  <Image
                     src={imageUrl}
                     alt={title}
                     className="block size-full object-cover object-center transition-transform duration-500 group-hover:scale-110"
+                    width={600}
+                    height={450}
                   />
                 </div>
               )}

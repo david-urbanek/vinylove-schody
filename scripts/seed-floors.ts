@@ -22,8 +22,6 @@ const client = createClient({
   token,
 });
 
-const TEST_DATA_PREFIX = "TEST_DATA";
-
 const DUMMY_IMAGE_URL = "https://placehold.co/800x600.png";
 
 async function uploadImage() {
