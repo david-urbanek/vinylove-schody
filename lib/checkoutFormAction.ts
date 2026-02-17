@@ -79,7 +79,7 @@ export async function submitOrder(data: CheckoutFormType) {
     // 4. Send Email to the customer
     await resend.emails.send({
       from: "Vinylové schody <david.urbanek@virtuio.cz>",
-      to: [email, "david.urbanek@virtuio.cz"],
+      to: [email],
       subject: `Potvrzení poptávky - Vinylové schody`,
       react: CustomerOrderEmail({
         products,
