@@ -65,6 +65,8 @@ export const stairType = defineType({
       name: "description",
       title: "Popis schodů",
       type: "text",
+      initialValue:
+        "Ideální volba pro rekonstrukce schodišť. Díky své minimální tloušťce téměř nezvyšuje původní výšku stupňů. Profil je opatřen standardním zaklikávacím systémem, který umožňuje okamžité a plynulé napojení na další podlahové dílce.",
       validation: (Rule) => Rule.required(),
     }),
     defineField({
