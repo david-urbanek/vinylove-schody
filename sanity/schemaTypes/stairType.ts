@@ -30,11 +30,11 @@ export const stairType = defineType({
       validation: (Rule) =>
         Rule.required().custom((slug) => {
           const current = slug?.current || "";
-          if (!current.startsWith("schod-")) {
-            return 'Slug musí začínat předponou "schod-"';
+          if (!current.startsWith("schody-")) {
+            return 'Slug musí začínat předponou "schody-"';
           }
-          if (current === "schod-") {
-            return "Za pomlčkou musí následovat název (např. schod-dub-classic)";
+          if (current === "schody-") {
+            return "Za pomlčkou musí následovat název (např. schody-dub-classic)";
           }
           return true;
         }),
