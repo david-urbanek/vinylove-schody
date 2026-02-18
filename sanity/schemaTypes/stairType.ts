@@ -91,6 +91,7 @@ export const stairType = defineType({
       initialValue: [
         { label: "Nášlapná vrstva", unit: "mm" },
         { label: "Délka schodu", unit: "mm" },
+        { label: "Šířka schodu", unit: "mm" },
         { label: "Výška nosu", unit: "mm" },
         { label: "Hloubka zpětného ohybu nosu", unit: "mm" },
       ],
