@@ -176,7 +176,7 @@ const ProductDetail7 = ({
   const techContent = techParams?.map((param: any, index: number) => {
     return (
       <li key={index}>
-        <strong>{param.label}:</strong> {param.value} {param.unit}
+        <strong>{param.label}:</strong> {param.value} {param?.unit || ""}
       </li>
     );
   });

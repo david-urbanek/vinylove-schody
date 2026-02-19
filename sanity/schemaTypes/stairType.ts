@@ -94,6 +94,7 @@ export const stairType = defineType({
         { label: "Šířka schodu", unit: "mm" },
         { label: "Výška nosu", unit: "mm" },
         { label: "Hloubka zpětného ohybu nosu", unit: "mm" },
+        { label: "S integrovanou deskou", value: "Ano" },
       ],
       of: [
         {
