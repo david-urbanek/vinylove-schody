@@ -202,12 +202,17 @@ const ProductCard = ({
       <CardContent className="p-0">
         <div className="group relative overflow-hidden">
           <a href={link}>
-            <AspectRatio ratio={1} className="overflow-hidden rounded-xl">
+            <AspectRatio
+              ratio={0.749767365}
+              className="overflow-hidden rounded-xl"
+            >
               {/* Main image */}
               <div className="absolute inset-0 size-full transition-opacity duration-700 z-20 group-hover:opacity-0">
-                <img
+                <Image
                   src={mainImageUrl}
                   alt={title}
+                  width={1000}
+                  height={1500}
                   className="block size-full object-cover object-center transition-transform duration-700 scale-105 group-hover:scale-100"
                 />
               </div>
@@ -215,9 +220,11 @@ const ProductCard = ({
               {/* Gallery image on hover */}
               {galleryImages.length > 0 && (
                 <div className="absolute inset-0 size-full z-10">
-                  <img
-                    src={urlFor(galleryImages[0]).width(800).url()}
+                  <Image
+                    src={urlFor(galleryImages[0]).width(1000).url()}
                     alt={title}
+                    width={1000}
+                    height={1500}
                     className="block size-full object-cover object-center transition-transform duration-700 scale-105 group-hover:scale-100"
                   />
                 </div>

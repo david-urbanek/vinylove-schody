@@ -15,6 +15,9 @@ import { urlFor } from "@/sanity/lib/image";
 import { ProductVariants } from "@/components/product/product-variants";
 import { Price, PriceValue } from "@/components/shadcnblocks/price";
 
+import { getImageDimensions } from "@/lib/utils";
+import Image from "next/image";
+import Link from "next/link";
 import { FloorProductForm } from "./forms/floor-product-form";
 import { SimpleProductForm } from "./forms/simple-product-form";
 
@@ -149,14 +152,23 @@ const ProductDetail7 = ({
   const rawImages = [mainImage, ...(gallery || []), pattern?.image].filter(
     Boolean,
   );
-  const images = rawImages.map((img: any) => ({
-    src: urlFor(img).url(),
-    thumbnail: urlFor(img).width(200).url(),
-    alt: img.alt || title || "Product Image",
-    width: 2400,
-    height: 1600,
-    sizes: "(min-width: 2400px) 2400px, (min-width: 1920px) 1920px, 100vw",
-  }));
+
+  console.log("rawImages", rawImages);
+
+  const images = rawImages.map((img: any) => {
+    const src = urlFor(img).url();
+    const dimensions = getImageDimensions(src);
+    const width = dimensions?.[0] ?? 2400;
+    const height = dimensions?.[1] ?? 1600;
+    return {
+      src,
+      thumbnail: urlFor(img).width(200).url(),
+      alt: img.alt || title || "Product Image",
+      width,
+      height,
+      sizes: `(min-width: ${width}px) ${width}px, (min-width: 1920px) 1920px, 100vw`,
+    };
+  });
 
   // Feature mapping ... (keep existing)
   const FEATURE_MAP: Record<string, string> = {
@@ -168,9 +180,6 @@ const ProductDetail7 = ({
   };
 
   const isStair = _type === "stair";
-  const isSkirting = _type === "skirting";
-  const isTransitionProfile = _type === "transitionProfile";
-  const isAccessory = _type === "accessory";
   const isFloor = _type === "floor";
 
   const techContent = techParams?.map((param: any, index: number) => {
@@ -479,9 +488,11 @@ const ProductImages = ({ images, galleryID }: ProductImagesProps) => {
                 type="button"
                 className="relative block size-20 overflow-hidden rounded-[0.875rem] after:pointer-events-none after:absolute after:inset-0 after:z-10 after:block after:size-full after:rounded-[0.875rem] after:inset-ring-2 after:inset-ring-transparent after:transition-shadow after:duration-200 after:content-[''] data-[state=active]:after:inset-ring-current"
               >
-                <img
+                <Image
                   src={img.thumbnail}
                   alt={img.alt}
+                  width={img.width}
+                  height={img.height}
                   className="block size-full object-cover object-center"
                   loading="lazy"
                 />
@@ -505,7 +516,7 @@ const ProductImages = ({ images, galleryID }: ProductImagesProps) => {
                         ratio={0.8}
                         className="w-full overflow-hidden rounded-[0.875rem] bg-muted"
                       >
-                        <a
+                        <Link
                           href={img.src}
                           data-pswp-width={img.width}
                           data-pswp-height={img.height}
@@ -514,7 +525,7 @@ const ProductImages = ({ images, galleryID }: ProductImagesProps) => {
                           data-cropped="true"
                           className="hover:cursor-zoom-in"
                         >
-                          <img
+                          <Image
                             src={img.src}
                             alt={img.alt}
                             width={img.width}
@@ -522,7 +533,7 @@ const ProductImages = ({ images, galleryID }: ProductImagesProps) => {
                             sizes={img.sizes}
                             className="block size-full rounded-[0.875rem] object-cover object-center"
                           />
-                        </a>
+                        </Link>
                       </AspectRatio>
                     </CarouselItem>
                   ))}
