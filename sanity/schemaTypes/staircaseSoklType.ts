@@ -27,6 +27,7 @@ export const staircaseSoklType = defineType({
           { title: "Pásek z podlahy (4 cm)", value: "pasek" },
           { title: "MDF lišta", value: "mdf" },
           { title: "Bez lišty (silikon)", value: "silikon" },
+          { title: "Tmel", value: "tmel" },
         ],
         layout: "radio",
       },
@@ -72,7 +73,7 @@ export const staircaseSoklType = defineType({
     }),
     defineField({
       name: "pricePerUnit",
-      title: "Cena za běžný metr (Kč/bm)",
+      title: "Cena za běžný metr (Kč/bm)/ kus (Kč/ks)",
       type: "number",
       validation: (Rule) => Rule.required(),
     }),
