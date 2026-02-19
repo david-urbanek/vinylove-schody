@@ -58,6 +58,7 @@ export const floorType = defineType({
         list: [
           { title: "Classic", value: "classic" },
           { title: "Premium", value: "premium" },
+          { title: "Canadian", value: "canadian" },
         ],
         // 'radio' zobrazí přepínače místo rozbalovacího seznamu
         layout: "dropdown",
