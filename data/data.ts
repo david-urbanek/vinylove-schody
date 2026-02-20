@@ -30,9 +30,13 @@ export const CATEGORY_MAP: Record<string, { query: string; title: string }> = {
     query: `*[_type == "stair" && category == "schody-s-nosem"]`,
     title: "Schody s nosem",
   },
-  "schody-naslapy": {
-    query: `*[_type == "stair" && category == "schody-naslapy"]`,
-    title: "Nášlapy",
+  "naslapy-s-nosem": {
+    query: `*[_type == "stair" && category == "naslapy-s-nosem"]`,
+    title: "Nášlapy s nosem",
+  },
+  "naslapy-bez-nosu": {
+    query: `*[_type == "stair" && category == "naslapy-bez-nosu"]`,
+    title: "Nášlapy bez nosu",
   },
   "schody-vetknute": {
     query: `*[_type == "stair" && category == "schody-vetknute"]`,

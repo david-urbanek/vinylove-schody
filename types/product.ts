@@ -44,6 +44,7 @@ export interface Product {
   tags?: Tag[];
   isSample?: boolean;
   type?: string;
+  collection?: string;
 }
 
 export interface EmailCartItem {

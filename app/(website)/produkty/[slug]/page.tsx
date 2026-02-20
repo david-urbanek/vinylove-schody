@@ -9,6 +9,7 @@ type Props = {
   params: Promise<{ slug: string }>;
   searchParams: Promise<{
     sort?: string;
+    collection?: string;
   }>;
 };
 
@@ -69,7 +70,7 @@ export default async function ProductsCategoryPage(props: Props) {
   }
 
   // Transform data
-  const products: Product[] = displayData.map((item: any) => {
+  let products: Product[] = displayData.map((item: any) => {
     // Check if already in Product shape (mock data)
     if (item.stockStatusCode) return item as Product;
 
@@ -93,6 +94,7 @@ export default async function ProductsCategoryPage(props: Props) {
       },
       //pro tohle napsat funkci
       tags: getTags(item.tags),
+      collection: item.collection,
     };
   });
 
@@ -113,6 +115,14 @@ export default async function ProductsCategoryPage(props: Props) {
       return priceB - priceA;
     });
   }
+
+  const collection = (await props.searchParams).collection;
+
+  if (collection) {
+    products = products.filter((product) => product.collection === collection);
+  }
+
+  console.log(products);
 
   // Split into batches
   const BATCH_SIZE_PROMO = 6; // products next to promo

@@ -46,7 +46,8 @@ export const stairType = defineType({
         list: [
           { title: "Schody bez nosu", value: "schody-bez-nosu" },
           { title: "Schody s nosem", value: "schody-s-nosem" },
-          { title: "Nášlapy", value: "schody-naslapy" },
+          { title: "Nášlap s nosem", value: "naslapy-s-nosem" },
+          { title: "Nášlap bez nosu", value: "naslapy-bez-nosu" },
           { title: "Vetknuté schody", value: "schody-vetknute" },
         ],
         layout: "dropdown",
@@ -55,12 +56,26 @@ export const stairType = defineType({
       validation: (Rule) => Rule.required(),
     }),
     defineField({
-      name: "pattern",
-      title: "Dekor",
-      type: "reference",
-      to: [{ type: "pattern" }],
+      name: "collection",
+      title: "Kolekce",
+      options: {
+        list: [
+          { title: "Premium", value: "premium" },
+          { title: "Classic", value: "classic" },
+          { title: "Rigid", value: "rigid" },
+        ],
+        layout: "dropdown",
+      },
+      type: "string",
       validation: (Rule) => Rule.required(),
     }),
+    // defineField({
+    //   name: "pattern",
+    //   title: "Dekor",
+    //   type: "reference",
+    //   to: [{ type: "pattern" }],
+    //   validation: (Rule) => Rule.required(),
+    // }),
     defineField({
       name: "description",
       title: "Popis schodů",

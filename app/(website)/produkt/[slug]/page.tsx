@@ -77,17 +77,9 @@ export default async function Page({ params }: Props) {
   let variantsParams;
 
   if (product._type === "stair") {
-    // For stairs, filter only by category
-    variantsQuery = `*[_type == $type && category == $category]{
-      _id,
-      title,
-      slug,
-      pattern->{title, image}
-    }`;
-    variantsParams = {
-      type: product._type,
-      category: product.category,
-    };
+    // Pro schody nechceme zobrazovat "related products" (varianty)
+    variantsQuery = null;
+    variantsParams = {};
   } else if (
     product._type === "skirting" ||
     product._type === "transitionProfile"
@@ -119,7 +111,7 @@ export default async function Page({ params }: Props) {
     };
   } else if (product._type === "floor") {
     // For floors, filter by category and collection
-    variantsQuery = `*[_type == $type && category == $category]{
+    variantsQuery = `*[_type == $type && category == $category && collection == $collection]{
       _id,
       title,
       slug,
@@ -128,6 +120,7 @@ export default async function Page({ params }: Props) {
     variantsParams = {
       type: product._type,
       category: product.category,
+      collection: product.collection,
     };
   } else {
     // Fallback for unknown types
@@ -140,25 +133,28 @@ export default async function Page({ params }: Props) {
     : [];
 
   // 2. Fetch Recommendations (Cross-sell)
-  const patternId = product.pattern?._id;
+  const collection = product.collection;
 
   const recommendationsQuery = `{
-    "skirtings": *[_type == "skirting" && pattern._ref == $patternId && _id != $id] {
+    "skirtings": *[_type == "skirting" && _id != $id][0...16] {
       _id, title, slug, pricePerUnit, mainImage, "category": "Obvodové lišty"
     },
-    "transitions": *[_type == "transitionProfile" && pattern._ref == $patternId && _id != $id] {
+    "transitions": *[_type == "transitionProfile" && collection == $collection && _id != $id][0...16] {
       _id, title, slug, pricePerUnit, mainImage, "category": "Přechodové lišty"
     },
-    "floors": *[_type == "floor" && pattern._ref == $patternId && _id != $id] {
+    "floors": *[_type == "floor" && collection == $collection && _id != $id][0...16] {
       _id, title, slug, pricePerUnit, mainImage, "category": "Podlahy"
     },
-    "accessories": *[_type == "accessory" && _id != $id][0...8] {
+    "accessories": *[_type == "accessory" && _id != $id][0...16] {
        _id, title, slug, pricePerUnit, mainImage, "category": "Příslušenství"
+    },
+    "stairs": *[_type == "stair" && collection == $collection && _id != $id][0...16] {
+      _id, title, slug, pricePerUnit, mainImage, "category": "Schody"
     }
   }`;
 
   const recommendations = await client.fetch(recommendationsQuery, {
-    patternId: patternId || "",
+    collection: collection || "",
     id: product._id,
   });
 
@@ -170,6 +166,8 @@ export default async function Page({ params }: Props) {
   });
 
   if (product._type === "floor") {
+    if (recommendations.stairs.length)
+      sections.push(createSection("Schody", "stairs", recommendations.stairs));
     if (recommendations.skirtings.length)
       sections.push(
         createSection("Obvodové lišty", "skirtings", recommendations.skirtings),
@@ -249,6 +247,8 @@ export default async function Page({ params }: Props) {
         ),
       );
   }
+
+  console.log(product);
 
   return (
     <>

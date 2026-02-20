@@ -55,10 +55,18 @@ const stairs = [
     image: "/realizace/schody/siroke/schody-2.png",
   },
   {
-    title: "Nášlapy",
+    title: "Nášlapy s nosem",
     description:
-      "Samostatné vinylové nášlapy ideální pro renovaci stávajících schodů.",
-    href: "/produkty/schody-naslapy",
+      "Samostatné vinylové nášlapy s nosem ideální pro renovaci stávajících schodů.",
+    href: "/produkty/naslapy-s-nosem",
+    icon: Layers,
+    image: "/realizace/schody/siroke/schody-3.png",
+  },
+  {
+    title: "Nášlapy bez nosu",
+    description:
+      "Samostatné vinylové nášlapy bez nosu ideální pro renovaci stávajících schodů.",
+    href: "/produkty/naslapy-bez-nosu",
     icon: Layers,
     image: "/realizace/schody/siroke/schody-3.png",
   },
