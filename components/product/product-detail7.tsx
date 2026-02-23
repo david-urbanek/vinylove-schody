@@ -1,6 +1,6 @@
 "use client";
 
-import { Info, LucideIcon, Minus, Plus } from "lucide-react";
+import { Info, List, LucideIcon, Minus, Plus } from "lucide-react";
 import PhotoSwipeLightbox from "photoswipe/lightbox";
 import { Fragment, useEffect, useRef, useState } from "react";
 
@@ -345,6 +345,21 @@ const ProductDetail7 = ({
                   <p className="mt-1 text-muted-foreground">
                     Rozměry schodů vám rádi upravíme na míru. Stačí napsat
                     požadované rozměry do poznámky v objednávce.
+                  </p>
+                </div>
+              </div>
+            )}
+            {isStair && (
+              <div className="mb-6 flex gap-3 rounded-md bg-muted/50 p-4 text-sm">
+                <List className="mt-0.5 size-5 shrink-0 text-foreground" />
+                <div>
+                  <p className="font-medium text-foreground">
+                    Líbí se Vám tento typ schodu?
+                  </p>
+                  <p className="mt-1 text-muted-foreground">
+                    Rádí Vám ho vyrobíme v jakémkoliv dekoru z naší nabídky.
+                    Koukněte se na nabizené podlahy ve stejné kolekci a napište
+                    nám do poznámky v objednávce, který dekor si přejete.
                   </p>
                 </div>
               </div>
