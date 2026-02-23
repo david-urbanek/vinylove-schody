@@ -58,15 +58,18 @@ export const CheckoutForm = ({ cartItems }: CheckoutFormProps) => {
   const router = useRouter();
   const [isPending, setIsPending] = React.useState(false);
 
-  const defaultProducts =
-    cartItems?.map((item) => ({
-      id: item.id,
-      quantity: item.quantity,
-      price: item.price,
-      title: item.title,
-      image: item.image?.src || "",
-      url: item.url,
-    })) || [];
+  const defaultProducts = React.useMemo(
+    () =>
+      cartItems?.map((item) => ({
+        id: item.id,
+        quantity: item.quantity,
+        price: item.price,
+        title: item.title,
+        image: item.image?.src || "",
+        url: item.url,
+      })) || [],
+    [cartItems],
+  );
 
   const form = useForm<CheckoutFormType>({
     resolver: zodResolver(checkoutFormSchema),
@@ -84,6 +87,10 @@ export const CheckoutForm = ({ cartItems }: CheckoutFormProps) => {
       projectDescription: "",
     },
   });
+
+  React.useEffect(() => {
+    form.setValue("products", defaultProducts);
+  }, [defaultProducts, form]);
 
   const interestInRealization = form.watch("interestInRealization");
 
