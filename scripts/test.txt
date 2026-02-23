@@ -3,3 +3,13 @@ sanity documents query "*[_type == 'floor'][0...20]._id" --apiVersion 2021-03-25
   | xargs sanity documents delete
 
   sanity documents query '*[_type == "stair"]._id' --apiVersion 2021-03-25 | jq -r '.[]' | xargs -I {} sanity documents delete {}
+
+
+  sanity documents query '*[_type == "stair"]._id' --apiVersion 2021-03-25 xargs -I {} delete {}
+
+  sanity documents query '*[_type == "floor" && collection == "rigid-spc"]{...}' --apiVersion 2021-03-25
+
+
+  sanity documents query '*[_type == "floor" && collection == "rigid-spc"]{...}' --apiVersion 2021-03-25 > test/floors.json
+
+  sanity documents query '*[_type == "floor" && collection == "rigid-spc"]{...}' --apiVersion 2021-03-25 > test/test.json

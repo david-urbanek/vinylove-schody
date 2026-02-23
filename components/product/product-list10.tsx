@@ -29,16 +29,27 @@ interface ProductList10Props {
   className?: string;
   items?: ProductList;
   title?: string;
+  categorySlug?: string;
 }
 
 const ProductList10 = ({
   className,
   items,
   title = "Naše nabídka",
+  categorySlug,
 }: ProductList10Props) => {
   const router = useRouter();
   const searchParams = useSearchParams();
   const sortOrder = searchParams.get("sort") || "default";
+  const collectionFilter = searchParams.get("collection") || "all";
+
+  const collections = [
+    { label: "Premium", value: "premium" },
+    { label: "Classic", value: "classic" },
+    { label: "Rigid SPC", value: "rigid-spc" },
+  ];
+
+  const showCollectionFilter = categorySlug === "podlahy-click";
 
   const handleSortChange = (value: string) => {
     const params = new URLSearchParams(searchParams.toString());
@@ -47,49 +58,63 @@ const ProductList10 = ({
     } else {
       params.set("sort", value);
     }
-    router.push(`?${params.toString()}`);
+    router.push(`?${params.toString()}`, { scroll: false });
+  };
+
+  const handleCollectionChange = (value: string) => {
+    const params = new URLSearchParams(searchParams.toString());
+    if (value === "all") {
+      params.delete("collection");
+    } else {
+      params.set("collection", value);
+    }
+    router.push(`?${params.toString()}`, { scroll: false });
   };
 
   return (
     <section className={cn("py-20 lg:py-32", className)}>
       <div className="container px-4 md:px-6">
-        <div className="flex flex-col md:flex-row md:items-center justify-between mb-6 gap-4">
-          <h2 className="font-serif text-3xl md:text-4xl lg:text-5xl text-foreground font-medium tracking-tight">
-            {title}
-          </h2>
-          <div className="hidden md:flex items-center gap-3 w-auto">
-            <span className="text-sm font-medium text-muted-foreground whitespace-nowrap">
-              Řadit podle:
-            </span>
-            <div className="w-48">
-              <Select value={sortOrder} onValueChange={handleSortChange}>
-                <SelectTrigger>
-                  <SelectValue placeholder="Seřadit podle" />
-                </SelectTrigger>
-                <SelectContent>
-                  <SelectItem value="default">Doporučeno</SelectItem>
-                  <SelectItem value="asc">Od nejlevnějšího</SelectItem>
-                  <SelectItem value="desc">Od nejdražšího</SelectItem>
-                </SelectContent>
-              </Select>
-            </div>
-          </div>
-        </div>
-        {!items || items.length === 0 ? (
-          <p className="py-10 text-lg text-muted-foreground text-center md:text-left">
-            Bohužel zde zatím žádné produkty nejsou.
-          </p>
-        ) : (
-          <>
-            <p className="mb-6 md:mb-16 text-lg text-muted-foreground text-left max-w-2xl text-balance">
+        <div className="flex flex-col  md:flex-row md:justify-between md:items-center mb-6 gap-4">
+          <div>
+            <h2 className="font-serif mb-4 text-3xl md:text-4xl lg:text-5xl text-foreground font-medium tracking-tight">
+              {title}
+            </h2>
+            <p className="mb-6 text-lg text-muted-foreground text-left max-w-2xl text-balance">
               Prohlédněte si naši širokou nabídku produktů v kategorii {title}.
               Vyberte si to nejlepší pro váš domov.
             </p>
-            <div className="flex md:hidden items-center gap-3 w-full mb-10">
+          </div>
+          <div className="flex flex-col gap-2">
+            {showCollectionFilter && collections && (
+              <div className="flex items-center gap-3">
+                <span className="text-sm font-medium text-muted-foreground whitespace-nowrap">
+                  Kolekce:
+                </span>
+                <div className="w-48">
+                  <Select
+                    value={collectionFilter}
+                    onValueChange={handleCollectionChange}
+                  >
+                    <SelectTrigger>
+                      <SelectValue placeholder="Všechny kolekce" />
+                    </SelectTrigger>
+                    <SelectContent>
+                      <SelectItem value="all">Všechny kolekce</SelectItem>
+                      {collections.map((c) => (
+                        <SelectItem key={c.value} value={c.value}>
+                          {c.label}
+                        </SelectItem>
+                      ))}
+                    </SelectContent>
+                  </Select>
+                </div>
+              </div>
+            )}
+            <div className="flex items-center gap-3">
               <span className="text-sm font-medium text-muted-foreground whitespace-nowrap">
                 Řadit podle:
               </span>
-              <div className="w-full">
+              <div className="w-48">
                 <Select value={sortOrder} onValueChange={handleSortChange}>
                   <SelectTrigger>
                     <SelectValue placeholder="Seřadit podle" />
@@ -102,42 +127,48 @@ const ProductList10 = ({
                 </Select>
               </div>
             </div>
-            <div className="flex flex-col gap-12 lg:gap-20">
-              {items.map((item, index) => (
+          </div>
+        </div>
+        {!items || items.length === 0 ? (
+          <p className="py-10 text-lg text-muted-foreground text-center md:text-left">
+            Bohužel zde zatím žádné produkty nejsou.
+          </p>
+        ) : (
+          <div className="flex flex-col gap-12 lg:gap-20">
+            {items.map((item, index) => (
+              <div
+                className="flex flex-col gap-8 lg:flex-row lg:gap-10 lg:even:flex-row-reverse"
+                key={`product-list-10-featured-promo-${index}`}
+              >
+                {item.featuredPromotion && (
+                  <div className="w-full lg:w-1/3 shrink-0">
+                    <FeaturedPromotionCard {...item.featuredPromotion} />
+                  </div>
+                )}
                 <div
-                  className="flex flex-col gap-8 lg:flex-row lg:gap-10 lg:even:flex-row-reverse"
-                  key={`product-list-10-featured-promo-${index}`}
+                  className={
+                    item.featuredPromotion ? "w-full lg:w-2/3" : "w-full"
+                  }
                 >
-                  {item.featuredPromotion && (
-                    <div className="w-full lg:w-1/3 shrink-0">
-                      <FeaturedPromotionCard {...item.featuredPromotion} />
-                    </div>
-                  )}
                   <div
-                    className={
-                      item.featuredPromotion ? "w-full lg:w-2/3" : "w-full"
-                    }
+                    className={cn(
+                      "grid gap-x-6 gap-y-10",
+                      item.featuredPromotion
+                        ? "grid-cols-2 md:grid-cols-4"
+                        : "grid-cols-2 md:grid-cols-4 lg:grid-cols-6 xl:grid-cols-6",
+                    )}
                   >
-                    <div
-                      className={cn(
-                        "grid gap-x-6 gap-y-10",
-                        item.featuredPromotion
-                          ? "grid-cols-2 md:grid-cols-4"
-                          : "grid-cols-2 md:grid-cols-4 lg:grid-cols-6 xl:grid-cols-6",
-                      )}
-                    >
-                      {item.products.map((product, pIndex) => (
-                        <ProductCard
-                          {...product}
-                          key={`product-10-list-card-${index}-${pIndex}`}
-                        />
-                      ))}
-                    </div>
+                    {item.products.map((product, pIndex) => (
+                      <ProductCard
+                        {...product}
+                        key={`product-10-list-card-${index}-${pIndex}`}
+                      />
+                    ))}
                   </div>
                 </div>
-              ))}
-            </div>
-          </>
+              </div>
+            ))}
+          </div>
         )}
       </div>
     </section>
@@ -151,10 +182,22 @@ const ProductCard = ({
   price,
   description,
   tags,
+  category,
+  m2PerPackage, // Added
 }: Product) => {
-  const { priceWithVAT, priceWithoutVAT, currency } = price;
+  const { currency } = price;
 
   const dimensions = getImageDimensions(mainImage.asset._ref);
+
+  const packageSize = m2PerPackage || 2.235;
+  const isFloor = category?.toLowerCase().startsWith("podlahy");
+
+  const displayPriceWithVAT = isFloor
+    ? price.priceWithVAT / packageSize
+    : price.priceWithVAT;
+  const displayPriceWithoutVAT = isFloor
+    ? (price.priceWithoutVAT || 0) / packageSize
+    : price.priceWithoutVAT;
 
   return (
     <Card className="group relative block rounded-none border-none bg-background p-0 shadow-none">
@@ -206,23 +249,25 @@ const ProductCard = ({
           <div className="mt-1 flex flex-col gap-0.5">
             <Price className="text-lg font-bold leading-none">
               <PriceValue
-                price={price.priceWithVAT}
-                currency={price.currency}
+                price={displayPriceWithVAT}
+                currency={currency}
                 variant="regular"
               />
               <span className="text-xs font-normal text-muted-foreground ml-1">
-                vč. DPH
+                {isFloor ? "za m² vč. DPH" : "za kus vč. DPH"}
               </span>
             </Price>
-            {price.priceWithoutVAT && (
+            {displayPriceWithoutVAT && (
               <Price className="text-sm text-muted-foreground">
                 <PriceValue
-                  price={price.priceWithoutVAT}
+                  price={displayPriceWithoutVAT}
                   currency={currency}
                   variant="regular"
                   className="text-muted-foreground"
                 />
-                <span className="text-xs ml-1">bez DPH</span>
+                <span className="text-xs ml-1">
+                  {isFloor ? "za m² bez DPH" : "za kus bez DPH"}
+                </span>
               </Price>
             )}
           </div>

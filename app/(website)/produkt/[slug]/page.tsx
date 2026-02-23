@@ -99,16 +99,8 @@ export default async function Page({ params }: Props) {
     variantsQuery = null;
     variantsParams = {};
   } else if (product._type === "staircaseSokl") {
-    variantsQuery = `*[_type == $type && type == $subtype]{
-      _id,
-      title,
-      slug,
-      pattern->{title, image}
-    }`;
-    variantsParams = {
-      type: product._type,
-      subtype: product.type,
-    };
+    variantsQuery = null;
+    variantsParams = {};
   } else if (product._type === "floor") {
     // For floors, filter by category and collection
     variantsQuery = `*[_type == $type && category == $category && collection == $collection]{
@@ -139,7 +131,7 @@ export default async function Page({ params }: Props) {
     "skirtings": *[_type == "skirting" && _id != $id][0...16] {
       _id, title, slug, pricePerUnit, mainImage, "category": "Obvodové lišty"
     },
-    "transitions": *[_type == "transitionProfile" && collection == $collection && _id != $id][0...16] {
+    "transitions": *[_type == "transitionProfile" && _id != $id][0...16] {
       _id, title, slug, pricePerUnit, mainImage, "category": "Přechodové lišty"
     },
     "floors": *[_type == "floor" && collection == $collection && _id != $id][0...16] {
@@ -247,8 +239,6 @@ export default async function Page({ params }: Props) {
         ),
       );
   }
-
-  console.log(product);
 
   return (
     <>

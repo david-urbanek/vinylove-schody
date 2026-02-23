@@ -24,8 +24,8 @@ const client = createClient({
 
 async function deleteFloors() {
   client
-    .delete({ query: '*[_type == "floor"][0...999]' })
-    .then((result) => console.log("Deleted floors", result))
+    .delete({ query: '*[_type == "stair"][0...999]' })
+    .then((result) => console.log("Deleted stairs", result))
     .catch(console.error);
 }
 

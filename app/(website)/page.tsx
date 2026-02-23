@@ -27,6 +27,7 @@ function toProduct(item: any): Product {
     typeLabel: item.typeLabel,
     category: item.category,
     tags: getTags(item.tags),
+    m2PerPackage: item.m2PerPackage, // Added
   };
 }
 
@@ -44,7 +45,8 @@ export default async function Home() {
       pricePerUnit,
       tags,
       typeLabel,
-      category
+      category,
+      m2PerPackage
     }
   `);
 
@@ -60,7 +62,8 @@ export default async function Home() {
       pricePerUnit,
       tags,
       typeLabel,
-      category
+      category,
+      m2PerPackage
     }
   `);
 

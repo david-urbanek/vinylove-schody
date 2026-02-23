@@ -62,7 +62,7 @@ export const stairType = defineType({
         list: [
           { title: "Premium", value: "premium" },
           { title: "Classic", value: "classic" },
-          { title: "Rigid", value: "rigid" },
+          { title: "Rigid SPC", value: "rigid-spc" },
         ],
         layout: "dropdown",
       },

@@ -192,10 +192,22 @@ const ProductCard = ({
   pattern,
   tags,
   link,
+  category,
+  m2PerPackage, // Added
 }: Product) => {
   // Generate image URLs using Sanity's urlFor
   const mainImageUrl = mainImage ? urlFor(mainImage).width(800).url() : "";
   const galleryImages = gallery && gallery.length > 0 ? gallery : [];
+
+  const packageSize = m2PerPackage || 2.235;
+  const isFloor = category?.toLowerCase().startsWith("podlahy");
+
+  const displayPriceWithVAT = isFloor
+    ? price.priceWithVAT / packageSize
+    : price.priceWithVAT;
+  const displayPriceWithoutVAT = isFloor
+    ? (price.priceWithoutVAT || 0) / packageSize
+    : price.priceWithoutVAT;
 
   return (
     <Card className="relative block rounded-none border-none bg-background p-0 shadow-none">
@@ -250,23 +262,25 @@ const ProductCard = ({
           <div className="flex flex-col gap-0.5">
             <Price className="text-sm leading-normal font-bold">
               <PriceValue
-                price={price.priceWithVAT}
+                price={displayPriceWithVAT}
                 currency={price.currency}
                 variant="regular"
               />
               <span className="text-xs font-normal text-muted-foreground ml-1">
-                vč. DPH
+                {isFloor ? "za m² vč. DPH" : "za kus vč. DPH"}
               </span>
             </Price>
-            {price.priceWithoutVAT && (
+            {displayPriceWithoutVAT && (
               <Price className="text-xs text-muted-foreground">
                 <PriceValue
-                  price={price.priceWithoutVAT}
+                  price={displayPriceWithoutVAT}
                   currency={price.currency}
                   variant="regular"
                   className="text-muted-foreground"
                 />
-                <span className="text-xs ml-1">bez DPH</span>
+                <span className="text-xs ml-1">
+                  {isFloor ? "za m² bez DPH" : "za kus bez DPH"}
+                </span>
               </Price>
             )}
           </div>

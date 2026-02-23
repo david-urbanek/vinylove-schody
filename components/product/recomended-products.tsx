@@ -27,6 +27,7 @@ export interface RelatedProduct {
   pricePerUnit: number;
   mainImage: any;
   category: string;
+  m2PerPackage?: number;
 }
 
 export interface RelatedSection {
@@ -140,11 +141,22 @@ const RecommendedProducts = ({ sections, className }: RelatedProductsProps) => {
 };
 
 const ProductCard = ({ product }: { product: RelatedProduct }) => {
-  const { title, slug, pricePerUnit, mainImage, category } = product;
+  const { title, slug, pricePerUnit, mainImage, category, m2PerPackage } =
+    product;
 
   const link = `/produkt/${slug.current}`;
 
   const imageUrl = mainImage ? urlFor(mainImage).width(600).url() : "";
+
+  const packageSize = m2PerPackage || 2.235;
+  const isFloor = category?.toLowerCase().startsWith("podlahy");
+
+  const displayPriceWithVAT = isFloor
+    ? addVat(pricePerUnit) / packageSize
+    : addVat(pricePerUnit);
+  const displayPriceWithoutVAT = isFloor
+    ? pricePerUnit / packageSize
+    : pricePerUnit;
 
   return (
     <Card className="relative block rounded-none border-none bg-background p-0 shadow-none">
@@ -194,22 +206,24 @@ const ProductCard = ({ product }: { product: RelatedProduct }) => {
           <div className="flex flex-col gap-0.5">
             <Price className="text-sm font-bold leading-none">
               <PriceValue
-                price={addVat(pricePerUnit)}
+                price={displayPriceWithVAT}
                 currency="CZK"
                 variant="regular"
               />
               <span className="text-[10px] font-normal text-muted-foreground ml-1">
-                vč. DPH
+                {isFloor ? "za m² vč. DPH" : "za kus vč. DPH"}
               </span>
             </Price>
             <Price className="text-xs text-muted-foreground">
               <PriceValue
-                price={pricePerUnit}
+                price={displayPriceWithoutVAT}
                 currency="CZK"
                 variant="regular"
                 className="text-muted-foreground"
               />
-              <span className="text-[10px] ml-1">bez DPH</span>
+              <span className="text-[10px] ml-1">
+                {isFloor ? "za m² bez DPH" : "za kus bez DPH"}
+              </span>
             </Price>
           </div>
         </div>

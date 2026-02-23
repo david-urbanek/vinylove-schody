@@ -26,7 +26,7 @@ export const staircaseSoklType = defineType({
         list: [
           { title: "Pásek z podlahy (4 cm)", value: "pasek" },
           { title: "MDF lišta", value: "mdf" },
-          { title: "Bez lišty (silikon)", value: "silikon" },
+          { title: "Silikon", value: "silikon" },
           { title: "Tmel", value: "tmel" },
         ],
         layout: "radio",
@@ -44,6 +44,11 @@ export const staircaseSoklType = defineType({
         maxLength: 96,
       },
       validation: (Rule) => Rule.required(),
+    }),
+    defineField({
+      name: "description",
+      title: "Popis",
+      type: "text",
     }),
     defineField({
       name: "techParams",

@@ -94,6 +94,7 @@ const ProductDetail7 = ({
     pattern,
     typeLabel,
     slug,
+    m2PerPackage, // Added this field
   } = product || {};
 
   const { addItem, items } = useCart();
@@ -205,7 +206,8 @@ const ProductDetail7 = ({
   ].filter((item) => item !== null);
 
   // Pricing & Packaging
-  const packageSize = techParams?.m2InPackage || DEFAULT_PACKAGE_SIZE;
+  const packageSize =
+    m2PerPackage || techParams?.m2InPackage || DEFAULT_PACKAGE_SIZE;
   const pricePerM2 =
     packageSize > 0 ? (price?.priceWithoutVAT || 0) / packageSize : 0;
 

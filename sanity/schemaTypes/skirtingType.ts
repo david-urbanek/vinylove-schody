@@ -43,11 +43,23 @@ export const skirtingType = defineType({
       type: "number",
       validation: (Rule) => Rule.required(),
     }),
+    // defineField({
+    //   name: "pattern",
+    //   title: "Dekor",
+    //   type: "reference",
+    //   to: [{ type: "pattern" }],
+    //   validation: (Rule) => Rule.required(),
+    // }),
     defineField({
-      name: "pattern",
-      title: "Dekor",
-      type: "reference",
-      to: [{ type: "pattern" }],
+      name: "manufacturer",
+      title: "Výrobce",
+      type: "string",
+      options: {
+        list: [
+          { title: "Egibi", value: "egibi" },
+          { title: "Rigid", value: "rigid" },
+        ],
+      },
       validation: (Rule) => Rule.required(),
     }),
     defineField({

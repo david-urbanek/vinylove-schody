@@ -38,13 +38,6 @@ export const transitionProfileType = defineType({
         }),
     }),
     defineField({
-      name: "pattern",
-      title: "Dekor",
-      type: "reference",
-      to: [{ type: "pattern" }],
-      validation: (Rule) => Rule.required(),
-    }),
-    defineField({
       name: "pricePerUnit",
       title: "Cena za kus (Kč)",
       type: "number",
@@ -60,10 +53,27 @@ export const transitionProfileType = defineType({
       validation: (Rule) => Rule.required(),
     }),
     defineField({
+      name: "description",
+      title: "Popis",
+      type: "text",
+    }),
+    defineField({
       name: "gallery",
       title: "Galerie",
       type: "array",
       of: [{ type: "image", options: { hotspot: true } }],
+    }),
+    defineField({
+      name: "manufacturer",
+      title: "Výrobce",
+      type: "string",
+      options: {
+        list: [
+          { title: "Egibi", value: "egibi" },
+          { title: "Rigid", value: "rigid" },
+        ],
+      },
+      validation: (Rule) => Rule.required(),
     }),
     defineField({
       name: "techParams",

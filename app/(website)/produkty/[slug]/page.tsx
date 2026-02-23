@@ -95,6 +95,8 @@ export default async function ProductsCategoryPage(props: Props) {
       //pro tohle napsat funkci
       tags: getTags(item.tags),
       collection: item.collection,
+      category: item.category,
+      m2PerPackage: item.m2PerPackage,
     };
   });
 
@@ -121,8 +123,6 @@ export default async function ProductsCategoryPage(props: Props) {
   if (collection) {
     products = products.filter((product) => product.collection === collection);
   }
-
-  console.log(products);
 
   // Split into batches
   const BATCH_SIZE_PROMO = 6; // products next to promo
@@ -176,5 +176,7 @@ export default async function ProductsCategoryPage(props: Props) {
     }
   }
 
-  return <ProductList10 items={productListItems} title={title} />;
+  return (
+    <ProductList10 items={productListItems} title={title} categorySlug={slug} />
+  );
 }

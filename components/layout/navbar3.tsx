@@ -84,7 +84,7 @@ const flooringCategories = [
   {
     title: "Lepené podlahy",
     description: "Maximálně odolné řešení pro vysokou zátěž.",
-    href: "/produkty/podlahy-lepena",
+    href: "/produkty/podlahy-lepene",
     icon: Layers,
     image: "/realizace/podlahy/siroke/podlaha-1.png",
   },

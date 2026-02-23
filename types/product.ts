@@ -45,6 +45,8 @@ export interface Product {
   isSample?: boolean;
   type?: string;
   collection?: string;
+  m2PerPackage?: number;
+  manufacturer?: string;
 }
 
 export interface EmailCartItem {

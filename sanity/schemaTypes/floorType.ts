@@ -58,7 +58,8 @@ export const floorType = defineType({
         list: [
           { title: "Classic", value: "classic" },
           { title: "Premium", value: "premium" },
-          { title: "Canadian", value: "canadian" },
+          { title: "Rigid SPC", value: "rigid-spc" },
+          { title: "Rigid LVT", value: "rigid-lvt" },
         ],
         // 'radio' zobrazí přepínače místo rozbalovacího seznamu
         layout: "dropdown",
@@ -105,6 +106,12 @@ export const floorType = defineType({
       title: "Galerie",
       type: "array",
       of: [{ type: "image", options: { hotspot: true } }],
+    }),
+    defineField({
+      name: "m2PerPackage",
+      title: "m² v balení",
+      type: "number",
+      validation: (Rule) => Rule.required(),
     }),
     defineField({
       name: "techParams",
